@@ -42,6 +42,8 @@ if (typeof window === 'undefined') {
       connectionString: databaseUrl,
       connectionTimeoutMillis: 5000,
       idleTimeoutMillis: 30000,
+      // Don't fail immediately if database is not available
+      allowExitOnIdle: false,
     })
     
     const adapter = new PrismaPg(pool)
@@ -50,8 +52,17 @@ if (typeof window === 'undefined') {
       adapter: adapter,
       log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
     })
+    
+    // Test connection (non-blocking)
+    prismaClient.$connect().catch((err) => {
+      console.warn('⚠️  Database connection warning:', err.message)
+      console.warn('💡 Please ensure PostgreSQL is running or use a cloud database.')
+      console.warn('📖 See DATABASE_SETUP.md for instructions.')
+    })
   } catch (adapterError) {
     console.error('❌ Error initializing Prisma client with adapter:', adapterError)
+    console.error('💡 Please ensure @prisma/adapter-pg and pg are installed.')
+    console.error('📖 See DATABASE_SETUP.md for database setup instructions.')
     throw new Error('Failed to initialize Prisma client. Please ensure @prisma/adapter-pg and pg are installed.')
   }
 } else {
