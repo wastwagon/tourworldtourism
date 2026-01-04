@@ -1,0 +1,180 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Tour {
+  id                String    @id @default(cuid())
+  title             String
+  slug              String    @unique
+  description       String    @db.Text
+  durationDays       Int       @map("duration_days")
+  durationNights     Int       @map("duration_nights")
+  regions           String[]  // ["Greater Accra", "Ashanti", "Central", "Eastern", "Western"]
+  tourType          String    @map("tour_type") // Culture & Heritage, Eco-Tourism, Historical, Adventure, Custom
+  highlights        String[]
+  itinerary         Json      // [{day: 1, title: "", activities: [], meals: "B/L/D", accommodation: ""}]
+  inclusions        String[]
+  exclusions        String[]
+  hotels            Json[]    // [{name: "", location: "", nights: 0, checkIn: "", checkOut: ""}]
+  pricePerPerson    Float     @map("price_per_person")
+  singleSupplement  Float?    @map("single_supplement")
+  groupSizeMin      Int?      @map("group_size_min")
+  groupSizeMax      Int?      @map("group_size_max")
+  availableDates    String[]  @map("available_dates")
+  featured          Boolean   @default(false)
+  status            String    @default("active") // active, inactive, archived
+  featuredImage     String?   @map("featured_image")
+  galleryImages     String[]  @map("gallery_images")
+  notes             String?   @db.Text
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+  bookings          Booking[]
+  testimonials       Testimonial[]
+
+  @@map("tours")
+}
+
+model Booking {
+  id                String   @id @default(cuid())
+  tourId            String   @map("tour_id")
+  tour              Tour     @relation(fields: [tourId], references: [id])
+  customerName      String   @map("customer_name")
+  email             String
+  phone             String
+  numberOfPeople    Int      @map("number_of_people")
+  preferredStartDate String   @map("preferred_start_date")
+  specialRequests   String?  @db.Text @map("special_requests")
+  totalPrice        Float     @map("total_price")
+  status            String    @default("pending") // pending, confirmed, cancelled, completed
+  paymentStatus     String    @default("unpaid") @map("payment_status") // unpaid, deposit, paid
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  @@map("bookings")
+}
+
+model Hotel {
+  id            String  @id @default(cuid())
+  name          String
+  location      String
+  region        String
+  address       String? @db.Text
+  phone         String?
+  rating        Float?
+  featured      Boolean @default(false)
+  description   String? @db.Text
+  website       String?
+  featuredImage String? @map("featured_image")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("hotels")
+}
+
+model Attraction {
+  id          String  @id @default(cuid())
+  name        String
+  category    String  // Historical, Cultural, Nature, Shopping, Educational
+  region      String
+  description String  @db.Text
+  featured    Boolean @default(false)
+  image       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("attractions")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("customer") // admin, manager, customer
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model ContactInquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String   @db.Text
+  status    String   @default("unread") // unread, read, responded
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("contact_inquiries")
+}
+
+model Newsletter {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  subscribedAt DateTime @default(now()) @map("subscribed_at")
+
+  @@map("newsletters")
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  rating      Int      // 1-5
+  testimonial String   @db.Text
+  tourId      String?  @map("tour_id")
+  tour        Tour?    @relation(fields: [tourId], references: [id])
+  approved    Boolean  @default(false)
+  featured    Boolean  @default(false)
+  image       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("testimonials")
+}
+
+model Blog {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String   @db.Text
+  content     String   @db.Text
+  featuredImage String? @map("featured_image")
+  author      String   @default("TOURWORLD TOURISM")
+  category    String   // Tourism, Culture, History, Wildlife, Travel Tips
+  tags        String[]
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  views       Int      @default(0)
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("blogs")
+}
+
+model Gallery {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?  @db.Text
+  tourName    String   // Name of the tour this gallery belongs to
+  images      String[] // Array of image paths
+  featuredImage String? @map("featured_image") // First image or selected featured image
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("galleries")
+}
