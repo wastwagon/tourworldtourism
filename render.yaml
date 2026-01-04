@@ -24,7 +24,6 @@ services:
 
 databases:
   - name: tourworld-tourism-db
-    plan: starter
     databaseName: tourworld_tourism
     user: tourworld_user
 
