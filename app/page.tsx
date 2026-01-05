@@ -44,7 +44,7 @@ export default async function Home() {
 
       {/* Main Body Content */}
       <main className="flex-grow">
-        {/* About Tour World Tourism Section */}
+        {/* About Tourworld Tourism Section */}
         <section className="py-10 sm:py-14 md:py-16 bg-gradient-to-b from-white via-gray-50 to-white relative overflow-hidden">
           {/* Decorative Background Elements */}
           <div className="absolute top-0 left-0 w-32 h-32 bg-red-100 rounded-full blur-3xl opacity-20 -translate-x-16 -translate-y-16"></div>
@@ -54,7 +54,7 @@ export default async function Home() {
             <div className="text-center mb-6 sm:mb-8 md:mb-10">
               <SectionHeader
                 title="About"
-                titleHighlight="Tour World Tourism"
+                titleHighlight="Tourworld Tourism"
                 subtitle="Your trusted partner for unforgettable Ghanaian adventures since 2007"
               />
             </div>
@@ -66,7 +66,7 @@ export default async function Home() {
               
               <div className="relative z-10">
                 <p className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed text-center mb-6 sm:mb-8">
-                  <span className="font-semibold text-gray-900">Tour World Tourism</span> is a leading tour operator in Ghana, specializing in authentic cultural experiences, 
+                  <span className="font-semibold text-gray-900">Tourworld Tourism</span> is a leading tour operator in Ghana, specializing in authentic cultural experiences, 
                   historical tours, and wildlife safaris. With over 15 years of experience, we are committed to providing exceptional 
                   travel experiences that connect visitors with Ghana's vibrant communities, historical sites, and breathtaking landscapes.
                 </p>
@@ -82,12 +82,12 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Why Choose Tour World Tourism Section */}
+        {/* Why Choose Tourworld Tourism Section */}
         <section className="py-8 sm:py-12 bg-gradient-to-b from-gray-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader
               title="Why Choose"
-              titleHighlight="Tour World Tourism"
+              titleHighlight="Tourworld Tourism"
               subtitle="Experience the difference of traveling with Ghana's premier tour operator"
             />
 

@@ -8,8 +8,8 @@ import {
 } from '@heroicons/react/24/solid'
 
 export const metadata = {
-  title: 'About Us - Tour World Tourism',
-  description: 'Learn about Tour World Tourism, your trusted partner for unforgettable Ghanaian adventures since 2007.',
+  title: 'About Us - Tourworld Tourism',
+  description: 'Learn about Tourworld Tourism, your trusted partner for unforgettable Ghanaian adventures since 2007.',
 }
 
 async function getTourImages() {
@@ -138,7 +138,7 @@ export default async function AboutPage() {
                 <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold text-white mb-3 sm:mb-4 leading-tight">
                   About{' '}
                   <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-clip-text text-transparent">
-                    Tour World Tourism
+                    Tourworld Tourism
                   </span>
                 </h1>
                 <p className="text-xs sm:text-sm md:text-base text-white/90 font-light max-w-2xl leading-relaxed">
@@ -174,7 +174,7 @@ export default async function AboutPage() {
                 </h2>
                 <div className="space-y-3 sm:space-y-4 md:space-y-6 text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
                   <p>
-                    <strong className="text-gray-900">Tour World Tourism</strong> has been 
+                    <strong className="text-gray-900">Tourworld Tourism</strong> has been 
                     a leading tour operator in Ghana since 2007. We specialize in creating authentic, 
                     immersive experiences that showcase the rich culture, history, and natural beauty 
                     of Ghana.

@@ -27,7 +27,7 @@
 1. Click "Select All" or manually check all files
 2. Add a commit message:
    ```
-   Initial commit: Tour World Tourism website with Render deployment setup
+   Initial commit: Tourworld Tourism website with Render deployment setup
    ```
 3. Click "Commit to main"
 4. Click "Push origin" to push to GitHub
@@ -64,7 +64,7 @@ Setup: Add Render deployment configuration and documentation
 
 **For initial commit:**
 ```
-Initial commit: Tour World Tourism website
+Initial commit: Tourworld Tourism website
 
 - Next.js 15 application
 - Prisma with PostgreSQL

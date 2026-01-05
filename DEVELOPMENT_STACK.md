@@ -1,4 +1,4 @@
-# Tour World Tourism - Complete Development Stack
+# Tourworld Tourism - Complete Development Stack
 
 ## 🚀 Overview
 A full-stack Content Management System (CMS) and tourism website built with modern web technologies for managing tours, bookings, hotels, blogs, galleries, and testimonials.

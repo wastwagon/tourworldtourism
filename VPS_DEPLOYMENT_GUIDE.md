@@ -1,4 +1,4 @@
-# 🖥️ VPS Deployment Guide for Tour World Tourism
+# 🖥️ VPS Deployment Guide for Tourworld Tourism
 
 ## 📋 Current Status
 
@@ -429,4 +429,5 @@ Once you have your VPS, follow these steps in order. The entire setup should tak
 2. Setup SSH access
 3. Follow Step 1-10 above
 4. Your application will be live!
+
 

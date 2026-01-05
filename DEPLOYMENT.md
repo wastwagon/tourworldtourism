@@ -1,4 +1,4 @@
-# Deployment Guide for Tour World Tourism
+# Deployment Guide for Tourworld Tourism
 
 ## 🚀 Quick Start
 
@@ -30,7 +30,7 @@ git status
 git add .
 
 # Commit changes
-git commit -m "Initial commit: Tour World Tourism website"
+git commit -m "Initial commit: Tourworld Tourism website"
 
 # Push to GitHub
 git push -u origin main
