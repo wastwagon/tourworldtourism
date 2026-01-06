@@ -35,6 +35,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Install Prisma CLI globally for runtime migrations
+RUN npm install -g prisma@^7.2.0
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -43,13 +46,20 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
-# Copy Prisma files
+# Copy Prisma files and necessary node_modules for runtime
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/node_modules/@prisma/adapter-pg ./node_modules/@prisma/adapter-pg
+COPY --from=builder /app/node_modules/pg ./node_modules/pg
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/package.json ./package.json
+
+# Copy startup script
+COPY --from=builder /app/scripts/start.sh ./scripts/start.sh
 
 # Set correct permissions
 RUN chown -R nextjs:nodejs /app
+RUN chmod +x ./scripts/start.sh
 
 USER nextjs
 
@@ -58,5 +68,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["./scripts/start.sh"]
 
