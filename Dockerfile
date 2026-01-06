@@ -35,8 +35,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Install Prisma CLI globally for runtime migrations
-RUN npm install -g prisma@^7.2.0
+# Install Prisma CLI and dotenv globally for runtime migrations
+RUN npm install -g prisma@^7.2.0 dotenv
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -52,7 +52,6 @@ COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/@prisma/adapter-pg ./node_modules/@prisma/adapter-pg
 COPY --from=builder /app/node_modules/pg ./node_modules/pg
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/package.json ./package.json
 
 # Copy startup script
