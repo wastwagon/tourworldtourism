@@ -51,3 +51,8 @@ untitled folder/
 local-db-export-*.json
 local-db-export-clean.json
 local-db-export-final.json
+
+# PostgreSQL dumps (contain database data)
+tourworld-dump-*.sql
+tourworld-dump-*.sql.base64.txt
+tourworld-dump-base64-oneline.txt
