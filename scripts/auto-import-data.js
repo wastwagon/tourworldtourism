@@ -37,12 +37,14 @@ async function autoImport() {
     
     let imported = 0;
     
-    // Import Tours
+    // Import Tours - create a map of old IDs to new IDs for foreign key references
+    const tourIdMap = new Map();
     if (data.data.tours) {
       for (const t of data.data.tours) {
-        const {id, ...x} = t;
+        const {id: oldId, ...x} = t;
         try {
-          await prisma.tour.upsert({where:{slug:t.slug},update:x,create:x});
+          const result = await prisma.tour.upsert({where:{slug:t.slug},update:x,create:x});
+          tourIdMap.set(oldId, result.id); // Map old ID to new ID
           imported++;
         } catch(e){console.error(`Tour ${t.slug}:`,e.message);}
       }
@@ -103,12 +105,18 @@ async function autoImport() {
       }
     }
     
-    // Import Bookings
+    // Import Bookings - map old tour IDs to new ones
     if (data.data.bookings) {
       for (const b of data.data.bookings) {
-        const {id, ...x} = b;
+        const {id, tourId, ...x} = b;
+        // Map old tour ID to new tour ID
+        const newTourId = tourIdMap.get(tourId);
+        if (!newTourId) {
+          console.error(`⚠️  Booking skipped: Tour ID ${tourId} not found`);
+          continue;
+        }
         try {
-          await prisma.booking.create({data:x});
+          await prisma.booking.create({data:{...x, tourId: newTourId}});
           imported++;
         } catch(e){console.error('Booking:',e.message);}
       }
@@ -128,12 +136,13 @@ async function autoImport() {
     console.log(`✅ Imported ${imported} records`);
     
     // Verify
-    const [tours, hotels, galleries] = await Promise.all([
+    const [tours, hotels, galleries, blogs] = await Promise.all([
       prisma.tour.count(),
       prisma.hotel.count(),
       prisma.gallery.count(),
+      prisma.blog.count(),
     ]);
-    console.log(`📊 Database now has: ${tours} tours, ${hotels} hotels, ${galleries} galleries`);
+    console.log(`📊 Database now has: ${tours} tours, ${hotels} hotels, ${galleries} galleries, ${blogs} blogs`);
     
   } catch (error) {
     console.error('⚠️  Auto-import failed:', error.message);
