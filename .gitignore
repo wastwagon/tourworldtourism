@@ -46,3 +46,8 @@ next-env.d.ts
 # Local folders (images already processed)
 NewGalleryAdditions/
 untitled folder/
+
+# Database exports (contain sensitive data)
+local-db-export-*.json
+local-db-export-clean.json
+local-db-export-final.json
