@@ -60,8 +60,12 @@ COPY --from=builder /app/scripts/start.sh ./scripts/start.sh
 COPY --from=builder /app/scripts/auto-import-data.js ./scripts/auto-import-data.js
 
 # Copy data file if it exists (optional - for auto-import on first startup)
-# If the file doesn't exist, the import will be skipped gracefully
-COPY --from=builder /app/local-db-export-final.json ./local-db-export-final.json 2>/dev/null || true
+# Using RUN with mount to conditionally copy - if file doesn't exist, this step is skipped
+# The auto-import script will gracefully handle a missing file at runtime
+RUN --mount=type=bind,from=builder,source=/app,target=/builder-source \
+    if [ -f /builder-source/local-db-export-final.json ]; then \
+        cp /builder-source/local-db-export-final.json ./local-db-export-final.json; \
+    fi || true
 
 # Set correct permissions
 RUN chown -R nextjs:nodejs /app
