@@ -14,61 +14,20 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Get DATABASE_URL from environment
-const databaseUrl = process.env.DATABASE_URL
-
-// For Prisma 7.x, we need to ensure DATABASE_URL is available
-if (typeof window === 'undefined' && !databaseUrl) {
-  console.error('❌ DATABASE_URL is not set. Please check your .env file.')
-  throw new Error('DATABASE_URL environment variable is required')
-}
-
-// Initialize Prisma Client
-// Prisma 7.x requires adapter for PostgreSQL
-let prismaClient: PrismaClient
-
-if (typeof window === 'undefined') {
-  // Server-side only
-  if (!databaseUrl) {
-    throw new Error('DATABASE_URL environment variable is required')
-  }
-  
-  try {
-    // Use Prisma with pg adapter (Prisma 7.x requirement)
-    const { Pool } = require('pg')
-    const { PrismaPg } = require('@prisma/adapter-pg')
-    
-    const pool = new Pool({
-      connectionString: databaseUrl,
-      connectionTimeoutMillis: 5000,
-      idleTimeoutMillis: 30000,
-      // Don't fail immediately if database is not available
-      allowExitOnIdle: false,
-    })
-    
-    const adapter = new PrismaPg(pool)
-    
-    prismaClient = new PrismaClient({
-      adapter: adapter,
+// Initialize Prisma Client (Prisma 6.x - standard initialization)
+const prismaClient = typeof window === 'undefined' 
+  ? new PrismaClient({
       log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
     })
-    
-    // Test connection (non-blocking)
-    prismaClient.$connect().catch((err) => {
-      console.warn('⚠️  Database connection warning:', err.message)
-      console.warn('💡 Please ensure PostgreSQL is running or use a cloud database.')
-      console.warn('📖 See DATABASE_SETUP.md for instructions.')
-    })
-  } catch (adapterError) {
-    console.error('❌ Error initializing Prisma client with adapter:', adapterError)
-    console.error('💡 Please ensure @prisma/adapter-pg and pg are installed.')
-    console.error('📖 See DATABASE_SETUP.md for database setup instructions.')
-    throw new Error('Failed to initialize Prisma client. Please ensure @prisma/adapter-pg and pg are installed.')
-  }
-} else {
-  // Client-side: Prisma should never be used on client
-  // This is a placeholder that will throw if accidentally used
-  prismaClient = {} as PrismaClient
+  : ({} as PrismaClient)
+
+// Test connection (non-blocking) - server-side only
+if (typeof window === 'undefined') {
+  prismaClient.$connect().catch((err) => {
+    console.warn('⚠️  Database connection warning:', err.message)
+    console.warn('💡 Please ensure PostgreSQL is running or use a cloud database.')
+    console.warn('📖 See DATABASE_SETUP.md for instructions.')
+  })
 }
 
 export const prisma = globalForPrisma.prisma ?? prismaClient
