@@ -7,6 +7,9 @@ import {
   MapPinIcon
 } from '@heroicons/react/24/solid'
 
+// Force dynamic rendering to avoid build-time database calls
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'About Us - Tourworld Tourism',
   description: 'Learn about Tourworld Tourism, your trusted partner for unforgettable Ghanaian adventures since 2007.',

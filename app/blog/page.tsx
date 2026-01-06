@@ -51,6 +51,9 @@ async function getFeaturedTourImage() {
   }
 }
 
+// Force dynamic rendering to avoid build-time database calls
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Blog - TOURWORLD TOURISM SERVICES LTD',
   description: 'Discover Ghana through our travel blog - stories about culture, history, wildlife, and unforgettable experiences in Ghana.',

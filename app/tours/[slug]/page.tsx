@@ -14,6 +14,9 @@ import {
   SparklesIcon
 } from '@heroicons/react/24/outline'
 
+// Force dynamic rendering to avoid build-time database calls
+export const dynamic = 'force-dynamic'
+
 async function getTour(slug: string) {
   try {
     const tour = await prisma.tour.findUnique({

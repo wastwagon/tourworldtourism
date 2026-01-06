@@ -5,6 +5,9 @@ import { prisma } from '@/lib/prisma'
 import { MapPinIcon, PhoneIcon, GlobeAltIcon, StarIcon } from '@heroicons/react/24/solid'
 import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline'
 
+// Force dynamic rendering to avoid build-time database calls
+export const dynamic = 'force-dynamic'
+
 async function getHotels() {
   try {
     const hotels = await prisma.hotel.findMany({

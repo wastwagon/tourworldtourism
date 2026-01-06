@@ -6,6 +6,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { CalendarIcon, UserIcon } from '@heroicons/react/24/outline'
 
+// Force dynamic rendering to avoid build-time database calls
+export const dynamic = 'force-dynamic'
+
 async function getBlog(slug: string) {
   try {
     const blog = await prisma.blog.findUnique({

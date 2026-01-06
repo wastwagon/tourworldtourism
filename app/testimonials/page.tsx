@@ -6,6 +6,9 @@ import { TestimonialForm } from '@/components/TestimonialForm'
 import { prisma } from '@/lib/prisma'
 import { StarIcon } from '@heroicons/react/24/solid'
 
+// Force dynamic rendering to avoid build-time database calls
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Testimonials - TOURWORLD TOURISM SERVICES LTD',
   description: 'Read what our guests have to say about their experiences with TOURWORLD TOURISM SERVICES LTD',
