@@ -35,9 +35,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Install Prisma CLI and dotenv globally for runtime migrations
-RUN npm install -g prisma@^6.0.0 dotenv
-
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -47,9 +44,20 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
 # Copy Prisma files and necessary node_modules for runtime
+# Create node_modules directories first
+RUN mkdir -p node_modules/.prisma node_modules/@prisma node_modules/prisma node_modules/pg node_modules/.bin
+
+# Copy Prisma Client and CLI
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/node_modules/pg ./node_modules/pg
+
+# Copy Prisma binary and ensure it's executable
+COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+RUN chmod +x ./node_modules/.bin/prisma || true
+
+# Copy Prisma schema and package.json
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package.json ./package.json
 

@@ -13,11 +13,9 @@ fi
 
 echo "✅ DATABASE_URL is set"
 
-# Generate Prisma Client (in case it wasn't generated during build)
-echo "📦 Generating Prisma Client..."
-npx prisma generate || {
-  echo "⚠️  Warning: Prisma generate failed, continuing anyway..."
-}
+# Prisma Client should already be generated during build
+# Skip generation to avoid permission issues with global Prisma
+echo "📦 Prisma Client should already be generated from build..."
 
 # Push database schema (creates tables if they don't exist)
 echo "🗄️  Syncing database schema..."
