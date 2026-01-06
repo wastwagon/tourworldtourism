@@ -48,9 +48,10 @@ NewGalleryAdditions/
 untitled folder/
 
 # Database exports (contain sensitive data)
+# Note: local-db-export-final.json is included for auto-import on deployment
 local-db-export-*.json
+!local-db-export-final.json
 local-db-export-clean.json
-local-db-export-final.json
 
 # PostgreSQL dumps (contain database data)
 tourworld-dump-*.sql
