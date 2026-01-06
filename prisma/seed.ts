@@ -1,4 +1,10 @@
-import 'dotenv/config'
+// Try to load dotenv (for local development), but don't fail if it's not available (production)
+try {
+  require('dotenv/config')
+} catch (e) {
+  // dotenv not available - that's okay, DATABASE_URL should be set as environment variable
+}
+
 import { PrismaClient } from '@prisma/client'
 
 // Ensure DATABASE_URL is loaded

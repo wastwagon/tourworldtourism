@@ -26,12 +26,11 @@ npx prisma db push --accept-data-loss || {
 
 echo "✅ Database setup complete"
 
-# Seed database if empty (seed script uses upsert, so safe to run)
-echo "🌱 Seeding database with sample data..."
-npx tsx prisma/seed.ts || {
-  echo "⚠️  Warning: Database seed failed, continuing anyway..."
-  echo "💡 You can manually seed later by running: npx tsx prisma/seed.ts"
-}
+# Skip automatic seeding - use migration script instead
+# Seed script requires dotenv which isn't in production dependencies
+# Users should use the migration script to import their local data
+echo "💡 To populate database, use the migration script:"
+echo "   See MIGRATE_NOW.md for instructions"
 
 # Start the Next.js server
 echo "🌐 Starting Next.js server..."
