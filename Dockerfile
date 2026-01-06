@@ -35,31 +35,25 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
 # Copy necessary files from builder
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
 # Copy Prisma files and necessary node_modules for runtime
-# Create node_modules directories first
-RUN mkdir -p node_modules/.prisma node_modules/@prisma node_modules/prisma node_modules/pg node_modules/.bin
-
-# Copy Prisma Client and CLI
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/node_modules/pg ./node_modules/pg
-
-# Copy Prisma binary and ensure it's executable
-COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
-RUN chmod +x ./node_modules/.bin/prisma || true
-
-# Copy Prisma schema and package.json
-COPY --from=builder /app/prisma ./prisma
+# Install Prisma locally (not globally) so all dependencies are available
 COPY --from=builder /app/package.json ./package.json
+RUN npm install --production --legacy-peer-deps prisma@^6.0.0 pg @prisma/client@^6.0.0
+
+# Copy Prisma Client (already generated from build)
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
+
+# Copy Prisma schema
+COPY --from=builder /app/prisma ./prisma
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
 # Copy startup script
 COPY --from=builder /app/scripts/start.sh ./scripts/start.sh
