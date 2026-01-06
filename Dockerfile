@@ -18,6 +18,8 @@ COPY . .
 
 # Set environment variables for build
 ENV DATABASE_URL="postgresql://placeholder"
+ENV NEXTAUTH_SECRET="build-time-placeholder-must-be-set-at-runtime"
+ENV NEXTAUTH_URL="http://localhost:3000"
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Generate Prisma Client
