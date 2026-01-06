@@ -41,9 +41,9 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
 # Copy Prisma files and necessary node_modules for runtime
-# Install Prisma locally (not globally) so all dependencies are available
+# Install Prisma and tsx locally (not globally) so all dependencies are available
 COPY --from=builder /app/package.json ./package.json
-RUN npm install --production --legacy-peer-deps prisma@^6.0.0 pg @prisma/client@^6.0.0
+RUN npm install --production --legacy-peer-deps prisma@^6.0.0 pg @prisma/client@^6.0.0 tsx
 
 # Copy Prisma Client (already generated from build)
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma

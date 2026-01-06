@@ -26,6 +26,13 @@ npx prisma db push --accept-data-loss || {
 
 echo "✅ Database setup complete"
 
+# Seed database if empty (seed script uses upsert, so safe to run)
+echo "🌱 Seeding database with sample data..."
+npx tsx prisma/seed.ts || {
+  echo "⚠️  Warning: Database seed failed, continuing anyway..."
+  echo "💡 You can manually seed later by running: npx tsx prisma/seed.ts"
+}
+
 # Start the Next.js server
 echo "🌐 Starting Next.js server..."
 exec node server.js
