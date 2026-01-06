@@ -11,10 +11,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Skip static page generation during build (pages are dynamic)
-  experimental: {
-    dynamicIO: true,
-  },
+  // Pages are already set to dynamic rendering via export const dynamic = 'force-dynamic'
+  // No need for experimental.dynamicIO (only available in canary)
   // Ensure environment variables are available
   env: {
     DATABASE_URL: process.env.DATABASE_URL,
