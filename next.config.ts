@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Skip static page generation during build (pages are dynamic)
+  experimental: {
+    dynamicIO: true,
+  },
   // Ensure environment variables are available
   env: {
     DATABASE_URL: process.env.DATABASE_URL,
