@@ -39,16 +39,7 @@ export async function FeaturedHotels() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {hotels.map((hotel) => {
-            // Debug: Log what we're passing
-            console.log(`🔍 FeaturedHotels passing to SafeImage [${hotel.name}]:`, {
-              featuredImage: hotel.featuredImage,
-              type: typeof hotel.featuredImage,
-              isNull: hotel.featuredImage === null,
-              isUndefined: hotel.featuredImage === undefined,
-              hotelKeys: Object.keys(hotel)
-            })
-            return (
+          {hotels.map((hotel) => (
             <div
               key={hotel.id}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group"
@@ -87,8 +78,7 @@ export async function FeaturedHotels() {
                 </Link>
               </div>
             </div>
-            )
-          })}
+          ))}
         </div>
 
         <div className="text-center">
