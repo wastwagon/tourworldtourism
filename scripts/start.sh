@@ -26,11 +26,11 @@ npx prisma db push --accept-data-loss || {
 
 echo "✅ Database setup complete"
 
-# Skip automatic seeding - use migration script instead
-# Seed script requires dotenv which isn't in production dependencies
-# Users should use the migration script to import their local data
-echo "💡 To populate database, use the migration script:"
-echo "   See MIGRATE_NOW.md for instructions"
+# Auto-import data if database is empty
+echo "🔍 Checking if database needs data import..."
+node scripts/auto-import-data.js || {
+  echo "⚠️  Auto-import skipped or failed, continuing startup..."
+}
 
 # Start the Next.js server
 echo "🌐 Starting Next.js server..."
