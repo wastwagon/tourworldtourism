@@ -93,7 +93,8 @@ export default async function ContactPage() {
                         <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                           No. 44, Sixth Avenue, Adjacent Republic Bank Head Office<br />
                           Sekou Toure Street, North Ridge<br />
-                          Accra, Ghana.
+                          Accra, Ghana.<br />
+                          <span className="font-semibold text-red-600">GPS: GA-016-7761</span>
                         </p>
                       </div>
                       <div className="pt-2 border-t border-gray-100">
@@ -156,7 +157,7 @@ export default async function ContactPage() {
               <div className="bg-gradient-to-r from-red-600 to-yellow-500 rounded-lg p-4 sm:p-6 lg:p-8 text-white">
                 <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">GPS Locations</h3>
                 <div className="space-y-2">
-                  <p className="text-xs sm:text-sm opacity-90 font-medium">North Ridge: GD-016-7761</p>
+                  <p className="text-xs sm:text-sm opacity-90 font-medium">North Ridge: GA-016-7761</p>
                   <p className="text-xs sm:text-sm opacity-90 font-medium">Adenta: GD-040-1884</p>
                 </div>
                 <p className="text-xs sm:text-sm mt-4 opacity-90">Licensed Tour Operator in Ghana</p>

@@ -152,7 +152,6 @@ export function Footer() {
             <ul className="space-y-2 text-white text-xs">
               <li>✓ Licensed by Ghana Tourism Authority</li>
               <li>✓ Member of the Tour Operators Union of Ghana</li>
-              <li>✓ GPS: GD-016-7761</li>
               <li>✓ 15+ Years Experience</li>
               <li>✓ Insured & Bonded</li>
             </ul>
@@ -196,7 +195,7 @@ export function Footer() {
         <div className="border-t border-gray-800 pt-6 mt-6">
           <div className="text-center text-sm text-white">
             <p>&copy; 2026 TOURWORLD TOURISM SERVICES LTD. All rights reserved.</p>
-            <p className="mt-1">GPS: GD-016-7761 | Licensed Tour Operator in Ghana</p>
+            <p className="mt-1 text-xs opacity-80">Licensed Tour Operator in Ghana</p>
           </div>
         </div>
       </div>
