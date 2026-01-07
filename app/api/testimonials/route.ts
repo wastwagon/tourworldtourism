@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { sendAdminNotification } from '@/lib/mail'
 
 export async function POST(request: Request) {
   try {
@@ -24,6 +25,7 @@ export async function POST(request: Request) {
     }
 
     // Verify tour exists if tourId is provided
+    let tourTitle = 'General Testimonial'
     if (tourId) {
       const tour = await prisma.tour.findUnique({
         where: { id: tourId },
@@ -34,6 +36,7 @@ export async function POST(request: Request) {
           { status: 404 }
         )
       }
+      tourTitle = tour.title
     }
 
     // Create testimonial (defaults to not approved - admin must approve)
@@ -49,6 +52,31 @@ export async function POST(request: Request) {
         featured: false,
       },
     })
+
+    // Send email notification to admin
+    try {
+      await sendAdminNotification({
+        subject: `New Testimonial Submitted: ${name}`,
+        html: `
+          <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+            <h2 style="color: #ed6c02;">New Testimonial Awaiting Approval</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email || 'Not provided'}</p>
+            <p><strong>Rating:</strong> ${ratingNum} / 5</p>
+            <p><strong>Tour:</strong> ${tourTitle}</p>
+            <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 4px solid #ed6c02;">
+              <p><strong>Testimonial Content:</strong></p>
+              <p style="white-space: pre-wrap;">${testimonial}</p>
+            </div>
+            <p style="margin-top: 20px; color: #d32f2f; font-weight: bold;">Note: This testimonial is currently HIDDEN. Please log in to the admin dashboard to approve it.</p>
+            <p style="margin-top: 20px; font-size: 12px; color: #666;">This is an automated notification from Tourworld Tourism.</p>
+          </div>
+        `,
+      })
+    } catch (mailError) {
+      console.error('Failed to send testimonial notification email:', mailError)
+      // We don't want to fail the whole request if email fails
+    }
 
     return NextResponse.json(
       { 
