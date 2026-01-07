@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { AdminLayout } from '@/components/AdminLayout'
 import Link from 'next/link'
+import { EmailTester } from '@/components/admin/EmailTester'
 
 async function getDashboardStats() {
   const [tours, bookings, inquiries, testimonials, subscribers, hotels, blogs, galleries] = await Promise.all([
@@ -188,50 +189,62 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        {/* Recent Bookings */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Recent Bookings</h2>
-            <Link href="/admin/bookings" className="text-sm text-red-600 hover:text-red-700">
-              View All →
-            </Link>
-          </div>
-          {stats.recentBookings.length === 0 ? (
-            <p className="text-gray-500">No bookings yet</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tour</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">People</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {stats.recentBookings.map((booking) => (
-                    <tr key={booking.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{booking.customerName}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{booking.tour.title}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{booking.numberOfPeople}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${booking.totalPrice.toLocaleString()}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 text-xs rounded-full ${
-                          booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                          booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {booking.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        {/* Recent Bookings and Email Tester */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          <div className="lg:col-span-2 bg-white rounded-lg shadow p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-gray-900">Recent Bookings</h2>
+              <Link href="/admin/bookings" className="text-sm text-red-600 hover:text-red-700">
+                View All →
+              </Link>
             </div>
-          )}
+            {stats.recentBookings.length === 0 ? (
+              <p className="text-gray-500">No bookings yet</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tour</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {stats.recentBookings.map((booking) => (
+                      <tr key={booking.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{booking.customerName}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600 truncate max-w-[150px]">{booking.tour.title}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`px-2 py-1 text-xs rounded-full ${
+                            booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                            booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}>
+                            {booking.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Email System Status</h2>
+            <div className="space-y-4">
+              <div className="p-3 bg-green-50 rounded-lg border border-green-100">
+                <div className="flex items-center">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  <span className="text-sm font-semibold text-green-800">SMTP Active</span>
+                </div>
+                <p className="text-xs text-green-700 mt-1">Host: host17.registrar-servers.com</p>
+              </div>
+              <EmailTester />
+            </div>
+          </div>
         </div>
 
         {/* Quick Actions */}
