@@ -1,17 +1,16 @@
 import nodemailer from 'nodemailer';
 
-// Email configuration
-// These should be added to your .env or Coolify environment variables
-const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
-const SMTP_PORT = parseInt(process.env.SMTP_PORT || '587');
-const SMTP_USER = process.env.SMTP_USER; // e.g., your-email@gmail.com
-const SMTP_PASS = process.env.SMTP_PASS; // e.g., your-app-password
+// Email configuration - Hardcoded as requested for immediate functionality
+const SMTP_HOST = 'mail.tourworldtourism.com';
+const SMTP_PORT = 465; // Standard SSL port for cPanel mail
+const SMTP_USER = 'admin@tourworldtourism.com';
+const SMTP_PASS = '8+@{CNR]9)dB';
 const BUSINESS_EMAIL = 'info@tourworldtourism.com';
 
 const transporter = nodemailer.createTransport({
   host: SMTP_HOST,
   port: SMTP_PORT,
-  secure: SMTP_PORT === 465, // true for 465, false for other ports
+  secure: true, // true for port 465
   auth: {
     user: SMTP_USER,
     pass: SMTP_PASS,
@@ -24,14 +23,9 @@ export interface EmailData {
 }
 
 export async function sendAdminNotification(data: EmailData) {
-  if (!SMTP_USER || !SMTP_PASS) {
-    console.warn('SMTP credentials not set. Email notification skipped.');
-    return;
-  }
-
   try {
     const info = await transporter.sendMail({
-      from: `"Tourworld Tourism Notifications" <${SMTP_USER}>`,
+      from: `"Tourworld Tourism" <${SMTP_USER}>`,
       to: BUSINESS_EMAIL,
       subject: data.subject,
       html: data.html,
@@ -40,7 +34,7 @@ export async function sendAdminNotification(data: EmailData) {
     return info;
   } catch (error) {
     console.error('Error sending admin notification email:', error);
+    // Log details but don't crash the application
     throw error;
   }
 }
-
