@@ -421,7 +421,7 @@ export default async function AboutPage() {
                   </h3>
                   <div className="h-1 w-16 bg-gradient-to-r from-red-600 to-red-400 mb-4 sm:mb-5 rounded-full"></div>
                   <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
-                    We are a licensed tour operator in Ghana (GPS: GD-016-7761) with over 15 years 
+                    We are a licensed tour operator in Ghana (GPS: GA-016-7761) with over 15 years 
                     of experience in the tourism industry.
                   </p>
                 </div>

@@ -103,7 +103,7 @@ export default async function ContactPage() {
                           No. 2 Ayeben Street, Adenta Housing Down<br />
                           Adenta, Accra, Ghana.<br />
                           <span className="text-gray-500 italic text-[11px] sm:text-xs">(Near Shield International School)</span><br />
-                          <span className="font-semibold text-red-600">GPS: GD-040-1884</span>
+                          <span className="font-semibold text-red-600">GPS: GA-040-1884</span>
                         </p>
                       </div>
                     </div>
@@ -158,7 +158,7 @@ export default async function ContactPage() {
                 <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">GPS Locations</h3>
                 <div className="space-y-2">
                   <p className="text-xs sm:text-sm opacity-90 font-medium">North Ridge: GA-016-7761</p>
-                  <p className="text-xs sm:text-sm opacity-90 font-medium">Adenta: GD-040-1884</p>
+                  <p className="text-xs sm:text-sm opacity-90 font-medium">Adenta: GA-040-1884</p>
                 </div>
                 <p className="text-xs sm:text-sm mt-4 opacity-90">Licensed Tour Operator in Ghana</p>
               </div>

@@ -107,7 +107,7 @@ export default async function Home() {
                   Licensed & Experienced
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                  Licensed tour operator (GPS: GD-016-7761) with over 15 years of expertise in Ghana tourism
+                  Licensed tour operator (GPS: GA-016-7761) with over 15 years of expertise in Ghana tourism
                 </p>
               </div>
 
