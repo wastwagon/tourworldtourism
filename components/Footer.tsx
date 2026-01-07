@@ -105,7 +105,8 @@ export function Footer() {
                   <div>
                     <p className="font-semibold text-yellow-500 uppercase text-[10px]">Adenta Office</p>
                     <p>No. 2 Ayeben Street, Adenta Housing Down,<br />Adenta, Accra, Ghana.</p>
-                    <p className="text-yellow-200/80 font-medium">GPS: GA-040-1884</p>
+                    <p className="text-gray-400 italic text-[9px] mb-0.5">(Near Shield International School)</p>
+                    <p className="text-yellow-200/80 font-medium">GPS: GD-040-1884</p>
                   </div>
                 </div>
               </div>
