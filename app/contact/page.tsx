@@ -132,11 +132,6 @@ export default async function ContactPage() {
                           info@tourworldtourism.com
                         </a>
                       </p>
-                      <p className="text-xs sm:text-sm text-gray-700 break-all">
-                        <a href="mailto:tourworldtourism2007@gmail.com" className="hover:text-red-600 transition-colors">
-                          tourworldtourism2007@gmail.com
-                        </a>
-                      </p>
                     </div>
                   </div>
 
