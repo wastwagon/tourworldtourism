@@ -35,7 +35,7 @@ export function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center py-2 gap-y-3 md:gap-y-0 text-[11px] sm:text-sm">
             {/* Contact Info */}
-            <div className="flex flex-col items-center md:items-start gap-y-2 md:gap-y-0">
+            <div className="flex flex-col md:flex-row items-center gap-y-2 md:gap-y-0 md:gap-x-6">
               <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-4 gap-y-2">
                 <a href="tel:+233547783865" className="flex items-center hover:text-yellow-200 transition-colors whitespace-nowrap">
                   <PhoneIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
@@ -46,9 +46,9 @@ export function Header() {
                   <span>info@tourworldtourism.com</span>
                 </a>
               </div>
-              <div className="flex items-center text-center md:text-left opacity-90 md:mt-1">
+              <div className="flex items-center text-center md:text-left opacity-90 md:border-l md:border-white/30 md:pl-6">
                 <MapPinIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 flex-shrink-0" />
-                <span>No. 44, Sixth Avenue, North Ridge, Accra, Ghana. <span className="font-semibold">GPS: GA-016-7761</span></span>
+                <span className="leading-tight">No. 44, Sixth Avenue, North Ridge, Accra, Ghana. <span className="font-semibold whitespace-nowrap">GPS: GA-016-7761</span></span>
               </div>
             </div>
 
