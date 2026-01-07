@@ -133,14 +133,6 @@ export function Footer() {
                   </div>
                 </div>
               </div>
-              <div className="flex items-start pt-1">
-                <ClockIcon className="h-4 w-4 mr-1.5 mt-0.5 flex-shrink-0 text-yellow-500" />
-                <div>
-                  <p className="font-semibold">Hours:</p>
-                  <p>Mon-Fri: 8AM-6PM</p>
-                  <p>Sat: 9AM-4PM</p>
-                </div>
-              </div>
             </div>
           </div>
 
