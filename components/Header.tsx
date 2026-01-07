@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { PhoneIcon, MapPinIcon, XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline'
+import { PhoneIcon, MapPinIcon, XMarkIcon, Bars3Icon, EnvelopeIcon } from '@heroicons/react/24/outline'
 
 export function Header() {
   const pathname = usePathname()
@@ -39,6 +39,10 @@ export function Header() {
               <a href="tel:+233547783865" className="flex items-center hover:text-yellow-200 transition-colors">
                 <PhoneIcon className="h-4 w-4 mr-1.5" />
                 <span>+233 54 778 3865</span>
+              </a>
+              <a href="mailto:info@tourworldtourism.com" className="flex items-center hover:text-yellow-200 transition-colors">
+                <EnvelopeIcon className="h-4 w-4 mr-1.5" />
+                <span>info@tourworldtourism.com</span>
               </a>
               <div className="hidden sm:flex items-center">
                 <MapPinIcon className="h-4 w-4 mr-1.5" />

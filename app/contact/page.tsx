@@ -111,11 +111,18 @@ export default async function ContactPage() {
                       <span className="text-red-600 mr-2">✉️</span>
                       Email
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-700 break-all">
-                      <a href="mailto:tourworldtourism2007@gmail.com" className="hover:text-red-600 transition-colors">
-                        tourworldtourism2007@gmail.com
-                      </a>
-                    </p>
+                    <div className="space-y-1">
+                      <p className="text-xs sm:text-sm text-gray-700 break-all">
+                        <a href="mailto:info@tourworldtourism.com" className="hover:text-red-600 transition-colors font-semibold">
+                          info@tourworldtourism.com
+                        </a>
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-700 break-all">
+                        <a href="mailto:tourworldtourism2007@gmail.com" className="hover:text-red-600 transition-colors">
+                          tourworldtourism2007@gmail.com
+                        </a>
+                      </p>
+                    </div>
                   </div>
 
                   <div>
