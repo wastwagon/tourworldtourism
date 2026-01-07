@@ -93,14 +93,14 @@ export default async function ContactPage() {
                         <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                           No. 44, Sixth Avenue, Adjacent Republic Bank Head Office<br />
                           Sekou Toure Street, North Ridge<br />
-                          Accra, Ghana
+                          Accra, Ghana.
                         </p>
                       </div>
                       <div className="pt-2 border-t border-gray-100">
                         <h4 className="text-xs sm:text-sm font-bold text-gray-800 mb-1">Adenta Office</h4>
                         <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                           No. 2 Ayeben Street, Adenta Housing Down<br />
-                          Adenta, Accra<br />
+                          Adenta, Accra, Ghana.<br />
                           <span className="text-gray-500 italic text-[11px] sm:text-xs">(Near Shield International School)</span><br />
                           <span className="font-semibold text-red-600">GPS: GD-040-1884</span>
                         </p>
