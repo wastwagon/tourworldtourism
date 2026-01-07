@@ -23,7 +23,10 @@ async function getAllGalleryImages() {
     const allImages: Array<{ src: string; alt: string; galleryTitle: string }> = []
     galleries.forEach((gallery: any) => {
       if (gallery.images && Array.isArray(gallery.images)) {
-        gallery.images.slice(0, 4).forEach((image: string) => {
+        gallery.images.slice(0, 10).forEach((image: string) => {
+          // Filter out HEIC files
+          if (image.toLowerCase().endsWith('.heic')) return;
+          
           if (allImages.length < 12) {
             allImages.push({
               src: image,

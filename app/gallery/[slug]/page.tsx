@@ -48,6 +48,11 @@ export default function GalleryDetailPage({ params }: { params: Promise<{ slug: 
           setError('Gallery not found')
           return
         }
+
+        // Filter out HEIC files
+        if (foundGallery.images) {
+          foundGallery.images = foundGallery.images.filter((img: string) => !img.toLowerCase().endsWith('.heic'))
+        }
         
         setGallery(foundGallery)
       } catch (err) {

@@ -25,7 +25,9 @@ export function Footer() {
           if (Array.isArray(galleries)) {
             galleries.forEach((gallery: any) => {
               if (gallery.images && Array.isArray(gallery.images)) {
-                allImages.push(...gallery.images)
+                // Filter out HEIC files
+                const validImages = gallery.images.filter((img: string) => !img.toLowerCase().endsWith('.heic'));
+                allImages.push(...validImages)
               }
             })
           }

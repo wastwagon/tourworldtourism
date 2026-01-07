@@ -14,6 +14,9 @@ interface GalleryImage {
 
 export default function GalleryPage() {
   const [allImages, setAllImages] = useState<GalleryImage[]>([])
+  const [filteredImages, setFilteredImages] = useState<GalleryImage[]>([])
+  const [categories, setCategories] = useState<string[]>(['All'])
+  const [activeCategory, setActiveCategory] = useState('All')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
@@ -30,19 +33,28 @@ export default function GalleryPage() {
         
         // Flatten all images from all galleries into a single array
         const images: GalleryImage[] = []
+        const uniqueCategories = new Set<string>(['All'])
+        
         galleries.forEach((gallery: any) => {
           if (gallery.images && Array.isArray(gallery.images)) {
+            const title = gallery.title || 'Tour Highlight'
+            uniqueCategories.add(title)
             gallery.images.forEach((image: string) => {
+              // Filter out HEIC files as browsers cannot display them
+              if (image.toLowerCase().endsWith('.heic')) return;
+              
               images.push({
                 src: image,
-                alt: `${gallery.title} - ${gallery.tourName}`,
-                galleryTitle: gallery.title
+                alt: `${gallery.title} - ${gallery.tourName || ''}`,
+                galleryTitle: title
               })
             })
           }
         })
         
         setAllImages(images)
+        setFilteredImages(images)
+        setCategories(Array.from(uniqueCategories))
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred')
       } finally {
@@ -68,6 +80,14 @@ export default function GalleryPage() {
     fetchFeaturedTourImage()
   }, [])
 
+  useEffect(() => {
+    if (activeCategory === 'All') {
+      setFilteredImages(allImages)
+    } else {
+      setFilteredImages(allImages.filter(img => img.galleryTitle === activeCategory))
+    }
+  }, [activeCategory, allImages])
+
   const openLightbox = (index: number) => {
     setSelectedImage(index)
     document.body.style.overflow = 'hidden'
@@ -80,13 +100,13 @@ export default function GalleryPage() {
 
   const nextImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % allImages.length)
+      setSelectedImage((selectedImage + 1) % filteredImages.length)
     }
   }
 
   const prevImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage - 1 + allImages.length) % allImages.length)
+      setSelectedImage((selectedImage - 1 + filteredImages.length) % filteredImages.length)
     }
   }
 
@@ -169,51 +189,76 @@ export default function GalleryPage() {
         </div>
       </div>
 
-      {/* Main Gallery - Masonry/Grid Layout */}
+      {/* Main Gallery - World-Class Equal Height Grid */}
       <main className="flex-grow py-8 sm:py-12 lg:py-16">
-        {allImages.length === 0 ? (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-            <p className="text-gray-600 text-lg mb-4">No photos available yet.</p>
-            <p className="text-gray-500">Check back soon for tour photo galleries.</p>
-          </div>
-        ) : (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Masonry Grid - Responsive columns */}
-            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 sm:gap-6">
-              {allImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="break-inside-avoid mb-4 sm:mb-6 group cursor-pointer relative overflow-hidden rounded-lg shadow-md hover:shadow-2xl transition-all duration-300"
-                  onClick={() => openLightbox(index)}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Category Filter */}
+          {categories.length > 2 && (
+            <div className="flex flex-wrap justify-center gap-2 mb-10 sm:mb-12">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                    activeCategory === category
+                      ? 'bg-red-600 text-white shadow-lg scale-105'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
                 >
-                  <div className="relative w-full">
+                  {category}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {filteredImages.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-gray-600 text-lg mb-4">No photos available in this category.</p>
+              <button 
+                onClick={() => setActiveCategory('All')}
+                className="text-red-600 font-semibold hover:underline"
+              >
+                Clear filter
+              </button>
+            </div>
+          ) : (
+            <>
+              {/* Equal Height Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {filteredImages.map((image, index) => (
+                  <div
+                    key={`${image.src}-${index}`}
+                    className="group cursor-pointer relative overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 aspect-[4/3]"
+                    onClick={() => openLightbox(index)}
+                  >
                     <SafeImage
                       src={image.src}
                       alt={image.alt}
-                      width={800}
-                      height={600}
-                      className="w-full h-auto object-cover rounded-lg group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 rounded-lg flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold text-gray-900">
-                          View Full Size
-                        </div>
+                    
+                    {/* Minimal World-Class Overlay */}
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                      <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 transform scale-90 group-hover:scale-100 transition-transform duration-500">
+                        <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                        </svg>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Image Count */}
-            <div className="text-center mt-12 pt-8 border-t border-gray-200">
-              <p className="text-gray-600 text-sm sm:text-base">
-                Showing <span className="font-semibold text-red-600">{allImages.length}</span> {allImages.length === 1 ? 'photo' : 'photos'} from our tours
-              </p>
-            </div>
-          </div>
-        )}
+              {/* Image Count */}
+              <div className="text-center mt-12 pt-8 border-t border-gray-200">
+                <p className="text-gray-500 text-xs tracking-widest uppercase">
+                  Showing <span className="text-red-600 font-bold">{filteredImages.length}</span> of <span className="text-gray-900 font-bold">{allImages.length}</span> moments captured
+                </p>
+              </div>
+            </>
+          )}
+        </div>
       </main>
 
       {/* Lightbox Modal */}
@@ -258,8 +303,8 @@ export default function GalleryPage() {
           >
             <div className="relative w-full h-full max-h-[90vh]">
               <SafeImage
-                src={allImages[selectedImage].src}
-                alt={allImages[selectedImage].alt}
+                src={filteredImages[selectedImage].src}
+                alt={filteredImages[selectedImage].alt}
                 fill
                 className="object-contain"
               />
@@ -268,9 +313,9 @@ export default function GalleryPage() {
 
           {/* Image Info */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black/70 backdrop-blur-sm px-6 py-3 rounded-full text-sm z-20">
-            <span className="font-semibold">{selectedImage + 1}</span> / <span>{allImages.length}</span>
-            {allImages[selectedImage].galleryTitle && (
-              <span className="ml-3 text-white/80">• {allImages[selectedImage].galleryTitle}</span>
+            <span className="font-semibold">{selectedImage + 1}</span> / <span>{filteredImages.length}</span>
+            {filteredImages[selectedImage].galleryTitle && (
+              <span className="ml-3 text-white/80">• {filteredImages[selectedImage].galleryTitle}</span>
             )}
           </div>
         </div>
