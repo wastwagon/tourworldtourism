@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 
 // Email configuration - Hardcoded as requested for immediate functionality
-const SMTP_HOST = 'mail.tourworldtourism.com';
+const SMTP_HOST = 'host17.registrar-servers.com';
 const SMTP_PORT = 465; // Standard SSL port for cPanel mail
 const SMTP_USER = 'admin@tourworldtourism.com';
 const SMTP_PASS = '8+@{CNR]9)dB';
