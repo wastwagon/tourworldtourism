@@ -150,9 +150,9 @@ export function Footer() {
           <div>
             <h3 className="text-base font-semibold mb-3 text-yellow-500">Certifications</h3>
             <ul className="space-y-2 text-white text-xs">
-              <li>✓ Licensed Tour Operator</li>
+              <li>✓ Licensed by Ghana Tourism Authority</li>
+              <li>✓ Member of Ghana Tour Operators Union of Ghana</li>
               <li>✓ GPS: GD-016-7761</li>
-              <li>✓ Ghana Tourism Authority</li>
               <li>✓ 15+ Years Experience</li>
               <li>✓ Insured & Bonded</li>
             </ul>

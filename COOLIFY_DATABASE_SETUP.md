@@ -125,3 +125,4 @@ When everything is working, you should see:
 
 **Need Help?** Check the application logs in Coolify for detailed error messages.
 
+

@@ -46,17 +46,9 @@ export function ItineraryDisplay({ itinerary, tourTitle }: ItineraryDisplayProps
 
             {/* Day Content */}
             <div className="bg-gray-50 rounded-lg p-3 sm:p-4 md:p-5 hover:shadow-md transition-shadow">
-              {/* Day Title and Date */}
+              {/* Day Title */}
               <div className="mb-2 sm:mb-3">
                 <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1">{day.title}</h3>
-                {day.date && (
-                  <div className="flex items-center text-xs sm:text-sm text-gray-600">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span>{day.date}</span>
-                  </div>
-                )}
               </div>
 
               {/* Activities */}

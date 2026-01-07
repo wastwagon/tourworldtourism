@@ -41,36 +41,10 @@ export default function ToursPage() {
         // API returns array directly, not wrapped in object
         const toursArray = Array.isArray(data) ? data : []
         
-        // Sort tours: upcoming tours first, then past tours
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
-        
+        // Sort tours: featured first, then by newest
         const sortedTours = toursArray.sort((a: Tour, b: Tour) => {
-          const aDates = a.availableDates || []
-          const bDates = b.availableDates || []
-          
-          // Check if tours are upcoming
-          const aIsUpcoming = aDates.length > 0 && aDates.some((date: string) => new Date(date) >= today)
-          const bIsUpcoming = bDates.length > 0 && bDates.some((date: string) => new Date(date) >= today)
-          
-          // Upcoming tours come first
-          if (aIsUpcoming && !bIsUpcoming) return -1
-          if (!aIsUpcoming && bIsUpcoming) return 1
-          
-          // Within same category, sort by featured status, then by earliest date
-          if (aIsUpcoming && bIsUpcoming) {
-            // Sort by earliest upcoming date
-            const aEarliest = aDates.filter((d: string) => new Date(d) >= today).sort()[0]
-            const bEarliest = bDates.filter((d: string) => new Date(d) >= today).sort()[0]
-            if (aEarliest && bEarliest) {
-              return new Date(aEarliest).getTime() - new Date(bEarliest).getTime()
-            }
-          }
-          
-          // For past tours or if dates are equal, sort by featured status
           if (a.featured && !b.featured) return -1
           if (!a.featured && b.featured) return 1
-          
           return 0
         })
         
@@ -95,9 +69,6 @@ export default function ToursPage() {
     search: string
     tourType: string
     region: string
-    minPrice: number
-    maxPrice: number
-    tourStatus: string
   }) => {
     let filtered = [...tours]
 
@@ -122,55 +93,10 @@ export default function ToursPage() {
       filtered = filtered.filter((tour) => tour.regions.includes(filters.region))
     }
 
-    // Tour status filter (upcoming/past)
-    if (filters.tourStatus) {
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-      
-      filtered = filtered.filter((tour) => {
-        const dates = tour.availableDates || []
-        if (dates.length === 0) return false // Skip tours with no dates
-        
-        if (filters.tourStatus === 'upcoming') {
-          // Tour is upcoming if it has at least one future date
-          return dates.some((date: string) => new Date(date) >= today)
-        } else if (filters.tourStatus === 'past') {
-          // Tour is past if all dates are in the past
-          return dates.every((date: string) => new Date(date) < today)
-        }
-        return true
-      })
-    }
-
-    // Price filters removed as pricing is not displayed
-
-    // Sort filtered results: upcoming tours first
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    
+    // Sort filtered results: featured first
     const sortedFiltered = filtered.sort((a: Tour, b: Tour) => {
-      const aDates = a.availableDates || []
-      const bDates = b.availableDates || []
-      
-      const aIsUpcoming = aDates.length > 0 && aDates.some((date: string) => new Date(date) >= today)
-      const bIsUpcoming = bDates.length > 0 && bDates.some((date: string) => new Date(date) >= today)
-      
-      // Upcoming tours come first
-      if (aIsUpcoming && !bIsUpcoming) return -1
-      if (!aIsUpcoming && bIsUpcoming) return 1
-      
-      // Within same category, sort by featured status, then by earliest date
-      if (aIsUpcoming && bIsUpcoming) {
-        const aEarliest = aDates.filter((d: string) => new Date(d) >= today).sort()[0]
-        const bEarliest = bDates.filter((d: string) => new Date(d) >= today).sort()[0]
-        if (aEarliest && bEarliest) {
-          return new Date(aEarliest).getTime() - new Date(bEarliest).getTime()
-        }
-      }
-      
       if (a.featured && !b.featured) return -1
       if (!a.featured && b.featured) return 1
-      
       return 0
     })
 
@@ -281,50 +207,28 @@ export default function ToursPage() {
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-2 right-2 sm:top-4 sm:right-4 flex flex-col gap-2 items-end z-10">
-                    {(() => {
-                      const dates = tour.availableDates || []
-                      const today = new Date()
-                      today.setHours(0, 0, 0, 0)
-                      const hasUpcoming = dates.length > 0 && dates.some((date: string) => new Date(date) >= today)
-                      const isPast = dates.length > 0 && dates.every((date: string) => new Date(date) < today)
-                      
-                      // Show Featured badge for all featured tours (upcoming or past)
-                      if (tour.featured) {
-                        return (
-                          <div className="bg-yellow-500 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">
-                            Featured
-                          </div>
-                        )
-                      }
-                      
-                      // Show status badges for non-featured tours
-                      if (hasUpcoming) {
-                        return (
-                          <div className="bg-green-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">
-                            Upcoming
-                          </div>
-                        )
-                      } else if (isPast) {
-                        return (
-                          <div className="bg-gray-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">
-                            Past Tour
-                          </div>
-                        )
-                      }
-                      return null
-                    })()}
+                    {tour.featured && (
+                      <div className="bg-yellow-500 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold shadow-md">
+                        Featured
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* Tour Content */}
                 <div className="p-4 sm:p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs sm:text-sm text-gray-500">
-                      {tour.durationDays} Days / {tour.durationNights} Nights
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold text-red-600">
-                      {tour.tourType}
-                    </span>
+                  <div className="flex flex-col gap-1 mb-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs sm:text-sm text-gray-500 font-medium">
+                        {tour.durationDays} Days / {tour.durationNights} Nights
+                      </span>
+                      <span className="text-xs sm:text-sm font-semibold text-red-600">
+                        {tour.tourType}
+                      </span>
+                    </div>
+                    <div className="flex items-center text-xs text-green-600 font-medium">
+                      <span className="mr-1">👥</span> Min. 5 Persons / Family
+                    </div>
                   </div>
                   
                   <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors line-clamp-2">

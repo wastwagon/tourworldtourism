@@ -21,7 +21,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
     customerName: '',
     email: '',
     phone: '',
-    numberOfPeople: 1,
+    numberOfPeople: 5,
     preferredStartDate: '',
     specialRequests: '',
   })
@@ -151,34 +151,35 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
         <div>
           <label htmlFor="numberOfPeople" className="flex items-center text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
             <UserGroupIcon className="w-4 h-4 mr-1.5 text-red-600" />
-            Number of People *
+            Number of People (Min. 5) *
           </label>
           <input
             type="number"
             id="numberOfPeople"
             name="numberOfPeople"
-            min="1"
+            min="5"
             required
             value={formData.numberOfPeople}
             onChange={handleChange}
             className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all text-sm sm:text-base"
-            placeholder="1"
+            placeholder="5"
           />
+          <p className="text-[10px] sm:text-xs text-gray-500 mt-1">Perfect for families and small groups</p>
         </div>
 
         <div>
           <label htmlFor="preferredStartDate" className="flex items-center text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
             <CalendarIcon className="w-4 h-4 mr-1.5 text-red-600" />
-            Preferred Start Date *
+            Preferred Travel Date
           </label>
           <input
-            type="date"
+            type="text"
             id="preferredStartDate"
             name="preferredStartDate"
-            required
             value={formData.preferredStartDate}
             onChange={handleChange}
             className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all text-sm sm:text-base"
+            placeholder="e.g. Summer 2026 or Any time"
           />
         </div>
       </div>

@@ -178,9 +178,10 @@ export default async function AboutPage() {
                 <div className="space-y-3 sm:space-y-4 md:space-y-6 text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
                   <p>
                     <strong className="text-gray-900">Tourworld Tourism</strong> has been 
-                    a leading tour operator in Ghana since 2007. We specialize in creating authentic, 
-                    immersive experiences that showcase the rich culture, history, and natural beauty 
-                    of Ghana.
+                    a leading tour operator in Ghana since 2007. We are licensed by the Ghana Tourism Authority and 
+                    are a member in good standing of the Ghana Tour Operators Union of Ghana. 
+                    We specialize in creating authentic, immersive experiences that showcase the rich culture, history, 
+                    and natural beauty of Ghana.
                   </p>
                   <p>
                     Our mission is to provide exceptional travel experiences that connect visitors with 

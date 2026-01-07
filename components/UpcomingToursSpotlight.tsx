@@ -3,14 +3,12 @@ import { prisma } from '@/lib/prisma'
 import { SafeImage } from './SafeImage'
 import { CalendarIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/solid'
 
-async function getUpcomingTours() {
+async function getFeaturedSpotlightTours() {
   try {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
     const tours = await prisma.tour.findMany({
       where: {
         status: 'active',
+        featured: true,
       },
       select: {
         id: true,
@@ -28,56 +26,24 @@ async function getUpcomingTours() {
       orderBy: {
         createdAt: 'desc',
       },
+      take: 3,
     })
 
-    // Filter for upcoming tours
-    const upcomingTours = tours.filter((tour) => {
-      const dates = tour.availableDates || []
-      if (dates.length === 0) return false
-      return dates.some((date: string) => new Date(date) >= today)
-    })
-
-    // Sort by earliest upcoming date
-    upcomingTours.sort((a, b) => {
-      const aDates = (a.availableDates || []).filter((d: string) => new Date(d) >= today)
-      const bDates = (b.availableDates || []).filter((d: string) => new Date(d) >= today)
-      if (aDates.length === 0) return 1
-      if (bDates.length === 0) return -1
-      return new Date(aDates[0]).getTime() - new Date(bDates[0]).getTime()
-    })
-
-    return JSON.parse(JSON.stringify(upcomingTours.slice(0, 3))) // Get top 3 upcoming tours
+    return JSON.parse(JSON.stringify(tours))
   } catch (error) {
-    console.error('Error fetching upcoming tours:', error)
+    console.error('Error fetching featured spotlight tours:', error)
     return []
   }
 }
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  })
-}
-
-function getNextDate(dates: string[]): string | null {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const upcomingDates = dates.filter((d) => new Date(d) >= today).sort()
-  return upcomingDates.length > 0 ? upcomingDates[0] : null
-}
-
 export async function UpcomingToursSpotlight() {
-  const upcomingTours = await getUpcomingTours()
+  const spotlightTours = await getFeaturedSpotlightTours()
 
-  if (upcomingTours.length === 0) {
+  if (spotlightTours.length === 0) {
     return null
   }
 
-  const featuredTour = upcomingTours[0]
-  const nextDate = getNextDate(featuredTour.availableDates || [])
+  const featuredTour = spotlightTours[0]
 
   return (
     <section className="relative py-8 sm:py-10 md:py-12 bg-gradient-to-br from-red-600 via-yellow-500 to-green-600 overflow-hidden">
@@ -93,15 +59,15 @@ export async function UpcomingToursSpotlight() {
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-block mb-2 sm:mb-3">
             <span className="bg-white/20 backdrop-blur-sm text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold">
-              ✨ Upcoming Tours
+              ✨ Signature Experiences
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3">
-            Don't Miss Out on These
-            <span className="block text-yellow-300 mt-1 sm:mt-2">Extraordinary Adventures</span>
+            Discover Our
+            <span className="block text-yellow-300 mt-1 sm:mt-2">Iconic Adventures</span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-2xl mx-auto">
-            Book your spot now and experience Ghana's most captivating destinations
+            Book as a family or group (Minimum 5 people). All tours are fully customizable.
           </p>
         </div>
 
@@ -129,18 +95,16 @@ export async function UpcomingToursSpotlight() {
                     {/* Subtle overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent"></div>
                     
-                    {/* Floating Date Badge */}
-                    {nextDate && (
-                      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-white rounded-xl shadow-lg p-2 sm:p-3 transform group-hover:scale-105 transition-transform z-10">
-                        <div className="flex flex-col items-center">
-                          <CalendarIcon className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 mb-1" />
-                          <div className="text-center">
-                            <div className="text-xs text-gray-500 font-medium uppercase tracking-wide">Next Departure</div>
-                            <div className="text-sm sm:text-base font-bold text-gray-900 mt-0.5">{formatDate(nextDate)}</div>
-                          </div>
+                    {/* Availability Badge */}
+                    <div className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-white rounded-xl shadow-lg p-2 sm:p-3 transform group-hover:scale-105 transition-transform z-10">
+                      <div className="flex flex-col items-center">
+                        <CalendarIcon className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 mb-1" />
+                        <div className="text-center">
+                          <div className="text-xs text-gray-500 font-medium uppercase tracking-wide">Availability</div>
+                          <div className="text-sm sm:text-base font-bold text-gray-900 mt-0.5">Year-round</div>
                         </div>
                       </div>
-                    )}
+                    </div>
                   </div>
 
                   {/* Content Section - Takes 2 columns */}
@@ -150,7 +114,7 @@ export async function UpcomingToursSpotlight() {
                       {/* Badges */}
                       <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                         <span className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wide">
-                          ⭐ Featured Tour
+                          ⭐ Recommended
                         </span>
                         <span className="bg-red-600 text-white px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wide">
                           {featuredTour.tourType}
@@ -199,11 +163,10 @@ export async function UpcomingToursSpotlight() {
           </Link>
         </div>
 
-        {/* Additional Upcoming Tours */}
-        {upcomingTours.length > 1 && (
+        {/* Additional Spotlight Tours */}
+        {spotlightTours.length > 1 && (
           <div className="grid md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-            {upcomingTours.slice(1).map((tour: any) => {
-              const tourNextDate = getNextDate(tour.availableDates || [])
+            {spotlightTours.slice(1).map((tour: any) => {
               return (
                 <Link
                   key={tour.id}
@@ -220,11 +183,9 @@ export async function UpcomingToursSpotlight() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                       
-                      {tourNextDate && (
-                        <div className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 rounded-lg text-xs font-semibold">
-                          {formatDate(tourNextDate)}
-                        </div>
-                      )}
+                      <div className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 rounded-lg text-xs font-semibold">
+                        Available Year-round
+                      </div>
                       
                       <div className="absolute top-3 right-3 bg-red-600 text-white px-2 py-1 rounded-lg text-xs font-semibold">
                         {tour.tourType}

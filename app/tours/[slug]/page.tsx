@@ -211,46 +211,43 @@ export default async function TourDetailPage({
 
               {/* Info Cards */}
               <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-                {tour.groupSizeMin && tour.groupSizeMax && (
-                  <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                          <UserGroupIcon className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
-                        </div>
-                      </div>
-                      <div className="ml-3 flex-1">
-                        <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-0.5 sm:mb-1">Group Size</p>
-                        <p className="text-sm sm:text-base font-bold text-gray-900">
-                          {tour.groupSizeMin} - {tour.groupSizeMax} people
-                        </p>
+                <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                        <UserGroupIcon className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
                       </div>
                     </div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-0.5 sm:mb-1">Group & Family Size</p>
+                      <p className="text-sm sm:text-base font-bold text-gray-900">
+                        Minimum 5 people
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Perfect for families and small groups
+                      </p>
+                    </div>
                   </div>
-                )}
+                </div>
 
-                {tour.availableDates && tour.availableDates.length > 0 && (
-                  <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                          <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                        </div>
-                      </div>
-                      <div className="ml-3 flex-1">
-                        <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">Available Dates</p>
-                        <ul className="space-y-1.5 sm:space-y-2">
-                          {tour.availableDates.slice(0, 5).map((date: string, idx: number) => (
-                            <li key={idx} className="flex items-center text-xs sm:text-sm text-gray-700">
-                              <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2 flex-shrink-0"></span>
-                              <span className="font-medium">{date}</span>
-                            </li>
-                          ))}
-                        </ul>
+                <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-lg flex-shrink-0 flex items-center justify-center">
+                        <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                       </div>
                     </div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-0.5 sm:mb-1">Availability</p>
+                      <p className="text-sm sm:text-base font-bold text-gray-900">
+                        Available year-round
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Fully customizable to your preferred dates
+                      </p>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             </div>
 

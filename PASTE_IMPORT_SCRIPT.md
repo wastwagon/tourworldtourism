@@ -94,3 +94,4 @@ node import-sql.js
 
 **Copy the entire script above (from `cat > import-sql.js` to `SCRIPTEOF`) and paste it into Coolify Terminal, then run `node import-sql.js`**
 
+

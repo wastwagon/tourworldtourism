@@ -128,7 +128,7 @@ export default function AdminBookingsPage() {
                       <div className="text-sm text-gray-900">{booking.numberOfPeople}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{new Date(booking.preferredStartDate).toLocaleDateString()}</div>
+                      <div className="text-sm text-gray-900">{booking.preferredStartDate || 'N/A'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">

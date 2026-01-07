@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ChevronLeftIcon, ChevronRightIcon, ClockIcon, MapPinIcon } from '@heroicons/react/24/outline'
+import { ChevronLeftIcon, ChevronRightIcon, ClockIcon, MapPinIcon, UserGroupIcon } from '@heroicons/react/24/outline'
 import { SafeImage } from './SafeImage'
 
 interface Tour {
@@ -118,6 +118,10 @@ export function Hero() {
                       <div className="flex items-center text-xs sm:text-sm">
                         <ClockIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
                         <span className="font-medium">{tour.durationDays} Days / {tour.durationNights} Nights</span>
+                      </div>
+                      <div className="flex items-center text-xs sm:text-sm">
+                        <UserGroupIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
+                        <span className="font-medium">Min. 5 Persons / Family</span>
                       </div>
                       <div className="flex items-center text-xs sm:text-sm">
                         <MapPinIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
