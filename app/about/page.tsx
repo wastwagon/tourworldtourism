@@ -179,7 +179,7 @@ export default async function AboutPage() {
                   <p>
                     <strong className="text-gray-900">Tourworld Tourism</strong> has been 
                     a leading tour operator in Ghana since 2015. We are licensed by the Ghana Tourism Authority and 
-                    are a member in good standing of the Ghana Tour Operators Union of Ghana. 
+                    are a member in good standing of the Tour Operators Union of Ghana. 
                     We specialize in creating authentic, immersive experiences that showcase the rich culture, history, 
                     and natural beauty of Ghana.
                   </p>
