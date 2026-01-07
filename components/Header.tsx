@@ -46,7 +46,7 @@ export function Header() {
               </a>
               <div className="hidden sm:flex items-center">
                 <MapPinIcon className="h-4 w-4 mr-1.5" />
-                <span>No. 44, Sixth Avenue, North Ridge, Accra</span>
+                <span>No. 44, Sixth Avenue, North Ridge, Accra, Ghana. GPS: GA-016-7761</span>
               </div>
             </div>
 
