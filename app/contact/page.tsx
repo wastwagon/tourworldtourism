@@ -85,13 +85,27 @@ export default async function ContactPage() {
                   <div>
                     <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-2 flex items-center">
                       <span className="text-red-600 mr-2">📍</span>
-                      Address
+                      Our Offices
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
-                      No. 44, Sixth Avenue, Adjacent Republic Bank Head Office<br />
-                      Sekou Toure Street, North Ridge<br />
-                      Accra, Ghana
-                    </p>
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-bold text-gray-800 mb-1">North Ridge Office</h4>
+                        <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                          No. 44, Sixth Avenue, Adjacent Republic Bank Head Office<br />
+                          Sekou Toure Street, North Ridge<br />
+                          Accra, Ghana
+                        </p>
+                      </div>
+                      <div className="pt-2 border-t border-gray-100">
+                        <h4 className="text-xs sm:text-sm font-bold text-gray-800 mb-1">Adenta Office</h4>
+                        <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                          No. 2 Ayeben Street, Adenta Housing Down<br />
+                          Adenta, Accra<br />
+                          <span className="text-gray-500 italic text-[11px] sm:text-xs">(Near Shield International School)</span><br />
+                          <span className="font-semibold text-red-600">GPS: GD-040-1884</span>
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
                   <div>
@@ -140,9 +154,12 @@ export default async function ContactPage() {
               </div>
 
               <div className="bg-gradient-to-r from-red-600 to-yellow-500 rounded-lg p-4 sm:p-6 lg:p-8 text-white">
-                <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">GPS Location</h3>
-                <p className="text-xs sm:text-sm opacity-90">GD-016-7761</p>
-                <p className="text-xs sm:text-sm mt-2 opacity-90">Licensed Tour Operator in Ghana</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">GPS Locations</h3>
+                <div className="space-y-2">
+                  <p className="text-xs sm:text-sm opacity-90 font-medium">North Ridge: GD-016-7761</p>
+                  <p className="text-xs sm:text-sm opacity-90 font-medium">Adenta: GD-040-1884</p>
+                </div>
+                <p className="text-xs sm:text-sm mt-4 opacity-90">Licensed Tour Operator in Ghana</p>
               </div>
             </div>
           </div>
