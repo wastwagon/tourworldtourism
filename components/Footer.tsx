@@ -90,22 +90,47 @@ export function Footer() {
           {/* Column 1: Company Info */}
           <div>
             <h3 className="text-base font-semibold mb-3 text-yellow-500">TOURWORLD TOURISM</h3>
-            <div className="space-y-2 text-white text-xs">
-              <div className="flex items-start">
-                <MapPinIcon className="h-4 w-4 mr-1.5 mt-0.5 flex-shrink-0 text-yellow-500" />
-                <p>No. 44, Sixth Avenue, North Ridge, Accra, Ghana</p>
+            <div className="space-y-3 text-white text-xs">
+              <div className="space-y-2">
+                <div className="flex items-start">
+                  <MapPinIcon className="h-4 w-4 mr-1.5 mt-0.5 flex-shrink-0 text-yellow-500" />
+                  <div>
+                    <p className="font-semibold text-yellow-500 uppercase text-[10px]">North Ridge Office</p>
+                    <p>No. 44, Sixth Avenue, North Ridge,<br />Accra, Ghana.</p>
+                    <p className="text-yellow-200/80 font-medium">GPS: GA-016-7761</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <MapPinIcon className="h-4 w-4 mr-1.5 mt-0.5 flex-shrink-0 text-yellow-500" />
+                  <div>
+                    <p className="font-semibold text-yellow-500 uppercase text-[10px]">Adenta Office</p>
+                    <p>No. 2 Ayeben Street, Adenta Housing Down,<br />Adenta, Accra, Ghana.</p>
+                    <p className="text-yellow-200/80 font-medium">GPS: GA-040-1884</p>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <PhoneIcon className="h-4 w-4 mr-1.5 flex-shrink-0 text-yellow-500" />
-                <a href="tel:+233547783865" className="text-white hover:text-yellow-500 transition-colors">
-                  +233 54 778 3865
-                </a>
-              </div>
-              <div className="flex items-center">
-                <EnvelopeIcon className="h-4 w-4 mr-1.5 flex-shrink-0 text-yellow-500" />
-                <a href="mailto:tourworldtourism2007@gmail.com" className="text-white hover:text-yellow-500 transition-colors break-all">
-                  tourworldtourism2007@gmail.com
-                </a>
+
+              <div className="space-y-1.5 pt-1">
+                <div className="flex items-center">
+                  <PhoneIcon className="h-4 w-4 mr-1.5 flex-shrink-0 text-yellow-500" />
+                  <a href="tel:+233547783865" className="text-white hover:text-yellow-500 transition-colors">
+                    +233 54 778 3865
+                  </a>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center">
+                    <EnvelopeIcon className="h-4 w-4 mr-1.5 flex-shrink-0 text-yellow-500" />
+                    <a href="mailto:info@tourworldtourism.com" className="text-white hover:text-yellow-500 transition-colors break-all font-semibold">
+                      info@tourworldtourism.com
+                    </a>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 mr-1.5 flex-shrink-0"></div>
+                    <a href="mailto:tourworldtourism2007@gmail.com" className="text-white/80 hover:text-yellow-500 transition-colors break-all">
+                      tourworldtourism2007@gmail.com
+                    </a>
+                  </div>
+                </div>
               </div>
               <div className="flex items-start pt-1">
                 <ClockIcon className="h-4 w-4 mr-1.5 mt-0.5 flex-shrink-0 text-yellow-500" />
