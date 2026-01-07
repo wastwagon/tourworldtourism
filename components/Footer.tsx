@@ -127,12 +127,6 @@ export function Footer() {
                       info@tourworldtourism.com
                     </a>
                   </div>
-                  <div className="flex items-center">
-                    <div className="w-4 mr-1.5 flex-shrink-0"></div>
-                    <a href="mailto:tourworldtourism2007@gmail.com" className="text-white/80 hover:text-yellow-500 transition-colors break-all">
-                      tourworldtourism2007@gmail.com
-                    </a>
-                  </div>
                 </div>
               </div>
             </div>
