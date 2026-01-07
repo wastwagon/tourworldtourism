@@ -33,25 +33,27 @@ export function Header() {
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center py-2 text-sm">
+          <div className="flex flex-col md:flex-row justify-between items-center py-2 gap-y-3 md:gap-y-0 text-[11px] sm:text-sm">
             {/* Contact Info */}
-            <div className="flex flex-wrap items-center gap-4 mb-2 md:mb-0">
-              <a href="tel:+233547783865" className="flex items-center hover:text-yellow-200 transition-colors">
-                <PhoneIcon className="h-4 w-4 mr-1.5" />
-                <span>+233 54 778 3865</span>
-              </a>
-              <a href="mailto:info@tourworldtourism.com" className="flex items-center hover:text-yellow-200 transition-colors">
-                <EnvelopeIcon className="h-4 w-4 mr-1.5" />
-                <span>info@tourworldtourism.com</span>
-              </a>
-              <div className="hidden sm:flex items-center">
-                <MapPinIcon className="h-4 w-4 mr-1.5" />
-                <span>No. 44, Sixth Avenue, North Ridge, Accra, Ghana. GPS: GA-016-7761</span>
+            <div className="flex flex-col items-center md:items-start gap-y-2 md:gap-y-0">
+              <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-4 gap-y-2">
+                <a href="tel:+233547783865" className="flex items-center hover:text-yellow-200 transition-colors whitespace-nowrap">
+                  <PhoneIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
+                  <span>+233 54 778 3865</span>
+                </a>
+                <a href="mailto:info@tourworldtourism.com" className="flex items-center hover:text-yellow-200 transition-colors whitespace-nowrap font-medium">
+                  <EnvelopeIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
+                  <span>info@tourworldtourism.com</span>
+                </a>
+              </div>
+              <div className="flex items-center text-center md:text-left opacity-90 md:mt-1">
+                <MapPinIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 flex-shrink-0" />
+                <span>No. 44, Sixth Avenue, North Ridge, Accra, Ghana. <span className="font-semibold">GPS: GA-016-7761</span></span>
               </div>
             </div>
 
             {/* Social Media Icons */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-5 border-t border-white/20 pt-2 md:border-t-0 md:pt-0 md:space-x-4">
               <a
                 href="https://facebook.com/tourworldtourism"
                 target="_blank"
