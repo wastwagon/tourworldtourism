@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'About Us - Tourworld Tourism',
-  description: 'Learn about Tourworld Tourism, your trusted partner for unforgettable Ghanaian adventures since 2007.',
+  description: 'Learn about Tourworld Tourism, your trusted partner for unforgettable Ghanaian adventures since 2015.',
 }
 
 async function getTourImages() {
@@ -145,7 +145,7 @@ export default async function AboutPage() {
                   </span>
                 </h1>
                 <p className="text-xs sm:text-sm md:text-base text-white/90 font-light max-w-2xl leading-relaxed">
-                  Your trusted partner for unforgettable Ghanaian adventures since 2007
+                  Your trusted partner for unforgettable Ghanaian adventures since 2015
                 </p>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default async function AboutPage() {
                 <div className="space-y-3 sm:space-y-4 md:space-y-6 text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
                   <p>
                     <strong className="text-gray-900">Tourworld Tourism</strong> has been 
-                    a leading tour operator in Ghana since 2007. We are licensed by the Ghana Tourism Authority and 
+                    a leading tour operator in Ghana since 2015. We are licensed by the Ghana Tourism Authority and 
                     are a member in good standing of the Ghana Tour Operators Union of Ghana. 
                     We specialize in creating authentic, immersive experiences that showcase the rich culture, history, 
                     and natural beauty of Ghana.

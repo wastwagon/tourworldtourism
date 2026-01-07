@@ -58,7 +58,7 @@ export default async function Home() {
               <SectionHeader
                 title="About"
                 titleHighlight="Tourworld Tourism"
-                subtitle="Your trusted partner for unforgettable Ghanaian adventures since 2007"
+                subtitle="Your trusted partner for unforgettable Ghanaian adventures since 2015"
               />
             </div>
             
@@ -69,9 +69,9 @@ export default async function Home() {
               
               <div className="relative z-10">
                 <p className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed text-center mb-6 sm:mb-8">
-                  <span className="font-semibold text-gray-900">Tourworld Tourism</span> is a leading tour operator in Ghana, specializing in authentic cultural experiences, 
-                  historical tours, and wildlife safaris. With over 15 years of experience, we are committed to providing exceptional 
-                  travel experiences that connect visitors with Ghana's vibrant communities, historical sites, and breathtaking landscapes.
+                  <span className="font-semibold text-gray-900">Tourworld Tourism</span> is a leading tour operator in Ghana since 2015. We are licensed by the 
+                  Ghana Tourism Authority and are a member in good standing of the Ghana Tour Operators Union of Ghana. 
+                  We specialize in authentic cultural experiences, historical tours, and wildlife safaris.
                 </p>
                 
                 {/* Highlight Box */}
