@@ -192,34 +192,10 @@ export default function GalleryPage() {
       {/* Main Gallery - World-Class Equal Height Grid */}
       <main className="flex-grow py-8 sm:py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Category Filter */}
-          {categories.length > 2 && (
-            <div className="flex flex-wrap justify-center gap-2 mb-10 sm:mb-12">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                    activeCategory === category
-                      ? 'bg-red-600 text-white shadow-lg scale-105'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          )}
-
+          {/* Main Gallery content area */}
           {filteredImages.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-gray-600 text-lg mb-4">No photos available in this category.</p>
-              <button 
-                onClick={() => setActiveCategory('All')}
-                className="text-red-600 font-semibold hover:underline"
-              >
-                Clear filter
-              </button>
+              <p className="text-gray-600 text-lg mb-4">No photos available in the gallery.</p>
             </div>
           ) : (
             <>
