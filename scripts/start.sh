@@ -3,11 +3,13 @@ set -e
 
 echo "🚀 Starting application..."
 
-# Check if DATABASE_URL is set
-if [ -z "$DATABASE_URL" ] || [ "$DATABASE_URL" = "postgresql://placeholder" ]; then
-  echo "❌ ERROR: DATABASE_URL is not set or is still the placeholder value!"
+# Check if DATABASE_URL is set and not a placeholder
+if [ -z "$DATABASE_URL" ] || echo "$DATABASE_URL" | grep -q "placeholder"; then
+  echo "❌ ERROR: DATABASE_URL is not set or is still a placeholder value!"
+  echo "💡 Current value: $DATABASE_URL"
   echo "💡 Please set DATABASE_URL in your Coolify environment variables."
   echo "💡 It should look like: postgresql://user:password@host:5432/database"
+  echo "💡 Make sure both 'Available at Buildtime' and 'Available at Runtime' are checked!"
   exit 1
 fi
 
