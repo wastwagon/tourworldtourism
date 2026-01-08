@@ -7,25 +7,13 @@ const globalForPrisma = globalThis as unknown as {
 // Ensure Prisma Client is only instantiated once
 const getPrismaClient = () => {
   const url = process.env.DATABASE_URL
-  const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
-                      process.env.NEXT_PHASE === 'phase-development-build'
   
-  // During build, allow placeholder (Dockerfile sets it)
-  // At runtime, require real database URL
-  if (!isBuildTime && (!url || url.includes('placeholder'))) {
-    console.error('❌ DATABASE_URL is not set or is still a placeholder!')
-    console.error('💡 Current value:', url || '(not set)')
-    throw new Error('DATABASE_URL must be set to a valid database connection string at runtime')
-  }
-
-  // Use placeholder URL during build, real URL at runtime
-  const finalUrl = isBuildTime && url?.includes('placeholder') 
-    ? url 
-    : url
-
-  if (!finalUrl) {
-    throw new Error('DATABASE_URL is required')
-  }
+  // During build, Next.js may execute code but DATABASE_URL will be placeholder
+  // We allow this and let Prisma Client be created (it won't actually connect during build)
+  // At runtime, the startup script will validate the URL before the app starts
+  
+  // Use placeholder if that's what we have (during build) or the real URL (at runtime)
+  const finalUrl = url || 'postgresql://placeholder'
 
   const connectionLimit = process.env.NODE_ENV === 'development' ? 2 : 10
   const urlWithLimit = finalUrl.includes('connection_limit=') 
