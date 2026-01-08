@@ -66,20 +66,32 @@ export function MultipleImageUpload({
         })
 
         if (!res.ok) {
-          const errorData = await res.json()
-          throw new Error(errorData.error || 'Failed to upload image')
+          const errorData = await res.json().catch(() => ({ error: 'Unknown error' }))
+          console.error('Upload failed:', res.status, errorData)
+          throw new Error(errorData.error || `Upload failed with status ${res.status}`)
         }
 
         const data = await res.json()
+        console.log('Upload successful:', data)
+        
+        if (!data.path) {
+          console.error('Upload response missing path:', data)
+          throw new Error('Upload response missing image path')
+        }
+        
         return data.path
       })
 
       const uploadedPaths = await Promise.all(uploadPromises)
+      console.log('All uploads completed. Paths:', uploadedPaths)
+      
       const newImages = [...images, ...uploadedPaths]
+      console.log('Updating images array. Total:', newImages.length)
       onChange(newImages)
 
       // Set first uploaded image as featured if no featured image exists
       if (onFeaturedChange && !featuredImage && uploadedPaths.length > 0) {
+        console.log('Setting featured image:', uploadedPaths[0])
         onFeaturedChange(uploadedPaths[0])
       }
     } catch (err: any) {

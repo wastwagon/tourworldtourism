@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { MultipleImageUpload } from '@/components/MultipleImageUpload'
 import Link from 'next/link'
 import slugify from 'slugify'
 
@@ -19,34 +20,20 @@ export default function NewGalleryPage() {
     featured: false,
     published: true,
   })
-  const [imageInput, setImageInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [uploadWarning, setUploadWarning] = useState<string | null>(null)
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value
     const slug = slugify(title, { lower: true, strict: true })
     setFormData({ ...formData, title, slug })
-  }
-
-  const addImage = () => {
-    if (imageInput.trim() && !formData.images.includes(imageInput.trim())) {
-      setFormData({
-        ...formData,
-        images: [...formData.images, imageInput.trim()],
-        featuredImage: formData.featuredImage || imageInput.trim(),
-      })
-      setImageInput('')
+    
+    // Clear warning when slug is set
+    if (slug && uploadWarning) {
+      setUploadWarning(null)
     }
   }
 
-  const removeImage = (index: number) => {
-    const newImages = formData.images.filter((_, i) => i !== index)
-    setFormData({
-      ...formData,
-      images: newImages,
-      featuredImage: formData.featuredImage === formData.images[index] ? (newImages[0] || '') : formData.featuredImage,
-    })
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -141,52 +128,21 @@ export default function NewGalleryPage() {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Images *
-              </label>
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  value={imageInput}
-                  onChange={(e) => setImageInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addImage())}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
-                  placeholder="/images/galleries/tour-name/image1.jpg"
-                />
-                <button
-                  type="button"
-                  onClick={addImage}
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
-                >
-                  Add
-                </button>
+            {!formData.slug && formData.images.length === 0 && (
+              <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg text-sm mb-4">
+                <strong>Tip:</strong> Enter a gallery title first to organize images in a dedicated folder. You can also upload images now - they'll be saved to a temporary folder.
               </div>
-              <div className="space-y-2 max-h-60 overflow-y-auto">
-                {formData.images.map((image, index) => (
-                  <div key={index} className="flex items-center gap-2 bg-gray-50 p-2 rounded">
-                    <input
-                      type="radio"
-                      name="featuredImage"
-                      checked={formData.featuredImage === image}
-                      onChange={() => setFormData({ ...formData, featuredImage: image })}
-                      className="mr-2"
-                    />
-                    <span className="flex-1 text-sm text-gray-700 truncate">{image}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      className="text-red-600 hover:text-red-700 text-sm"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
-              </div>
-              {formData.images.length === 0 && (
-                <p className="text-sm text-gray-500 mt-2">Add at least one image path</p>
-              )}
-            </div>
+            )}
+            <MultipleImageUpload
+              images={formData.images}
+              onChange={(images) => setFormData({ ...formData, images })}
+              featuredImage={formData.featuredImage}
+              onFeaturedChange={(image) => setFormData({ ...formData, featuredImage: image })}
+              category="galleries"
+              subfolder={formData.slug || 'temp-' + Date.now()}
+              label="Images"
+              required
+            />
 
             <div className="flex items-center gap-6">
               <label className="flex items-center">

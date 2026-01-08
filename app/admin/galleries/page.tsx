@@ -30,7 +30,10 @@ export default function AdminGalleriesPage() {
 
   async function fetchGalleries() {
     try {
-      const res = await fetch('/api/galleries')
+      const res = await fetch('/api/admin/galleries')
+      if (!res.ok) {
+        throw new Error('Failed to fetch galleries')
+      }
       const data = await res.json()
       setGalleries(data)
     } catch (error) {

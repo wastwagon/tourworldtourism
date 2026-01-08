@@ -3,8 +3,8 @@ import { Footer } from '@/components/Footer'
 import { SafeImage } from '@/components/SafeImage'
 import { SectionHeader } from '@/components/SectionHeader'
 import { TestimonialForm } from '@/components/TestimonialForm'
+import { TestimonialCardPage } from '@/components/TestimonialCardPage'
 import { prisma } from '@/lib/prisma'
-import { StarIcon } from '@heroicons/react/24/solid'
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
@@ -109,61 +109,9 @@ export default async function TestimonialsPage() {
               <p className="text-xs sm:text-sm text-gray-500">Be the first to share your experience!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
               {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className="bg-white rounded-lg shadow-md p-4 sm:p-6 hover:shadow-xl transition-shadow"
-                >
-                  <div className="flex items-center mb-3 sm:mb-4">
-                    <div className="flex text-yellow-500">
-                      {[...Array(5)].map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          className={`h-4 w-4 sm:h-5 sm:w-5 ${
-                            i < testimonial.rating ? 'fill-current' : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    {testimonial.featured && (
-                      <span className="ml-auto px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="text-xs sm:text-sm text-gray-700 mb-3 sm:mb-4 italic leading-relaxed">
-                    "{testimonial.testimonial}"
-                  </p>
-
-                  <div className="flex items-center pt-3 sm:pt-4 border-t border-gray-200">
-                    {testimonial.image ? (
-                      <SafeImage
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        width={40}
-                        height={40}
-                        className="rounded-full mr-2 sm:mr-3 w-10 h-10 sm:w-12 sm:h-12"
-                      />
-                    ) : (
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-red-600 to-yellow-500 flex items-center justify-center text-white text-sm sm:text-base font-bold mr-2 sm:mr-3">
-                        {testimonial.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm sm:text-base font-semibold text-gray-900 truncate">{testimonial.name}</p>
-                      {testimonial.tour && (
-                        <a
-                          href={`/tours/${testimonial.tour.slug}`}
-                          className="text-xs sm:text-sm text-red-600 hover:text-red-700 transition-colors truncate block"
-                        >
-                          {testimonial.tour.title} →
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <TestimonialCardPage key={testimonial.id} testimonial={testimonial} />
               ))}
             </div>
           )}

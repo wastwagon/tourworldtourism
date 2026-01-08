@@ -1,7 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import React from 'react'
 
 interface SafeImageProps {
   src: string | null | undefined
@@ -28,9 +29,19 @@ export function SafeImage({
 }: SafeImageProps) {
   const [imageError, setImageError] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [imgRef, setImgRef] = useState<HTMLImageElement | null>(null)
 
   // Ensure src is a string and handle null/undefined
   const imageSrc = src ? (typeof src === 'string' ? src : String(src)) : null
+
+  // Check if image is already loaded (for cached images)
+  React.useEffect(() => {
+    if (imgRef && imageSrc && !isLoaded && !imageError) {
+      if (imgRef.complete && imgRef.naturalHeight !== 0) {
+        setIsLoaded(true)
+      }
+    }
+  }, [imgRef, imageSrc, isLoaded, imageError])
 
   // If no src or error occurred, show fallback
   if (!imageSrc || imageError) {
@@ -88,16 +99,30 @@ export function SafeImage({
     }
 
     return (
-      <div className="relative inline-block">
+      <div className="relative inline-block" style={width && height ? { width, height } : undefined}>
         {loadingPlaceholder}
         <img
+          ref={setImgRef}
           src={imageSrc}
           alt={alt}
           width={width}
           height={height}
-          className={`${className} transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onError={() => setImageError(true)}
-          onLoad={() => setIsLoaded(true)}
+          className={`${className} transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'} object-cover`}
+          onError={(e) => {
+            console.error('Image failed to load:', imageSrc, e);
+            setImageError(true);
+            setIsLoaded(false);
+          }}
+          onLoad={() => {
+            setIsLoaded(true);
+            setImageError(false);
+          }}
+          style={{ 
+            display: imageError ? 'none' : 'block',
+            width: width ? `${width}px` : '100%',
+            height: height ? `${height}px` : 'auto',
+            objectFit: 'cover'
+          }}
         />
       </div>
     )

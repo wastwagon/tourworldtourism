@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
-import { SafeImage } from './SafeImage'
 import { SectionHeader } from './SectionHeader'
+import { TestimonialCard } from './TestimonialCard'
 import Link from 'next/link'
 
 async function getTestimonials() {
@@ -62,52 +62,7 @@ export async function Testimonials() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial) => (
-            <div
-              key={testimonial.id}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow"
-            >
-              <div className="flex items-center mb-4">
-                <div className="flex text-yellow-500">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className={`w-5 h-5 ${
-                        i < testimonial.rating ? 'fill-current' : 'text-gray-300'
-                      }`}
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-
-              <p className="text-gray-700 mb-4 italic line-clamp-4">
-                "{testimonial.testimonial}"
-              </p>
-
-              <div className="flex items-center">
-                {testimonial.image ? (
-                  <SafeImage
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    width={48}
-                    height={48}
-                    className="rounded-full mr-3"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-yellow-500 flex items-center justify-center text-white font-bold mr-3">
-                    {testimonial.name.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div>
-                  <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                  {testimonial.tour && (
-                    <p className="text-sm text-gray-500">{testimonial.tour.title}</p>
-                  )}
-                </div>
-              </div>
-            </div>
+            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </div>
 

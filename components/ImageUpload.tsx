@@ -63,7 +63,10 @@ export function ImageUpload({
         formData.append('subfolder', subfolder)
       }
 
-      const res = await fetch('/api/admin/upload', {
+      // Use public upload endpoint for testimonials, admin endpoint for everything else
+      const uploadEndpoint = category === 'testimonials' ? '/api/upload' : '/api/admin/upload'
+      
+      const res = await fetch(uploadEndpoint, {
         method: 'POST',
         body: formData,
       })

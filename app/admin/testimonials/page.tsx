@@ -121,21 +121,28 @@ export default function AdminTestimonialsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-white rounded-lg shadow p-6">
+            <div key={testimonial.id} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-gray-100">
               <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  {testimonial.image && (
-                    <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                      <SafeImage
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        fill
-                        className="object-cover"
-                      />
+                <div className="flex items-center gap-4">
+                  {testimonial.image ? (
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-yellow-500 rounded-full blur-sm opacity-50"></div>
+                      <div className="w-14 h-14 rounded-full overflow-hidden relative border-2 border-white shadow-md">
+                        <SafeImage
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-red-600 to-yellow-500 flex items-center justify-center text-white font-bold text-lg border-2 border-white shadow-md">
+                      {testimonial.name.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <div>
-                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                    <div className="font-bold text-gray-900">{testimonial.name}</div>
                     <div className="flex items-center gap-1 mt-1">
                       {[...Array(5)].map((_, i) => (
                         <StarIcon
@@ -149,39 +156,39 @@ export default function AdminTestimonialsPage() {
                   </div>
                 </div>
                 {!testimonial.approved && (
-                  <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">
+                  <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full font-semibold">
                     Pending
                   </span>
                 )}
               </div>
-              <p className="text-sm text-gray-700 mb-4 line-clamp-4">{testimonial.testimonial}</p>
+              <p className="text-sm text-gray-700 mb-4 line-clamp-4 italic leading-relaxed">"{testimonial.testimonial}"</p>
               {testimonial.tour && (
-                <p className="text-xs text-gray-500 mb-4">Tour: {testimonial.tour.title}</p>
+                <p className="text-xs text-gray-500 mb-4 font-medium">Tour: {testimonial.tour.title}</p>
               )}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div className="flex gap-2">
                   {!testimonial.approved && (
                     <button
                       onClick={() => updateTestimonial(testimonial.id, { approved: true })}
-                      className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
+                      className="px-3 py-1.5 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold shadow-sm"
                     >
                       Approve
                     </button>
                   )}
                   <button
                     onClick={() => updateTestimonial(testimonial.id, { featured: !testimonial.featured })}
-                    className={`px-3 py-1 text-xs rounded ${
+                    className={`px-3 py-1.5 text-xs rounded-lg transition-colors font-semibold shadow-sm ${
                       testimonial.featured
-                        ? 'bg-yellow-600 text-white hover:bg-yellow-700'
+                        ? 'bg-yellow-500 text-white hover:bg-yellow-600'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    {testimonial.featured ? 'Featured' : 'Feature'}
+                    {testimonial.featured ? '⭐ Featured' : 'Feature'}
                   </button>
                 </div>
                 <button
                   onClick={() => deleteTestimonial(testimonial.id)}
-                  className="text-red-600 hover:text-red-800"
+                  className="text-red-600 hover:text-red-800 transition-colors p-1 rounded hover:bg-red-50"
                 >
                   <TrashIcon className="h-5 w-5" />
                 </button>
