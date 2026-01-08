@@ -16,10 +16,15 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Set environment variables for build
-ENV DATABASE_URL="postgresql://placeholder"
-ENV NEXTAUTH_SECRET="build-time-placeholder-must-be-set-at-runtime"
-ENV NEXTAUTH_URL="http://localhost:3000"
+# Accept build arguments (can be overridden by Coolify's build-time env vars)
+ARG DATABASE_URL="postgresql://placeholder"
+ARG NEXTAUTH_SECRET="build-time-placeholder-must-be-set-at-runtime"
+ARG NEXTAUTH_URL="http://localhost:3000"
+
+# Set as environment variables for the build
+ENV DATABASE_URL=$DATABASE_URL
+ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
+ENV NEXTAUTH_URL=$NEXTAUTH_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Generate Prisma Client
