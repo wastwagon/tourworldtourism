@@ -1,35 +1,25 @@
 import { PrismaClient } from '@prisma/client'
 
-// Ensure dotenv is loaded before Prisma Client initialization
-if (typeof window === 'undefined') {
-  // Only load on server-side
-  try {
-    require('dotenv/config')
-  } catch (e) {
-    // dotenv might already be loaded or not available
-  }
-}
-
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Initialize Prisma Client (Prisma 6.x - standard initialization)
-const prismaClient = typeof window === 'undefined' 
-  ? new PrismaClient({
-      log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-    })
-  : ({} as PrismaClient)
+// Ensure Prisma Client is only instantiated once
+const getPrismaClient = () => {
+  const url = process.env.DATABASE_URL
+  const connectionLimit = process.env.NODE_ENV === 'development' ? 2 : 10
+  const urlWithLimit = url ? `${url}${url.includes('?') ? '&' : '?'}connection_limit=${connectionLimit}` : url
 
-// Test connection (non-blocking) - server-side only
-if (typeof window === 'undefined') {
-  prismaClient.$connect().catch((err) => {
-    console.warn('⚠️  Database connection warning:', err.message)
-    console.warn('💡 Please ensure PostgreSQL is running or use a cloud database.')
-    console.warn('📖 See DATABASE_SETUP.md for instructions.')
+  return new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+    datasources: {
+      db: {
+        url: urlWithLimit,
+      },
+    },
   })
 }
 
-export const prisma = globalForPrisma.prisma ?? prismaClient
+export const prisma = globalForPrisma.prisma ?? getPrismaClient()
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma

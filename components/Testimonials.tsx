@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { SafeImage } from './SafeImage'
 import { SectionHeader } from './SectionHeader'
-import { TestimonialsFormSection } from './TestimonialsFormSection'
+import Link from 'next/link'
 
 async function getTestimonials() {
   try {
@@ -46,7 +46,6 @@ export async function Testimonials() {
           <div className="text-center text-gray-500 mb-8">
             <p>Testimonials coming soon!</p>
           </div>
-          <TestimonialsFormSection />
         </div>
       </section>
     )
@@ -61,7 +60,7 @@ export async function Testimonials() {
           subtitle="Don't just take our word for it - hear from travelers who have experienced Ghana with us"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
@@ -112,8 +111,14 @@ export async function Testimonials() {
           ))}
         </div>
 
-        {/* Testimonial Submission Form */}
-        <TestimonialsFormSection />
+        <div className="text-center mt-12">
+          <Link
+            href="/testimonials"
+            className="inline-block bg-white border-2 border-red-600 text-red-600 px-8 py-3 rounded-lg font-bold hover:bg-red-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-xl"
+          >
+            View All Reviews & Share Your Story
+          </Link>
+        </div>
       </div>
     </section>
   )

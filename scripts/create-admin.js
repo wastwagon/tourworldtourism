@@ -1,17 +1,8 @@
 require('dotenv/config')
 const bcrypt = require('bcryptjs')
-
-// Use the same Prisma setup as the app
 const { PrismaClient } = require('@prisma/client')
-const { Pool } = require('pg')
-const { PrismaPg } = require('@prisma/adapter-pg')
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-})
-
-const adapter = new PrismaPg(pool)
-const prisma = new PrismaClient({ adapter })
+const prisma = new PrismaClient()
 
 async function createAdmin() {
   try {
@@ -23,7 +14,13 @@ async function createAdmin() {
     })
     
     if (existingAdmin) {
-      console.log('✅ Admin user already exists!')
+      console.log('🔄 Admin user already exists. Resetting password...')
+      const hashedPassword = await bcrypt.hash('admin123', 10)
+      await prisma.user.update({
+        where: { email: 'admin@tourworldtourism.com' },
+        data: { password: hashedPassword }
+      })
+      console.log('✅ Admin password has been reset!')
       console.log('   Email: admin@tourworldtourism.com')
       console.log('   Password: admin123')
       await prisma.$disconnect()
@@ -53,7 +50,6 @@ async function createAdmin() {
     }
   } finally {
     await prisma.$disconnect()
-    await pool.end()
   }
 }
 
