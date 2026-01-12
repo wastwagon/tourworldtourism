@@ -165,26 +165,51 @@ export default function EditTourPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    
-    // Prevent double submission
-    if (saving || loading) {
-      return
-    }
-    
-    setSaving(true)
-
     try {
+      e.preventDefault()
+      e.stopPropagation()
+      
+      // Log for debugging (will show in production console)
+      if (typeof window !== 'undefined') {
+        window.console?.log?.('🔵 Form submit handler called')
+        window.console?.log?.('Saving state:', saving, 'Loading state:', loading)
+      }
+      
+      // Prevent double submission
+      if (saving || loading) {
+        if (typeof window !== 'undefined') {
+          window.console?.warn?.('⚠️ Submission prevented: already saving or loading')
+        }
+        return
+      }
+      
+      if (!tourId) {
+        alert('Error: Tour ID is missing')
+        return
+      }
+      
+      setSaving(true)
+
+      if (typeof window !== 'undefined') {
+        window.console?.log?.('📤 Making API request to:', `/api/admin/tours/${tourId}`)
+      }
+
       const res = await fetch(`/api/admin/tours/${tourId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
 
+      if (typeof window !== 'undefined') {
+        window.console?.log?.('📥 Response status:', res.status)
+      }
+
       const responseData = await res.json()
 
       if (res.ok) {
+        if (typeof window !== 'undefined') {
+          window.console?.log?.('✅ Tour saved successfully')
+        }
         setSuccessMessage('Tour saved successfully!')
         setSaving(false)
         
@@ -193,13 +218,20 @@ export default function EditTourPage() {
           router.push('/admin/tours')
         }, 2000)
       } else {
-        console.error('Failed to update tour:', responseData)
-        alert(responseData.error || 'Failed to update tour')
+        const errorMsg = responseData.error || 'Failed to update tour'
+        if (typeof window !== 'undefined') {
+          window.console?.error?.('❌ Update failed:', errorMsg)
+        }
+        alert(errorMsg)
         setSaving(false)
       }
     } catch (error: any) {
-      console.error('Error updating tour:', error)
-      alert(`Error updating tour: ${error.message || 'Unknown error'}`)
+      const errorMsg = error.message || 'Unknown error'
+      if (typeof window !== 'undefined') {
+        window.console?.error?.('❌ Error updating tour:', errorMsg)
+        window.console?.error?.('Error details:', error)
+      }
+      alert(`Error updating tour: ${errorMsg}`)
       setSaving(false)
     }
   }
@@ -251,8 +283,18 @@ export default function EditTourPage() {
         )}
 
         <form 
-          onSubmit={handleSubmit} 
+          onSubmit={(e) => {
+            try {
+              handleSubmit(e)
+            } catch (error: any) {
+              if (typeof window !== 'undefined') {
+                window.console?.error?.('❌ Form onSubmit error:', error)
+              }
+              alert('An error occurred. Please try again.')
+            }
+          }} 
           className="space-y-8"
+          noValidate
         >
           {/* Basic Information */}
           <div className="space-y-6">
@@ -520,6 +562,16 @@ export default function EditTourPage() {
             <button
               type="submit"
               disabled={saving || loading}
+              onClick={(e) => {
+                // Force form submission even if disabled state is wrong
+                if (!saving && !loading) {
+                  const form = e.currentTarget.closest('form')
+                  if (form) {
+                    const submitEvent = new Event('submit', { bubbles: true, cancelable: true })
+                    form.dispatchEvent(submitEvent)
+                  }
+                }
+              }}
               className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? 'Saving...' : 'Save Changes'}
