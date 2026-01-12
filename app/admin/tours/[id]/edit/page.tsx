@@ -166,12 +166,20 @@ export default function EditTourPage() {
     e.preventDefault()
     e.stopPropagation()
     
-    console.log('Form submitted, tourId:', tourId)
-    console.log('Form data:', formData)
+    // Prevent double submission
+    if (saving || loading) {
+      console.warn('Form submission prevented: already saving or loading')
+      return
+    }
+    
+    console.log('=== FORM SUBMISSION STARTED ===')
+    console.log('Tour ID:', tourId)
+    console.log('Form data:', JSON.stringify(formData, null, 2))
     
     setSaving(true)
 
     try {
+      console.log('Making PUT request to:', `/api/admin/tours/${tourId}`)
       const res = await fetch(`/api/admin/tours/${tourId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -183,15 +191,20 @@ export default function EditTourPage() {
       console.log('Response data:', responseData)
 
       if (res.ok) {
-        console.log('Tour updated successfully, redirecting...')
+        console.log('✅ Tour updated successfully, redirecting...')
         router.push('/admin/tours')
       } else {
-        console.error('Update failed:', responseData)
+        console.error('❌ Update failed:', responseData)
         alert(responseData.error || 'Failed to update tour')
         setSaving(false)
       }
     } catch (error: any) {
-      console.error('Error updating tour:', error)
+      console.error('❌ Error updating tour:', error)
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      })
       alert(`Error updating tour: ${error.message || 'Unknown error'}`)
       setSaving(false)
     }
@@ -490,13 +503,6 @@ export default function EditTourPage() {
             <button
               type="submit"
               disabled={saving || loading}
-              onClick={(e) => {
-                console.log('Save button clicked, saving:', saving, 'loading:', loading)
-                if (saving || loading) {
-                  e.preventDefault()
-                  console.log('Button disabled, preventing submit')
-                }
-              }}
               className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? 'Saving...' : 'Save Changes'}
