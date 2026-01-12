@@ -266,14 +266,8 @@ export default function EditTourPage() {
 
         <form 
           onSubmit={(e) => {
-            try {
-              handleSubmit(e)
-            } catch (error: any) {
-              if (typeof window !== 'undefined') {
-                window.console?.error?.('❌ Form onSubmit error:', error)
-              }
-              alert('An error occurred. Please try again.')
-            }
+            console.log('📝 Form onSubmit event fired')
+            handleSubmit(e)
           }} 
           className="space-y-8"
           noValidate
