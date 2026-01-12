@@ -15,6 +15,18 @@ export default function EditTourPage() {
   const tourId = params?.id as string
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+
+  // Debug: Log component mount and state changes
+  useEffect(() => {
+    console.log('🎯 EditTourPage component mounted')
+    console.log('Tour ID:', tourId)
+    console.log('Loading:', loading)
+    console.log('Saving:', saving)
+  }, [])
+
+  useEffect(() => {
+    console.log('📊 State changed - Loading:', loading, 'Saving:', saving)
+  }, [loading, saving])
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -44,6 +56,18 @@ export default function EditTourPage() {
   const [newInclusion, setNewInclusion] = useState('')
   const [newExclusion, setNewExclusion] = useState('')
   const [newDate, setNewDate] = useState('')
+
+  // Debug: Log component mount and state changes
+  useEffect(() => {
+    console.log('🎯 EditTourPage component mounted')
+    console.log('Tour ID:', tourId)
+    console.log('Loading:', loading)
+    console.log('Saving:', saving)
+  }, [])
+
+  useEffect(() => {
+    console.log('📊 State changed - Loading:', loading, 'Saving:', saving)
+  }, [loading, saving])
 
   useEffect(() => {
     if (tourId) {
@@ -515,16 +539,36 @@ export default function EditTourPage() {
               Cancel
             </Link>
             <button
-              type="submit"
+              type="button"
               disabled={saving || loading}
               onClick={(e) => {
-                console.log('🔘 BUTTON CLICKED - Direct onClick handler')
+                e.preventDefault()
+                e.stopPropagation()
+                console.log('🔘🔘🔘 BUTTON CLICKED - Direct onClick handler 🔘🔘🔘')
                 console.log('Button disabled state:', saving || loading)
                 console.log('Saving:', saving, 'Loading:', loading)
-                // Don't prevent default - let form handle it
-                // But log to confirm button is clickable
+                console.log('Event:', e)
+                console.log('Event type:', e.type)
+                console.log('Event target:', e.target)
+                
+                if (saving || loading) {
+                  console.warn('⚠️ Button is disabled, not proceeding')
+                  return
+                }
+                
+                console.log('✅ Button is enabled, calling handleSubmit directly...')
+                // Create a synthetic form event
+                const syntheticEvent = {
+                  preventDefault: () => {},
+                  stopPropagation: () => {},
+                  type: 'submit',
+                  target: e.currentTarget.closest('form') || e.target,
+                } as React.FormEvent
+                
+                handleSubmit(syntheticEvent)
               }}
               className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ zIndex: 9999, position: 'relative', pointerEvents: 'auto' }}
             >
               {saving ? 'Saving...' : 'Save Changes'}
             </button>
