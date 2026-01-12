@@ -560,19 +560,44 @@ export default function EditTourPage() {
               Cancel
             </Link>
             <button
-              type="submit"
+              type="button"
               disabled={saving || loading}
-              onClick={(e) => {
-                // Force form submission even if disabled state is wrong
-                if (!saving && !loading) {
-                  const form = e.currentTarget.closest('form')
-                  if (form) {
-                    const submitEvent = new Event('submit', { bubbles: true, cancelable: true })
-                    form.dispatchEvent(submitEvent)
+              onClick={async (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                
+                // Immediate logging - this MUST appear if button is clicked
+                if (typeof window !== 'undefined' && window.console) {
+                  window.console.log('🔴🔴🔴 BUTTON CLICKED - Direct onClick handler 🔴🔴🔴')
+                  window.console.log('Button clicked at:', new Date().toISOString())
+                  window.console.log('Saving:', saving, 'Loading:', loading)
+                  window.console.log('Tour ID:', tourId)
+                }
+                
+                // Alert as backup - will definitely show if button works
+                if (!saving && !loading && tourId) {
+                  // Call handleSubmit directly
+                  const syntheticEvent = {
+                    preventDefault: () => {},
+                    stopPropagation: () => {},
+                    type: 'submit',
+                    target: e.currentTarget.closest('form') || e.currentTarget,
+                  } as React.FormEvent
+                  
+                  handleSubmit(syntheticEvent)
+                } else {
+                  if (typeof window !== 'undefined' && window.console) {
+                    window.console.warn('⚠️ Button click ignored:', { saving, loading, tourId })
+                  }
+                  if (!tourId) {
+                    alert('Error: Tour ID is missing. Please refresh the page.')
+                  } else if (saving || loading) {
+                    alert('Please wait, operation in progress...')
                   }
                 }
               }}
               className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ cursor: saving || loading ? 'not-allowed' : 'pointer' }}
             >
               {saving ? 'Saving...' : 'Save Changes'}
             </button>
