@@ -18,6 +18,18 @@ const nextConfig: NextConfig = {
     DATABASE_URL: process.env.DATABASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    AUTH_SECRET: process.env.AUTH_SECRET,
+  },
+  // Webpack configuration to fix next-auth/react module resolution
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Fix for next-auth/react module resolution in client-side
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'next-auth/react': require.resolve('next-auth/react.js'),
+      };
+    }
+    return config;
   },
   // Image optimization settings
   images: {
