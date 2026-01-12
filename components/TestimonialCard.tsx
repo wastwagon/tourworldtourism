@@ -70,10 +70,10 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
               {testimonial.name.charAt(0).toUpperCase()}
             </div>
           )}
-          <div className="flex-1">
-            <p className="font-bold text-gray-900 text-lg">{testimonial.name}</p>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-gray-900 text-lg break-words leading-tight">{testimonial.name}</p>
             {testimonial.tour && (
-              <p className="text-sm text-gray-500 mt-1">{testimonial.tour.title}</p>
+              <p className="text-sm text-gray-500 mt-1 break-words">{testimonial.tour.title}</p>
             )}
           </div>
         </div>

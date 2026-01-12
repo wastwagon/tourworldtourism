@@ -3,7 +3,7 @@ import { Footer } from '@/components/Footer'
 import { SafeImage } from '@/components/SafeImage'
 import { SectionHeader } from '@/components/SectionHeader'
 import { TestimonialForm } from '@/components/TestimonialForm'
-import { TestimonialCardPage } from '@/components/TestimonialCardPage'
+import { TestimonialsPageCarousel } from '@/components/TestimonialsPageCarousel'
 import { prisma } from '@/lib/prisma'
 
 // Force dynamic rendering to avoid build-time database calls
@@ -102,23 +102,15 @@ export default async function TestimonialsPage() {
       {/* Main Content */}
       <main className="flex-grow py-6 sm:py-8 lg:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Testimonials Grid */}
+          {/* Testimonials Carousel */}
           {testimonials.length === 0 ? (
             <div className="text-center py-8 sm:py-12 bg-white rounded-lg shadow">
               <p className="text-sm sm:text-base text-gray-600 mb-2 sm:mb-4">No testimonials available yet.</p>
               <p className="text-xs sm:text-sm text-gray-500">Be the first to share your experience!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
-              {testimonials.map((testimonial, index) => (
-                <div
-                  key={testimonial.id}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <TestimonialCardPage testimonial={testimonial} />
-                </div>
-              ))}
+            <div className="mb-8 sm:mb-12">
+              <TestimonialsPageCarousel testimonials={testimonials} />
             </div>
           )}
 

@@ -26,10 +26,10 @@ export function TestimonialCardPage({ testimonial }: TestimonialCardPageProps) {
 
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+      <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 h-full flex flex-col">
         {/* Rating and Featured Badge */}
         <div className="flex items-center justify-between mb-4 sm:mb-5">
-          <div className="flex text-yellow-400">
+          <div className="flex text-yellow-400 gap-0.5">
             {[...Array(5)].map((_, i) => (
               <StarIcon
                 key={i}
@@ -47,14 +47,14 @@ export function TestimonialCardPage({ testimonial }: TestimonialCardPageProps) {
         </div>
 
         {/* Testimonial Text */}
-        <p className="text-sm sm:text-base text-gray-700 mb-5 sm:mb-6 italic leading-relaxed">
+        <p className="text-sm sm:text-base text-gray-700 mb-5 sm:mb-6 italic leading-relaxed flex-grow">
           "{testimonial.testimonial}"
         </p>
 
         {/* Author Section */}
-        <div className="flex items-center pt-5 sm:pt-6 border-t border-gray-100">
+        <div className="flex items-start pt-5 sm:pt-6 border-t border-gray-100 mt-auto">
           {testimonial.image ? (
-            <div className="relative mr-3 sm:mr-4">
+            <div className="relative mr-3 sm:mr-4 flex-shrink-0">
               <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-yellow-500 rounded-full blur-sm opacity-50"></div>
               <button
                 onClick={() => setIsLightboxOpen(true)}
@@ -71,16 +71,16 @@ export function TestimonialCardPage({ testimonial }: TestimonialCardPageProps) {
               </button>
             </div>
           ) : (
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-red-600 to-yellow-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl mr-3 sm:mr-4 shadow-lg border-2 sm:border-4 border-white">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-red-600 to-yellow-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl mr-3 sm:mr-4 shadow-lg border-2 sm:border-4 border-white flex-shrink-0">
               {testimonial.name.charAt(0).toUpperCase()}
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-base sm:text-lg font-bold text-gray-900 truncate">{testimonial.name}</p>
+            <p className="text-base sm:text-lg font-bold text-gray-900 break-words leading-tight">{testimonial.name}</p>
             {testimonial.tour && (
               <Link
                 href={`/tours/${testimonial.tour.slug}`}
-                className="text-xs sm:text-sm text-red-600 hover:text-red-700 transition-colors truncate block mt-1 font-medium"
+                className="text-xs sm:text-sm text-red-600 hover:text-red-700 transition-colors break-words block mt-1 font-medium"
               >
                 {testimonial.tour.title} →
               </Link>
