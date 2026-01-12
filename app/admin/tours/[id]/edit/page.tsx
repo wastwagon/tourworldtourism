@@ -163,17 +163,23 @@ export default function EditTourPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('🚀 handleSubmit FUNCTION CALLED')
+    console.log('Event type:', e.type)
+    console.log('Event target:', e.target)
+    
     e.preventDefault()
     e.stopPropagation()
     
     // Prevent double submission
     if (saving || loading) {
-      console.warn('Form submission prevented: already saving or loading')
+      console.warn('⚠️ Form submission prevented: already saving or loading')
+      console.warn('Saving state:', saving, 'Loading state:', loading)
       return
     }
     
     console.log('=== FORM SUBMISSION STARTED ===')
     console.log('Tour ID:', tourId)
+    console.log('Tour ID type:', typeof tourId)
     console.log('Form data:', JSON.stringify(formData, null, 2))
     
     setSaving(true)
@@ -236,7 +242,15 @@ export default function EditTourPage() {
       <div className="bg-white rounded-lg shadow-md p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Tour</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form 
+          onSubmit={(e) => {
+            console.log('📝 FORM onSubmit EVENT FIRED')
+            console.log('Event:', e)
+            console.log('Calling handleSubmit...')
+            handleSubmit(e)
+          }} 
+          className="space-y-8"
+        >
           {/* Basic Information */}
           <div className="space-y-6">
             <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Basic Information</h2>
