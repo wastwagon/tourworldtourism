@@ -42,7 +42,14 @@ export async function GET(request: Request) {
       ],
     })
 
-    return NextResponse.json(galleries)
+    // Add cache control headers to prevent stale data
+    return NextResponse.json(galleries, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+    })
   } catch (error) {
     console.error('Error fetching galleries:', error)
     return NextResponse.json(

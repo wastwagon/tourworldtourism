@@ -25,7 +25,10 @@ export default function GalleryPage() {
   useEffect(() => {
     async function fetchAllImages() {
       try {
-        const res = await fetch('/api/galleries')
+        // Add cache-busting query parameter to ensure fresh data
+        const res = await fetch(`/api/galleries?t=${Date.now()}`, {
+          cache: 'no-store',
+        })
         if (!res.ok) {
           throw new Error('Failed to fetch galleries')
         }
