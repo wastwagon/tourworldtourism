@@ -1,19 +1,17 @@
 import { prisma } from '@/lib/prisma'
 import { SectionHeader } from './SectionHeader'
-import { TestimonialCard } from './TestimonialCard'
-import Link from 'next/link'
+import { TestimonialCarousel } from './TestimonialCarousel'
 
-async function getTestimonials() {
+async function getAllTestimonials() {
   try {
     const testimonials = await prisma.testimonial.findMany({
       where: {
         approved: true,
-        featured: true,
       },
-      take: 3,
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: [
+        { featured: 'desc' }, // Featured first
+        { createdAt: 'desc' }, // Then newest first
+      ],
       include: {
         tour: {
           select: {
@@ -31,7 +29,7 @@ async function getTestimonials() {
 }
 
 export async function Testimonials() {
-  const testimonials = await getTestimonials()
+  const testimonials = await getAllTestimonials()
 
   // If no testimonials, show placeholder
   if (testimonials.length === 0) {
@@ -60,20 +58,8 @@ export async function Testimonials() {
           subtitle="Don't just take our word for it - hear from travelers who have experienced Ghana with us"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <Link
-            href="/testimonials"
-            className="inline-block bg-white border-2 border-red-600 text-red-600 px-8 py-3 rounded-lg font-bold hover:bg-red-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-xl"
-          >
-            View All Reviews & Share Your Story
-          </Link>
-        </div>
+        {/* Carousel showing all testimonials */}
+        <TestimonialCarousel testimonials={testimonials} />
       </div>
     </section>
   )

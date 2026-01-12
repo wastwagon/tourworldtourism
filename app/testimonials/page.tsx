@@ -110,8 +110,14 @@ export default async function TestimonialsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
-              {testimonials.map((testimonial) => (
-                <TestimonialCardPage key={testimonial.id} testimonial={testimonial} />
+              {testimonials.map((testimonial, index) => (
+                <div
+                  key={testimonial.id}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <TestimonialCardPage testimonial={testimonial} />
+                </div>
               ))}
             </div>
           )}

@@ -204,14 +204,14 @@ export default function GalleryPage() {
                 {filteredImages.map((image, index) => (
                   <div
                     key={`${image.src}-${index}`}
-                    className="group cursor-pointer relative overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 aspect-[4/3]"
+                    className="group cursor-pointer relative overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-50 aspect-[4/3] flex items-center justify-center"
                     onClick={() => openLightbox(index)}
                   >
                     <SafeImage
                       src={image.src}
                       alt={image.alt}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="object-contain group-hover:scale-105 transition-transform duration-700 bg-gray-50"
                     />
                     
                     {/* Minimal World-Class Overlay */}

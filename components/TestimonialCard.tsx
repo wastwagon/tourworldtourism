@@ -23,7 +23,7 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
 
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+      <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 h-full flex flex-col">
         {/* Rating */}
         <div className="flex items-center mb-5">
           <div className="flex text-yellow-400">
@@ -42,7 +42,7 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
         </div>
 
         {/* Testimonial Text */}
-        <p className="text-gray-700 mb-6 italic text-base leading-relaxed line-clamp-4">
+        <p className="text-gray-700 mb-6 italic text-base leading-relaxed flex-grow">
           "{testimonial.testimonial}"
         </p>
 

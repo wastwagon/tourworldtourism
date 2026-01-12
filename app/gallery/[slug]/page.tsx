@@ -161,14 +161,14 @@ export default function GalleryDetailPage({ params }: { params: Promise<{ slug: 
           {gallery.images.map((image, index) => (
             <div
               key={index}
-              className="relative aspect-square overflow-hidden rounded-lg cursor-pointer group"
+              className="relative aspect-square overflow-hidden rounded-lg cursor-pointer group bg-gray-50 flex items-center justify-center"
               onClick={() => openLightbox(index)}
             >
               <SafeImage
                 src={image}
                 alt={`${gallery.title} - Image ${index + 1}`}
                 fill
-                className="object-cover group-hover:scale-110 transition-transform duration-300"
+                className="object-contain group-hover:scale-105 transition-transform duration-300"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
             </div>

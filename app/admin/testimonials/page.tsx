@@ -128,12 +128,12 @@ export default function AdminTestimonialsPage() {
                     <div className="relative">
                       <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-yellow-500 rounded-full blur-sm opacity-50"></div>
                       <div className="w-14 h-14 rounded-full overflow-hidden relative border-2 border-white shadow-md">
-                        <SafeImage
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          fill
-                          className="object-cover"
-                        />
+                      <SafeImage
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        fill
+                        className="object-cover"
+                      />
                       </div>
                     </div>
                   ) : (

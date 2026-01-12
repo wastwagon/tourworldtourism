@@ -67,13 +67,13 @@ export async function FeaturedGalleries() {
             <Link
               key={index}
               href="/gallery"
-              className="group relative aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+              className="group relative aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 bg-gray-50 flex items-center justify-center"
             >
               <SafeImage
                 src={image.src}
                 alt={image.alt}
                 fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                className="object-contain group-hover:scale-105 transition-transform duration-500 bg-gray-50"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300"></div>
             </Link>
