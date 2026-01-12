@@ -17,17 +17,6 @@ export default function EditTourPage() {
   const [saving, setSaving] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-  // Debug: Log component mount and state changes
-  useEffect(() => {
-    console.log('🎯 EditTourPage component mounted')
-    console.log('Tour ID:', tourId)
-    console.log('Loading:', loading)
-    console.log('Saving:', saving)
-  }, [])
-
-  useEffect(() => {
-    console.log('📊 State changed - Loading:', loading, 'Saving:', saving)
-  }, [loading, saving])
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
