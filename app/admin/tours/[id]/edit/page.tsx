@@ -15,6 +15,7 @@ export default function EditTourPage() {
   const tourId = params?.id as string
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   // Debug: Log component mount and state changes
   useEffect(() => {
@@ -221,8 +222,14 @@ export default function EditTourPage() {
       console.log('Response data:', responseData)
 
       if (res.ok) {
-        console.log('✅ Tour updated successfully, redirecting...')
-        router.push('/admin/tours')
+        console.log('✅ Tour updated successfully')
+        setSuccessMessage('Tour saved successfully!')
+        setSaving(false)
+        
+        // Show success message for 2 seconds before redirecting
+        setTimeout(() => {
+          router.push('/admin/tours')
+        }, 2000)
       } else {
         console.error('❌ Update failed:', responseData)
         alert(responseData.error || 'Failed to update tour')
