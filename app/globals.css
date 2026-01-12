@@ -2,8 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safe area support for iOS devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 body {
   font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Bottom padding for mobile pages to account for bottom nav */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 80px; /* Space for bottom navigation */
+  }
+  
+  /* Admin pages don't need bottom padding */
+  body:has([data-admin-layout]) {
+    padding-bottom: 0;
+  }
+}
+
+/* Bottom padding for mobile pages to account for bottom nav */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 80px; /* Space for bottom navigation */
+  }
+  
+  /* Admin pages don't need bottom padding */
+  body:has([data-admin-layout]) {
+    padding-bottom: 0;
+  }
 }
 
 /* Smooth scrolling */

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SessionProvider } from "@/components/SessionProvider";
 import { WhatsAppSupport } from "@/components/WhatsAppSupport";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 
 export const metadata: Metadata = {
   title: "Tourworld Tourism - Ghana Tours & Travel",
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className="antialiased">
         <SessionProvider>
           {children}
+          <MobileBottomNav />
           <WhatsAppSupport />
         </SessionProvider>
       </body>
