@@ -164,6 +164,11 @@ export default function EditTourPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    e.stopPropagation()
+    
+    console.log('Form submitted, tourId:', tourId)
+    console.log('Form data:', formData)
+    
     setSaving(true)
 
     try {
@@ -173,16 +178,21 @@ export default function EditTourPage() {
         body: JSON.stringify(formData),
       })
 
+      console.log('Response status:', res.status)
+      const responseData = await res.json()
+      console.log('Response data:', responseData)
+
       if (res.ok) {
+        console.log('Tour updated successfully, redirecting...')
         router.push('/admin/tours')
       } else {
-        const error = await res.json()
-        alert(error.error || 'Failed to update tour')
+        console.error('Update failed:', responseData)
+        alert(responseData.error || 'Failed to update tour')
+        setSaving(false)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating tour:', error)
-      alert('Error updating tour')
-    } finally {
+      alert(`Error updating tour: ${error.message || 'Unknown error'}`)
       setSaving(false)
     }
   }

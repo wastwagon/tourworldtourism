@@ -129,11 +129,19 @@ export async function PUT(
     
     console.log(`Tour updated successfully: ${tour.id} - ${tour.title}`)
 
-    return NextResponse.json({ tour })
+    return NextResponse.json({ 
+      success: true,
+      tour,
+      message: 'Tour updated successfully'
+    })
   } catch (error: any) {
     console.error('Error updating tour:', error)
+    console.error('Error stack:', error.stack)
     return NextResponse.json(
-      { error: error.message || 'Failed to update tour' },
+      { 
+        error: error.message || 'Failed to update tour',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     )
   }
