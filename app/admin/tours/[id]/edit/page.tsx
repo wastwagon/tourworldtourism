@@ -540,54 +540,25 @@ export default function EditTourPage() {
               id="save-tour-button"
               disabled={saving || loading}
               onClick={(e) => {
-                // FORCE immediate alert - will show even if console doesn't work
-                alert('🔴 BUTTON CLICKED! Tour ID: ' + tourId + ' | Saving: ' + saving + ' | Loading: ' + loading)
-                
                 e.preventDefault()
                 e.stopPropagation()
                 
-                // Immediate logging - this MUST appear if button is clicked
-                if (typeof window !== 'undefined' && window.console) {
-                  window.console.log('🔴🔴🔴 BUTTON CLICKED - Direct onClick handler 🔴🔴🔴')
-                  window.console.log('Button clicked at:', new Date().toISOString())
-                  window.console.log('Saving:', saving, 'Loading:', loading)
-                  window.console.log('Tour ID:', tourId)
-                  window.console.log('Event:', e)
+                // Prevent double submission
+                if (saving || loading || !tourId) {
+                  return
                 }
                 
                 // Call handleSubmit directly
-                if (!saving && !loading && tourId) {
-                  const syntheticEvent = {
-                    preventDefault: () => {},
-                    stopPropagation: () => {},
-                    type: 'submit',
-                    target: e.currentTarget.closest('form') || e.currentTarget,
-                  } as React.FormEvent
-                  
-                  handleSubmit(syntheticEvent)
-                } else {
-                  if (typeof window !== 'undefined' && window.console) {
-                    window.console.warn('⚠️ Button click ignored:', { saving, loading, tourId })
-                  }
-                  if (!tourId) {
-                    alert('Error: Tour ID is missing. Please refresh the page.')
-                  } else if (saving || loading) {
-                    alert('Please wait, operation in progress...')
-                  }
-                }
-              }}
-              onMouseDown={(e) => {
-                // Test if mouse events work
-                if (typeof window !== 'undefined' && window.console) {
-                  window.console.log('🖱️ Mouse down on button')
-                }
+                const syntheticEvent = {
+                  preventDefault: () => {},
+                  stopPropagation: () => {},
+                  type: 'submit',
+                  target: e.currentTarget.closest('form') || e.currentTarget,
+                } as React.FormEvent
+                
+                handleSubmit(syntheticEvent)
               }}
               className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ 
-                cursor: saving || loading ? 'not-allowed' : 'pointer',
-                zIndex: 9999,
-                position: 'relative'
-              }}
             >
               {saving ? 'Saving...' : 'Save Changes'}
             </button>
