@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { AdminLayout } from '@/components/AdminLayout'
 import Link from 'next/link'
@@ -75,10 +74,8 @@ async function getDashboardStats() {
 }
 
 export default async function AdminDashboard() {
-  // In Next.js 15, getServerSession internally uses headers() which must be awaited
-  // We need to ensure headers are available before calling getServerSession
-  // This is a compatibility workaround for next-auth v4 with Next.js 15
-  const session = await getServerSession(authOptions)
+  // Using Auth.js v5 auth() function which is fully compatible with Next.js 15
+  const session = await auth()
 
   if (!session || (session.user as any)?.role !== 'admin') {
     redirect('/admin/login')

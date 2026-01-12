@@ -1,18 +1,9 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
+import { requireAdmin } from '@/lib/auth'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'
 import { compressImage, getCompressionStats } from '@/lib/image-compression'
-
-async function requireAdmin() {
-  const session = await getServerSession(authOptions)
-  if (!session || (session.user as any)?.role !== 'admin') {
-    return null
-  }
-  return session
-}
 
 export async function POST(request: Request) {
   try {

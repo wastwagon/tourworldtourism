@@ -1,20 +1,20 @@
-import { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth from "next-auth"
+import Credentials from "next-auth/providers/credentials"
 import { prisma } from "./prisma"
 import bcrypt from "bcryptjs"
 
 // Test Prisma connection on module load
 if (typeof window === 'undefined') {
-  console.log("🔍 Initializing NextAuth...")
+  console.log("🔍 Initializing NextAuth v5 (Auth.js)...")
   console.log("Prisma client available:", !!prisma)
   if (prisma) {
     console.log("Prisma client type:", typeof prisma)
   }
 }
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           
           const user = await prisma.user.findUnique({
             where: {
-              email: credentials.email
+              email: credentials.email as string
             }
           })
 
@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
 
           console.log("✅ User found, validating password...")
           const isPasswordValid = await bcrypt.compare(
-            credentials.password,
+            credentials.password as string,
             user.password
           )
 
@@ -133,7 +133,7 @@ export const authOptions: NextAuthOptions = {
     error: "/admin/login",
   },
   secret: (() => {
-    const secret = process.env.NEXTAUTH_SECRET
+    const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET
     if (secret && secret !== "build-time-placeholder-must-be-set-at-runtime") {
       return secret
     }
@@ -151,12 +151,20 @@ export const authOptions: NextAuthOptions = {
     
     // At runtime in production, enforce a real secret
     if (process.env.NODE_ENV === 'production') {
-      throw new Error('NEXTAUTH_SECRET environment variable is required in production. Please set a valid secret at runtime.')
+      throw new Error('AUTH_SECRET or NEXTAUTH_SECRET environment variable is required in production. Please set a valid secret at runtime.')
     }
     
-    console.warn('⚠️  NEXTAUTH_SECRET not set. Using default for development only.')
+    console.warn('⚠️  AUTH_SECRET not set. Using default for development only.')
     return "development-secret-change-in-production"
   })(),
   debug: process.env.NODE_ENV === "development",
-}
+})
 
+// Helper function for requiring admin (compatible with existing code)
+export async function requireAdmin() {
+  const session = await auth()
+  if (!session || (session.user as any)?.role !== 'admin') {
+    return null
+  }
+  return session
+}

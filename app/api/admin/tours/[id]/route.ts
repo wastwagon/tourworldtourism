@@ -1,16 +1,9 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
+import { getServerSession } from '@/lib/auth'
+// authOptions imported via requireAdmin from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import slugify from 'slugify'
 
-async function requireAdmin() {
-  const session = await getServerSession(authOptions)
-  if (!session || (session.user as any)?.role !== 'admin') {
-    return null
-  }
-  return session
-}
 
 export async function GET(
   request: Request,
