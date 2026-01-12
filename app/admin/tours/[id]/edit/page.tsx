@@ -17,15 +17,6 @@ export default function EditTourPage() {
   const [saving, setSaving] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-  // Test: Log on component mount to verify code is running
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.console?.log?.('✅✅✅ EditTourPage component loaded ✅✅✅')
-      window.console?.log?.('Tour ID:', tourId)
-      // Test alert - comment out after testing
-      // alert('Component loaded! Tour ID: ' + tourId)
-    }
-  }, [tourId])
 
   const [formData, setFormData] = useState({
     title: '',
@@ -179,17 +170,8 @@ export default function EditTourPage() {
       e.preventDefault()
       e.stopPropagation()
       
-      // Log for debugging (will show in production console)
-      if (typeof window !== 'undefined') {
-        window.console?.log?.('🔵 Form submit handler called')
-        window.console?.log?.('Saving state:', saving, 'Loading state:', loading)
-      }
-      
       // Prevent double submission
       if (saving || loading) {
-        if (typeof window !== 'undefined') {
-          window.console?.warn?.('⚠️ Submission prevented: already saving or loading')
-        }
         return
       }
       
@@ -200,26 +182,15 @@ export default function EditTourPage() {
       
       setSaving(true)
 
-      if (typeof window !== 'undefined') {
-        window.console?.log?.('📤 Making API request to:', `/api/admin/tours/${tourId}`)
-      }
-
       const res = await fetch(`/api/admin/tours/${tourId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
 
-      if (typeof window !== 'undefined') {
-        window.console?.log?.('📥 Response status:', res.status)
-      }
-
       const responseData = await res.json()
 
       if (res.ok) {
-        if (typeof window !== 'undefined') {
-          window.console?.log?.('✅ Tour saved successfully')
-        }
         setSuccessMessage('Tour saved successfully!')
         setSaving(false)
         
@@ -229,18 +200,13 @@ export default function EditTourPage() {
         }, 2000)
       } else {
         const errorMsg = responseData.error || 'Failed to update tour'
-        if (typeof window !== 'undefined') {
-          window.console?.error?.('❌ Update failed:', errorMsg)
-        }
+        console.error('Failed to update tour:', errorMsg)
         alert(errorMsg)
         setSaving(false)
       }
     } catch (error: any) {
       const errorMsg = error.message || 'Unknown error'
-      if (typeof window !== 'undefined') {
-        window.console?.error?.('❌ Error updating tour:', errorMsg)
-        window.console?.error?.('Error details:', error)
-      }
+      console.error('Error updating tour:', errorMsg)
       alert(`Error updating tour: ${errorMsg}`)
       setSaving(false)
     }
