@@ -132,31 +132,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/admin/login",
     error: "/admin/login",
   },
-  secret: (() => {
-    const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET
-    if (secret && secret !== "build-time-placeholder-must-be-set-at-runtime") {
-      return secret
-    }
-    
-    // During build time or if placeholder is set, allow it
-    // The actual secret will be validated at runtime when the server starts
-    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
-                        process.env.NEXT_PHASE === 'phase-development-build' ||
-                        secret === "build-time-placeholder-must-be-set-at-runtime"
-    
-    if (isBuildTime) {
-      // Allow placeholder during build - will be validated at runtime
-      return secret || "build-time-placeholder-must-be-set-at-runtime"
-    }
-    
-    // At runtime in production, enforce a real secret
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('AUTH_SECRET or NEXTAUTH_SECRET environment variable is required in production. Please set a valid secret at runtime.')
-    }
-    
-    console.warn('⚠️  AUTH_SECRET not set. Using default for development only.')
-    return "development-secret-change-in-production"
-  })(),
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
 })
 
