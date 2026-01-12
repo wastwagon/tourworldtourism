@@ -81,14 +81,15 @@ export async function POST(request: Request) {
         console.log(`Upload directory exists: ${uploadDir}`)
       }
       
-      // Verify directory is writable
-      const testFile = join(uploadDir, '.write-test')
+      // Verify directory is writable using a unique test file per request
+      // This prevents race conditions when multiple files are uploaded simultaneously
+      const uniqueTestFile = join(uploadDir, `.write-test-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`)
       try {
-        await writeFile(testFile, 'test')
+        await writeFile(uniqueTestFile, 'test')
         // Try to delete the test file, but don't fail if it doesn't exist
         try {
           const { unlink } = await import('fs/promises')
-          await unlink(testFile)
+          await unlink(uniqueTestFile)
         } catch (unlinkError: any) {
           // Ignore ENOENT errors (file doesn't exist) - this is fine
           if (unlinkError.code !== 'ENOENT') {
