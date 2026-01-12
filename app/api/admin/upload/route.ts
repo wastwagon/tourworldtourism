@@ -124,7 +124,14 @@ export async function POST(request: Request) {
     }
 
     // Return the public URL path
-    const publicPath = `/images/${category}${subfolder ? `/${subfolder}` : ''}/${filename}`
+    // In standalone mode, use API route for runtime-uploaded images to ensure accessibility
+    // Fallback to direct path for images that exist in the build
+    const imageSubPath = `${category}${subfolder ? `/${subfolder}` : ''}/${filename}`
+    const directPath = `/images/${imageSubPath}`
+    const apiPath = `/api/images/${imageSubPath}`
+    
+    // Use API route for production/standalone mode, direct path for development
+    const publicPath = process.env.NODE_ENV === 'production' ? apiPath : directPath
 
     return NextResponse.json({
       success: true,
