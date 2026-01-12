@@ -85,7 +85,16 @@ export async function POST(request: Request) {
       const testFile = join(uploadDir, '.write-test')
       try {
         await writeFile(testFile, 'test')
-        await import('fs/promises').then(fs => fs.unlink(testFile))
+        // Try to delete the test file, but don't fail if it doesn't exist
+        try {
+          const { unlink } = await import('fs/promises')
+          await unlink(testFile)
+        } catch (unlinkError: any) {
+          // Ignore ENOENT errors (file doesn't exist) - this is fine
+          if (unlinkError.code !== 'ENOENT') {
+            console.warn(`Could not delete test file: ${unlinkError.message}`)
+          }
+        }
         console.log(`Directory is writable: ${uploadDir}`)
       } catch (writeError: any) {
         console.error(`Directory is not writable: ${uploadDir}`, writeError)

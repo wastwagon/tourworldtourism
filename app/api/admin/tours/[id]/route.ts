@@ -105,8 +105,8 @@ export async function PUT(
         title,
         slug,
         description,
-        durationDays: parseInt(durationDays) || 0,
-        durationNights: parseInt(durationNights) || 0,
+        durationDays: durationDays ? parseInt(durationDays) : 0,
+        durationNights: durationNights ? parseInt(durationNights) : 0,
         regions: Array.isArray(regions) ? regions : [],
         tourType,
         highlights: Array.isArray(highlights) ? highlights : [],
@@ -114,7 +114,7 @@ export async function PUT(
         inclusions: Array.isArray(inclusions) ? inclusions : [],
         exclusions: Array.isArray(exclusions) ? exclusions : [],
         hotels: Array.isArray(hotels) ? hotels : [],
-        pricePerPerson: parseFloat(pricePerPerson) || 0,
+        pricePerPerson: pricePerPerson ? parseFloat(pricePerPerson) : 0,
         singleSupplement: singleSupplement ? parseFloat(singleSupplement) : null,
         groupSizeMin: groupSizeMin ? parseInt(groupSizeMin) : null,
         groupSizeMax: groupSizeMax ? parseInt(groupSizeMax) : null,
@@ -126,6 +126,8 @@ export async function PUT(
         notes: notes || null,
       },
     })
+    
+    console.log(`Tour updated successfully: ${tour.id} - ${tour.title}`)
 
     return NextResponse.json({ tour })
   } catch (error: any) {
