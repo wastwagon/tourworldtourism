@@ -133,6 +133,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error: "/admin/login",
   },
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+  trustHost: true, // Trust the host header (required for Coolify/proxy setups)
   debug: process.env.NODE_ENV === "development",
 })
 
