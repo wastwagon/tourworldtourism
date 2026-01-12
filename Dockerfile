@@ -63,6 +63,7 @@ RUN adduser --system --uid 1001 nextjs
 # Copy startup script and auto-import script
 COPY --from=builder /app/scripts/start.sh ./scripts/start.sh
 COPY --from=builder /app/scripts/auto-import-data.js ./scripts/auto-import-data.js
+COPY --from=builder /app/scripts/ensure-upload-dirs.js ./scripts/ensure-upload-dirs.js
 
 # Copy data file if it exists (optional - for auto-import on first startup)
 # Using RUN with mount to conditionally copy - if file doesn't exist, this step is skipped
@@ -76,6 +77,11 @@ RUN --mount=type=bind,from=builder,source=/app,target=/builder-source \
 RUN chown -R nextjs:nodejs /app
 RUN chmod +x ./scripts/start.sh
 RUN chmod +x ./scripts/auto-import-data.js
+RUN chmod +x ./scripts/ensure-upload-dirs.js
+# Ensure public/images directories exist and are writable
+RUN mkdir -p public/images/{galleries,testimonials,tours,hotels,blogs,general} && \
+    chown -R nextjs:nodejs public/images && \
+    chmod -R 755 public/images
 
 USER nextjs
 

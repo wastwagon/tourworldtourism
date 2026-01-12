@@ -68,7 +68,9 @@ export function MultipleImageUpload({
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({ error: 'Unknown error' }))
           console.error('Upload failed:', res.status, errorData)
-          throw new Error(errorData.error || `Upload failed with status ${res.status}`)
+          const errorMessage = errorData.error || errorData.details || `Upload failed with status ${res.status}`
+          console.error('Error details:', errorData)
+          throw new Error(errorMessage)
         }
 
         const data = await res.json()

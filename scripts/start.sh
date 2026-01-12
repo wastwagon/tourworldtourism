@@ -24,6 +24,12 @@ fi
 
 echo "✅ DATABASE_URL is set"
 
+# Ensure upload directories exist with proper permissions
+echo "📁 Ensuring upload directories exist..."
+node scripts/ensure-upload-dirs.js || {
+  echo "⚠️  Directory check failed, continuing..."
+}
+
 # Prisma Client should already be generated during build
 # Skip generation to avoid permission issues with global Prisma
 echo "📦 Prisma Client should already be generated from build..."

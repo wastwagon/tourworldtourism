@@ -73,11 +73,20 @@ export function ImageUpload({
 
       if (res.ok) {
         const data = await res.json()
+        console.log('Upload successful:', data)
+        if (!data.path) {
+          console.error('Upload response missing path:', data)
+          setError('Upload succeeded but no image path was returned')
+          setPreview(null)
+          return
+        }
         onChange(data.path)
         setPreview(null) // Clear preview since we have the actual path
       } else {
-        const errorData = await res.json()
-        setError(errorData.error || 'Failed to upload image')
+        const errorData = await res.json().catch(() => ({ error: 'Unknown error' }))
+        console.error('Upload failed:', res.status, errorData)
+        const errorMessage = errorData.error || errorData.details || 'Failed to upload image'
+        setError(errorMessage)
         setPreview(null)
       }
     } catch (err) {
