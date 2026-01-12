@@ -188,41 +188,26 @@ export default function EditTourPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('🚀 handleSubmit FUNCTION CALLED')
-    console.log('Event type:', e.type)
-    console.log('Event target:', e.target)
-    
     e.preventDefault()
     e.stopPropagation()
     
     // Prevent double submission
     if (saving || loading) {
-      console.warn('⚠️ Form submission prevented: already saving or loading')
-      console.warn('Saving state:', saving, 'Loading state:', loading)
       return
     }
-    
-    console.log('=== FORM SUBMISSION STARTED ===')
-    console.log('Tour ID:', tourId)
-    console.log('Tour ID type:', typeof tourId)
-    console.log('Form data:', JSON.stringify(formData, null, 2))
     
     setSaving(true)
 
     try {
-      console.log('Making PUT request to:', `/api/admin/tours/${tourId}`)
       const res = await fetch(`/api/admin/tours/${tourId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
 
-      console.log('Response status:', res.status)
       const responseData = await res.json()
-      console.log('Response data:', responseData)
 
       if (res.ok) {
-        console.log('✅ Tour updated successfully')
         setSuccessMessage('Tour saved successfully!')
         setSaving(false)
         
@@ -231,17 +216,12 @@ export default function EditTourPage() {
           router.push('/admin/tours')
         }, 2000)
       } else {
-        console.error('❌ Update failed:', responseData)
+        console.error('Failed to update tour:', responseData)
         alert(responseData.error || 'Failed to update tour')
         setSaving(false)
       }
     } catch (error: any) {
-      console.error('❌ Error updating tour:', error)
-      console.error('Error details:', {
-        message: error.message,
-        stack: error.stack,
-        name: error.name
-      })
+      console.error('Error updating tour:', error)
       alert(`Error updating tour: ${error.message || 'Unknown error'}`)
       setSaving(false)
     }
@@ -294,12 +274,7 @@ export default function EditTourPage() {
         )}
 
         <form 
-          onSubmit={(e) => {
-            console.log('📝 FORM onSubmit EVENT FIRED')
-            console.log('Event:', e)
-            console.log('Calling handleSubmit...')
-            handleSubmit(e)
-          }} 
+          onSubmit={handleSubmit} 
           className="space-y-8"
         >
           {/* Basic Information */}
@@ -566,36 +541,9 @@ export default function EditTourPage() {
               Cancel
             </Link>
             <button
-              type="button"
+              type="submit"
               disabled={saving || loading}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                console.log('🔘🔘🔘 BUTTON CLICKED - Direct onClick handler 🔘🔘🔘')
-                console.log('Button disabled state:', saving || loading)
-                console.log('Saving:', saving, 'Loading:', loading)
-                console.log('Event:', e)
-                console.log('Event type:', e.type)
-                console.log('Event target:', e.target)
-                
-                if (saving || loading) {
-                  console.warn('⚠️ Button is disabled, not proceeding')
-                  return
-                }
-                
-                console.log('✅ Button is enabled, calling handleSubmit directly...')
-                // Create a synthetic form event
-                const syntheticEvent = {
-                  preventDefault: () => {},
-                  stopPropagation: () => {},
-                  type: 'submit',
-                  target: e.currentTarget.closest('form') || e.target,
-                } as React.FormEvent
-                
-                handleSubmit(syntheticEvent)
-              }}
               className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ zIndex: 9999, position: 'relative', pointerEvents: 'auto' }}
             >
               {saving ? 'Saving...' : 'Save Changes'}
             </button>
