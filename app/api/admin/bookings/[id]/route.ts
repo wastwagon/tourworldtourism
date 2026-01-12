@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from '@/lib/auth'
-// authOptions imported via requireAdmin from '@/lib/auth'
+import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 
