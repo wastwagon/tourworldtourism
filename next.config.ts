@@ -24,9 +24,11 @@ const nextConfig: NextConfig = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // Fix for next-auth/react module resolution in client-side
+      // next-auth v5 exports react.js directly, not react/index.js
+      const path = require('path');
       config.resolve.alias = {
         ...config.resolve.alias,
-        'next-auth/react': require.resolve('next-auth/react.js'),
+        'next-auth/react': path.resolve(__dirname, 'node_modules/next-auth/react.js'),
       };
     }
     return config;
