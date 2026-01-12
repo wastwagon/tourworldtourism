@@ -170,8 +170,11 @@ export default function EditTourPage() {
       e.preventDefault()
       e.stopPropagation()
       
+      console.log('🔵 handleSubmit called', { saving, loading, tourId })
+      
       // Prevent double submission
       if (saving || loading) {
+        console.warn('⚠️ Already saving or loading')
         return
       }
       
@@ -180,6 +183,7 @@ export default function EditTourPage() {
         return
       }
       
+      console.log('📤 Starting save...', { galleryImagesCount: formData.galleryImages?.length })
       setSaving(true)
 
       const res = await fetch(`/api/admin/tours/${tourId}`, {
@@ -188,9 +192,11 @@ export default function EditTourPage() {
         body: JSON.stringify(formData),
       })
 
+      console.log('📥 Response received:', res.status)
       const responseData = await res.json()
 
       if (res.ok) {
+        console.log('✅ Tour saved successfully')
         setSuccessMessage('Tour saved successfully!')
         setSaving(false)
         
@@ -200,13 +206,13 @@ export default function EditTourPage() {
         }, 2000)
       } else {
         const errorMsg = responseData.error || 'Failed to update tour'
-        console.error('Failed to update tour:', errorMsg)
+        console.error('❌ Update failed:', errorMsg)
         alert(errorMsg)
         setSaving(false)
       }
     } catch (error: any) {
       const errorMsg = error.message || 'Unknown error'
-      console.error('Error updating tour:', errorMsg)
+      console.error('❌ Error updating tour:', errorMsg, error)
       alert(`Error updating tour: ${errorMsg}`)
       setSaving(false)
     }
@@ -540,13 +546,24 @@ export default function EditTourPage() {
               id="save-tour-button"
               disabled={saving || loading}
               onClick={(e) => {
+                // Log immediately to verify click is registered
+                console.log('🔴 Save button clicked', { saving, loading, tourId })
+                
                 e.preventDefault()
                 e.stopPropagation()
                 
                 // Prevent double submission
-                if (saving || loading || !tourId) {
+                if (saving || loading) {
+                  console.warn('⚠️ Button disabled or already saving')
                   return
                 }
+                
+                if (!tourId) {
+                  alert('Error: Tour ID is missing')
+                  return
+                }
+                
+                console.log('✅ Calling handleSubmit')
                 
                 // Call handleSubmit directly
                 const syntheticEvent = {
