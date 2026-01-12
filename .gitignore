@@ -57,3 +57,12 @@ local-db-export-clean.json
 tourworld-dump-*.sql
 tourworld-dump-*.sql.base64.txt
 tourworld-dump-base64-oneline.txt
+# Uploaded tour images (managed via admin interface)
+public/images/tours/*.jpg
+public/images/tours/*.webp
+public/images/tours/*.png
+public/images/tours/*.gif
+
+# But keep the directory structure
+!public/images/tours/.gitkeep
+!public/images/tours/*/
