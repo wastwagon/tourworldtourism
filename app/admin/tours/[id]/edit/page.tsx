@@ -48,6 +48,19 @@ export default function EditTourPage() {
   const [newExclusion, setNewExclusion] = useState('')
   const [newDate, setNewDate] = useState('')
 
+  // Component mount logging
+  useEffect(() => {
+    console.log('✅✅✅ EditTourPage component loaded ✅✅✅')
+    console.log('Tour ID:', tourId)
+    console.log('Loading:', loading)
+    console.log('Saving:', saving)
+  }, [])
+
+  // State change logging
+  useEffect(() => {
+    console.log('📊 State changed - Loading:', loading, 'Saving:', saving)
+  }, [loading, saving])
+
   useEffect(() => {
     if (tourId) {
       fetchTour()
@@ -170,11 +183,14 @@ export default function EditTourPage() {
       e.preventDefault()
       e.stopPropagation()
       
-      console.log('🔵 handleSubmit called', { saving, loading, tourId })
+      console.log('🔵 Form submit handler called')
+      console.log('Saving state:', saving)
+      console.log('Loading state:', loading)
+      console.log('Tour ID:', tourId)
       
       // Prevent double submission
       if (saving || loading) {
-        console.warn('⚠️ Already saving or loading')
+        console.warn('⚠️ Already saving or loading, preventing submission')
         return
       }
       
@@ -183,7 +199,7 @@ export default function EditTourPage() {
         return
       }
       
-      console.log('📤 Starting save...', { galleryImagesCount: formData.galleryImages?.length })
+      console.log('📤 Making API request to:', `/api/admin/tours/${tourId}`)
       setSaving(true)
 
       const res = await fetch(`/api/admin/tours/${tourId}`, {
@@ -192,7 +208,7 @@ export default function EditTourPage() {
         body: JSON.stringify(formData),
       })
 
-      console.log('📥 Response received:', res.status)
+      console.log('📥 Response status:', res.status)
       const responseData = await res.json()
 
       if (res.ok) {
@@ -536,31 +552,51 @@ export default function EditTourPage() {
               Cancel
             </Link>
             <button
-              type="submit"
+              type="button"
               id="save-tour-button"
               disabled={saving || loading}
+              onMouseDown={(e) => {
+                console.log('🖱️ Mouse down on button')
+              }}
               onClick={(e) => {
-                console.log('🔴🔴🔴 BUTTON CLICKED 🔴🔴🔴')
-                console.log('State:', { saving, loading, tourId })
+                console.log('🔴🔴🔴 BUTTON CLICKED - Direct onClick handler 🔴🔴🔴')
+                console.log('Button clicked at:', new Date().toISOString())
+                console.log('Saving:', saving, 'Loading:', loading)
+                console.log('Tour ID:', tourId)
+                console.log('Event:', e)
                 
-                // Don't prevent default - let form handle it
-                // But ensure we're not disabled
+                e.preventDefault()
+                e.stopPropagation()
+                
+                // Prevent double submission
                 if (saving || loading) {
-                  e.preventDefault()
-                  console.warn('⚠️ Prevented: already saving/loading')
-                  return false
+                  console.warn('⚠️ Button disabled or already saving')
+                  return
                 }
                 
                 if (!tourId) {
-                  e.preventDefault()
                   alert('Error: Tour ID is missing')
-                  return false
+                  return
                 }
                 
-                console.log('✅ Button click proceeding to form submit')
-                return true
+                console.log('✅ Calling handleSubmit directly')
+                
+                // Call handleSubmit directly with synthetic event
+                const syntheticEvent = {
+                  preventDefault: () => {},
+                  stopPropagation: () => {},
+                  type: 'submit',
+                  target: e.currentTarget.closest('form') || e.currentTarget,
+                } as React.FormEvent
+                
+                handleSubmit(syntheticEvent)
               }}
-              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              style={{ 
+                cursor: saving || loading ? 'not-allowed' : 'pointer',
+                zIndex: 9999,
+                position: 'relative'
+              }}
             >
               {saving ? 'Saving...' : 'Save Changes'}
             </button>
