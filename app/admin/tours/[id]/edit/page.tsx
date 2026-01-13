@@ -48,18 +48,6 @@ export default function EditTourPage() {
   const [newExclusion, setNewExclusion] = useState('')
   const [newDate, setNewDate] = useState('')
 
-  // Component mount logging
-  useEffect(() => {
-    console.log('✅✅✅ EditTourPage component loaded ✅✅✅')
-    console.log('Tour ID:', tourId)
-    console.log('Loading:', loading)
-    console.log('Saving:', saving)
-  }, [])
-
-  // State change logging
-  useEffect(() => {
-    console.log('📊 State changed - Loading:', loading, 'Saving:', saving)
-  }, [loading, saving])
 
   useEffect(() => {
     if (tourId) {
@@ -183,14 +171,8 @@ export default function EditTourPage() {
       e.preventDefault()
       e.stopPropagation()
       
-      console.log('🔵 Form submit handler called')
-      console.log('Saving state:', saving)
-      console.log('Loading state:', loading)
-      console.log('Tour ID:', tourId)
-      
       // Prevent double submission
       if (saving || loading) {
-        console.warn('⚠️ Already saving or loading, preventing submission')
         return
       }
       
@@ -199,7 +181,6 @@ export default function EditTourPage() {
         return
       }
       
-      console.log('📤 Making API request to:', `/api/admin/tours/${tourId}`)
       setSaving(true)
 
       const res = await fetch(`/api/admin/tours/${tourId}`, {
@@ -208,11 +189,9 @@ export default function EditTourPage() {
         body: JSON.stringify(formData),
       })
 
-      console.log('📥 Response status:', res.status)
       const responseData = await res.json()
 
       if (res.ok) {
-        console.log('✅ Tour saved successfully')
         setSuccessMessage('Tour saved successfully!')
         setSaving(false)
         
@@ -222,13 +201,13 @@ export default function EditTourPage() {
         }, 2000)
       } else {
         const errorMsg = responseData.error || 'Failed to update tour'
-        console.error('❌ Update failed:', errorMsg)
+        console.error('Failed to update tour:', errorMsg)
         alert(errorMsg)
         setSaving(false)
       }
     } catch (error: any) {
       const errorMsg = error.message || 'Unknown error'
-      console.error('❌ Error updating tour:', errorMsg, error)
+      console.error('Error updating tour:', errorMsg, error)
       alert(`Error updating tour: ${errorMsg}`)
       setSaving(false)
     }
@@ -555,22 +534,12 @@ export default function EditTourPage() {
               type="button"
               id="save-tour-button"
               disabled={saving || loading}
-              onMouseDown={(e) => {
-                console.log('🖱️ Mouse down on button')
-              }}
               onClick={(e) => {
-                console.log('🔴🔴🔴 BUTTON CLICKED - Direct onClick handler 🔴🔴🔴')
-                console.log('Button clicked at:', new Date().toISOString())
-                console.log('Saving:', saving, 'Loading:', loading)
-                console.log('Tour ID:', tourId)
-                console.log('Event:', e)
-                
                 e.preventDefault()
                 e.stopPropagation()
                 
                 // Prevent double submission
                 if (saving || loading) {
-                  console.warn('⚠️ Button disabled or already saving')
                   return
                 }
                 
@@ -578,8 +547,6 @@ export default function EditTourPage() {
                   alert('Error: Tour ID is missing')
                   return
                 }
-                
-                console.log('✅ Calling handleSubmit directly')
                 
                 // Call handleSubmit directly with synthetic event
                 const syntheticEvent = {
