@@ -110,8 +110,19 @@ export default function NewTourPage() {
     setFormData({ ...formData, hotels: newHotels })
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault()
+    e?.stopPropagation()
+
+    if (loading) {
+      return
+    }
+
+    if (!formData.title.trim() || !formData.description.trim() || !formData.tourType) {
+      alert('Please fill in Tour Title, Description, and Tour Type')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -121,11 +132,12 @@ export default function NewTourPage() {
         body: JSON.stringify(formData),
       })
 
+      const responseData = await res.json().catch(() => ({}))
+
       if (res.ok) {
         router.push('/admin/tours')
       } else {
-        const error = await res.json()
-        alert(error.error || 'Failed to create tour')
+        alert(responseData.error || 'Failed to create tour')
       }
     } catch (error) {
       console.error('Error creating tour:', error)
@@ -148,7 +160,7 @@ export default function NewTourPage() {
       <div className="bg-white rounded-lg shadow-md p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Tour</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-8" noValidate>
           {/* Basic Information */}
           <div className="space-y-6">
             <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Basic Information</h2>
@@ -413,9 +425,15 @@ export default function NewTourPage() {
               Cancel
             </Link>
             <button
-              type="submit"
+              type="button"
               disabled={loading}
-              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+              onClick={() => handleSubmit()}
+              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              style={{
+                cursor: loading ? 'not-allowed' : 'pointer',
+                zIndex: 9999,
+                position: 'relative',
+              }}
             >
               {loading ? 'Creating...' : 'Create Tour'}
             </button>

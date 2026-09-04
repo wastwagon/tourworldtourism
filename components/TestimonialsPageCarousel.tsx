@@ -80,7 +80,7 @@ export function TestimonialsPageCarousel({ testimonials }: TestimonialsPageCarou
               style={{ width: `${100 / itemsPerView}%` }}
             >
               <div
-                className="w-full animate-fade-in"
+                className="w-full h-full animate-fade-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <TestimonialCardPage testimonial={testimonial} />

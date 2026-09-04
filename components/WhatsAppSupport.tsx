@@ -1,18 +1,25 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 export function WhatsAppSupport() {
+  const pathname = usePathname()
   const [showTooltip, setShowTooltip] = useState(false)
   const phoneNumber = '233547783865'
   const message = encodeURIComponent('Hello! I am interested in booking a tour with Tourworld Tourism.')
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`
 
+  // Keep the public-site widget from covering admin action buttons
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
+
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
       {/* Tooltip */}
       <div 
-        className={`bg-white text-gray-800 px-4 py-2 rounded-lg shadow-xl mb-3 text-sm font-semibold border border-green-100 transition-all duration-300 transform origin-bottom-right ${
+        className={`bg-white text-gray-800 px-4 py-2 rounded-lg shadow-xl mb-3 text-sm font-semibold border border-green-100 transition-all duration-300 transform origin-bottom-right pointer-events-none ${
           showTooltip ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
         }`}
       >
@@ -25,7 +32,7 @@ export function WhatsAppSupport() {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-[#25D366] hover:bg-[#20ba5a] text-white p-3.5 sm:p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 group flex items-center justify-center relative"
+        className="pointer-events-auto bg-[#25D366] hover:bg-[#20ba5a] text-white p-3.5 sm:p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 group flex items-center justify-center relative"
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
         aria-label="Chat on WhatsApp"
@@ -40,9 +47,8 @@ export function WhatsAppSupport() {
         </svg>
 
         {/* Pulse effect */}
-        <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-40 animate-ping group-hover:hidden"></span>
+        <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-40 animate-ping group-hover:hidden pointer-events-none"></span>
       </a>
     </div>
   )
 }
-

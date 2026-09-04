@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { SafeImage } from './SafeImage'
 import { Lightbox } from './Lightbox'
+import { TestimonialQuote } from './TestimonialQuote'
 import { StarIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
 
@@ -46,10 +47,14 @@ export function TestimonialCardPage({ testimonial }: TestimonialCardPageProps) {
           )}
         </div>
 
-        {/* Testimonial Text */}
-        <p className="text-sm sm:text-base text-gray-700 mb-5 sm:mb-6 italic leading-relaxed flex-grow">
-          "{testimonial.testimonial}"
-        </p>
+        <TestimonialQuote
+          name={testimonial.name}
+          rating={testimonial.rating}
+          text={testimonial.testimonial}
+          image={testimonial.image}
+          tourTitle={testimonial.tour?.title}
+          textClassName="text-sm sm:text-base text-gray-700"
+        />
 
         {/* Author Section */}
         <div className="flex items-start pt-5 sm:pt-6 border-t border-gray-100 mt-auto">

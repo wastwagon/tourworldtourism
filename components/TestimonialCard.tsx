@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { SafeImage } from './SafeImage'
 import { Lightbox } from './Lightbox'
+import { TestimonialQuote } from './TestimonialQuote'
 
 interface TestimonialCardProps {
   testimonial: {
@@ -41,13 +42,17 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
           </div>
         </div>
 
-        {/* Testimonial Text */}
-        <p className="text-gray-700 mb-6 italic text-base leading-relaxed flex-grow">
-          "{testimonial.testimonial}"
-        </p>
+        <TestimonialQuote
+          name={testimonial.name}
+          rating={testimonial.rating}
+          text={testimonial.testimonial}
+          image={testimonial.image}
+          tourTitle={testimonial.tour?.title}
+          textClassName="text-base text-gray-700"
+        />
 
         {/* Author Section */}
-        <div className="flex items-center pt-6 border-t border-gray-100">
+        <div className="flex items-center pt-6 border-t border-gray-100 mt-auto">
           {testimonial.image ? (
             <div className="relative mr-4">
               <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-yellow-500 rounded-full blur-sm opacity-50"></div>
