@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { PUBLIC_API_CACHE_CONTROL } from '@/lib/public-cache'
 import { rateLimitPublicApi } from '@/lib/public-api-rate-limit'
+import { devError } from '@/lib/dev-log'
 
 function jsonWithCache(data: unknown, status = 200) {
   return NextResponse.json(data, {
@@ -74,7 +75,7 @@ export async function GET(request: Request) {
 
     return jsonWithCache(galleries)
   } catch (error) {
-    console.error('Error fetching galleries:', error)
+    devError('Error fetching galleries:', error)
     return NextResponse.json(
       { error: 'Failed to fetch galleries' },
       { status: 500 }
@@ -102,7 +103,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(gallery)
   } catch (error) {
-    console.error('Error creating gallery:', error)
+    devError('Error creating gallery:', error)
     return NextResponse.json(
       { error: 'Failed to create gallery' },
       { status: 500 }

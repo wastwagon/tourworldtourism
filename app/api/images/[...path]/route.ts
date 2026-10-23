@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getOptimizedImage } from '@/lib/optimize-local-image'
+import { devError } from '@/lib/dev-log'
 
 export async function GET(
   request: NextRequest,
@@ -28,7 +29,7 @@ export async function GET(
     if (status === 404) {
       return NextResponse.json({ error: 'Image not found' }, { status: 404 })
     }
-    console.error('Error serving image:', error)
+    devError('Error serving image:', error)
     return NextResponse.json({ error: 'Failed to serve image' }, { status: 500 })
   }
 }

@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { SafeImage } from './SafeImage'
 import { CalendarIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/solid'
 import { cachedPublic } from '@/lib/public-cache'
+import { devError } from '@/lib/dev-log'
 
 async function getFeaturedSpotlightTours() {
   try {
@@ -34,7 +35,7 @@ async function getFeaturedSpotlightTours() {
       return JSON.parse(JSON.stringify(tours))
     })
   } catch (error) {
-    console.error('Error fetching featured spotlight tours:', error)
+    devError('Error fetching featured spotlight tours:', error)
     return []
   }
 }

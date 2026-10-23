@@ -3,11 +3,12 @@ import { prisma } from '@/lib/prisma'
 import { SectionHeader } from './SectionHeader'
 import { SafeImage } from './SafeImage'
 import { cachedPublic } from '@/lib/public-cache'
+import { devError, devWarn } from '@/lib/dev-log'
 
 async function getAllGalleryImages() {
   try {
     if (!prisma.gallery) {
-      console.warn('Gallery model not available in Prisma client')
+      devWarn('Gallery model not available in Prisma client')
       return []
     }
 
@@ -40,7 +41,7 @@ async function getAllGalleryImages() {
       return JSON.parse(JSON.stringify(allImages.slice(0, 12)))
     })
   } catch (error) {
-    console.error('Error fetching gallery images:', error)
+    devError('Error fetching gallery images:', error)
     return []
   }
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { sendAdminNotification } from '@/lib/mail'
+import { devError } from '@/lib/dev-log'
 
 export async function POST(request: Request) {
   try {
@@ -47,7 +48,7 @@ export async function POST(request: Request) {
         `,
       })
     } catch (mailError) {
-      console.error('Failed to send newsletter notification email:', mailError)
+      devError('Failed to send newsletter notification email:', mailError)
     }
 
     return NextResponse.json(
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Error creating newsletter subscription:', error)
+    devError('Error creating newsletter subscription:', error)
     return NextResponse.json(
       { error: 'Failed to subscribe to newsletter' },
       { status: 500 }

@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { PhotoIcon, XMarkIcon, ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { SafeImage } from './SafeImage'
-import { devLog } from '@/lib/dev-log'
+import { devLog, devError } from '@/lib/dev-log'
 
 interface MultipleImageUploadProps {
   images: string[]
@@ -68,9 +68,9 @@ export function MultipleImageUpload({
 
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({ error: 'Unknown error' }))
-          console.error('Upload failed:', res.status, errorData)
+          devError('Upload failed:', res.status, errorData)
           const errorMessage = errorData.error || errorData.details || `Upload failed with status ${res.status}`
-          console.error('Error details:', errorData)
+          devError('Error details:', errorData)
           throw new Error(errorMessage)
         }
 
@@ -78,7 +78,7 @@ export function MultipleImageUpload({
         devLog('Upload successful:', data)
         
         if (!data.path) {
-          console.error('Upload response missing path:', data)
+          devError('Upload response missing path:', data)
           throw new Error('Upload response missing image path')
         }
         
@@ -98,7 +98,7 @@ export function MultipleImageUpload({
         onFeaturedChange(uploadedPaths[0])
       }
     } catch (err: any) {
-      console.error('Upload error:', err)
+      devError('Upload error:', err)
       setError(err.message || 'Failed to upload images. Please try again.')
     } finally {
       setUploading(false)

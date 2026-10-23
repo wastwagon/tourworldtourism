@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { devError } from '@/lib/dev-log'
 
 
 export async function PATCH(
@@ -28,7 +29,7 @@ export async function PATCH(
 
     return NextResponse.json({ testimonial })
   } catch (error: any) {
-    console.error('Error updating testimonial:', error)
+    devError('Error updating testimonial:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to update testimonial' },
       { status: 500 }
@@ -53,7 +54,7 @@ export async function DELETE(
 
     return NextResponse.json({ message: 'Testimonial deleted successfully' })
   } catch (error: any) {
-    console.error('Error deleting testimonial:', error)
+    devError('Error deleting testimonial:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to delete testimonial' },
       { status: 500 }

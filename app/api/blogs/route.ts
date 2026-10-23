@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { PUBLIC_API_CACHE_CONTROL } from '@/lib/public-cache'
 import { rateLimitPublicApi } from '@/lib/public-api-rate-limit'
+import { devError } from '@/lib/dev-log'
 
 export async function GET(request: Request) {
   const limited = rateLimitPublicApi(request)
@@ -37,7 +38,7 @@ export async function GET(request: Request) {
       headers: { 'Cache-Control': PUBLIC_API_CACHE_CONTROL },
     })
   } catch (error) {
-    console.error('Error fetching blogs:', error)
+    devError('Error fetching blogs:', error)
     return NextResponse.json(
       { error: 'Failed to fetch blogs' },
       { status: 500 }

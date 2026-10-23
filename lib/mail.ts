@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { devLog, devError } from '@/lib/dev-log'
 
 // Email configuration - Hardcoded as requested for immediate functionality
 const SMTP_HOST = 'host17.registrar-servers.com';
@@ -30,10 +31,10 @@ export async function sendAdminNotification(data: EmailData) {
       subject: data.subject,
       html: data.html,
     });
-    console.log('Admin notification email sent: %s', info.messageId);
+    devLog('Admin notification email sent: %s', info.messageId);
     return info;
   } catch (error) {
-    console.error('Error sending admin notification email:', error);
+    devError('Error sending admin notification email:', error);
     // Log details but don't crash the application
     throw error;
   }

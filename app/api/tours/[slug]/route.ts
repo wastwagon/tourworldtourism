@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rateLimitPublicApi } from '@/lib/public-api-rate-limit'
+import { devError } from '@/lib/dev-log'
 
 export async function GET(
   request: Request,
@@ -35,7 +36,7 @@ export async function GET(
 
     return NextResponse.json({ tour })
   } catch (error) {
-    console.error('Error fetching tour:', error)
+    devError('Error fetching tour:', error)
     return NextResponse.json(
       { error: 'Failed to fetch tour' },
       { status: 500 }

@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { sendAdminNotification } from '@/lib/mail'
 import { PUBLIC_API_CACHE_CONTROL } from '@/lib/public-cache'
 import { rateLimitPublicApi } from '@/lib/public-api-rate-limit'
+import { devError } from '@/lib/dev-log'
 
 export async function POST(request: Request) {
   try {
@@ -76,7 +77,7 @@ export async function POST(request: Request) {
         `,
       })
     } catch (mailError) {
-      console.error('Failed to send testimonial notification email:', mailError)
+      devError('Failed to send testimonial notification email:', mailError)
       // We don't want to fail the whole request if email fails
     }
 
@@ -88,7 +89,7 @@ export async function POST(request: Request) {
       { status: 201 }
     )
   } catch (error: any) {
-    console.error('Error creating testimonial:', error)
+    devError('Error creating testimonial:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to submit testimonial' },
       { status: 500 }
@@ -142,7 +143,7 @@ export async function GET(request: Request) {
       headers: { 'Cache-Control': PUBLIC_API_CACHE_CONTROL },
     })
   } catch (error: any) {
-    console.error('Error fetching testimonials:', error)
+    devError('Error fetching testimonials:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch testimonials' },
       { status: 500 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { devError } from '@/lib/dev-log'
 
 
 export async function PATCH(
@@ -31,7 +32,7 @@ export async function PATCH(
 
     return NextResponse.json({ inquiry })
   } catch (error: any) {
-    console.error('Error updating inquiry:', error)
+    devError('Error updating inquiry:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to update inquiry' },
       { status: 500 }

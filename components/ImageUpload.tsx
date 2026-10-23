@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { PhotoIcon, XMarkIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline'
 import { SafeImage } from './SafeImage'
-import { devLog } from '@/lib/dev-log'
+import { devLog, devError } from '@/lib/dev-log'
 
 interface ImageUploadProps {
   value: string
@@ -76,7 +76,7 @@ export function ImageUpload({
         const data = await res.json()
         devLog('Upload successful:', data)
         if (!data.path) {
-          console.error('Upload response missing path:', data)
+          devError('Upload response missing path:', data)
           setError('Upload succeeded but no image path was returned')
           setPreview(null)
           return
@@ -85,13 +85,13 @@ export function ImageUpload({
         setPreview(null) // Clear preview since we have the actual path
       } else {
         const errorData = await res.json().catch(() => ({ error: 'Unknown error' }))
-        console.error('Upload failed:', res.status, errorData)
+        devError('Upload failed:', res.status, errorData)
         const errorMessage = errorData.error || errorData.details || 'Failed to upload image'
         setError(errorMessage)
         setPreview(null)
       }
     } catch (err) {
-      console.error('Upload error:', err)
+      devError('Upload error:', err)
       setError('Failed to upload image. Please try again.')
       setPreview(null)
     } finally {

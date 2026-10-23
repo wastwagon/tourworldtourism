@@ -15,6 +15,7 @@ import { cachedPublic } from '@/lib/public-cache'
 import { createPageMetadata } from '@/lib/metadata-helpers'
 import { FaqSection } from '@/components/FaqSection'
 import { HOME_FAQ } from '@/lib/faq-content'
+import { devError } from '@/lib/dev-log'
 
 export const metadata = createPageMetadata({
   title: 'Tourworld Tourism - Ghana Tours & Travel',
@@ -54,7 +55,7 @@ async function getFeaturedTours() {
       return tours
     })
   } catch (error) {
-    console.error('Error fetching featured tours:', error)
+    devError('Error fetching featured tours:', error)
     return []
   }
 }

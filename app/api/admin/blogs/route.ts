@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import slugify from 'slugify'
+import { devError } from '@/lib/dev-log'
 
 
 export async function GET() {
@@ -17,7 +18,7 @@ export async function GET() {
 
     return NextResponse.json({ blogs })
   } catch (error: any) {
-    console.error('Error fetching blogs:', error)
+    devError('Error fetching blogs:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch blogs' },
       { status: 500 }
@@ -74,7 +75,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ blog }, { status: 201 })
   } catch (error: any) {
-    console.error('Error creating blog:', error)
+    devError('Error creating blog:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to create blog' },
       { status: 500 }

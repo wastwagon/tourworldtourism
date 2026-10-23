@@ -8,7 +8,7 @@ export function GET() {
     info: {
       title: 'Tourworld Tourism Public API',
       description:
-        'Read-only endpoints for tour listings and content. Rate limit 120 req/min/IP. See /llms.txt.',
+        'Read-only endpoints for tour listings and content. Rate limit 120 req/min/IP. FAQ content on major pages; see /llms.txt.',
       version: '1.0.0',
     },
     servers: [{ url: site }],

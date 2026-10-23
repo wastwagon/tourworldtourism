@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { SectionHeader } from './SectionHeader'
 import { TestimonialCarousel } from './TestimonialCarousel'
+import { devError } from '@/lib/dev-log'
 
 async function getAllTestimonials() {
   try {
@@ -23,7 +24,7 @@ async function getAllTestimonials() {
     })
     return testimonials
   } catch (error) {
-    console.error('Error fetching testimonials:', error)
+    devError('Error fetching testimonials:', error)
     return []
   }
 }

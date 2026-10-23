@@ -1,4 +1,5 @@
 import sharp from 'sharp'
+import { devError } from '@/lib/dev-log'
 
 interface CompressionOptions {
   maxWidth?: number
@@ -81,7 +82,7 @@ export async function compressImage(
 
     return { buffer: compressedBuffer, extension }
   } catch (error) {
-    console.error('Error compressing image:', error)
+    devError('Error compressing image:', error)
     return {
       buffer,
       extension: originalType.includes('png')

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { sendAdminNotification } from '@/lib/mail';
+import { devError } from '@/lib/dev-log'
 
 export async function POST(request: Request) {
   try {
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Test email sent successfully' });
   } catch (error) {
-    console.error('Error sending admin test email:', error);
+    devError('Error sending admin test email:', error);
     return NextResponse.json({ error: 'Failed to send test email' }, { status: 500 });
   }
 }

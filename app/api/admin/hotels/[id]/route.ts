@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { devError } from '@/lib/dev-log'
 
 
 export async function GET(
@@ -24,7 +25,7 @@ export async function GET(
 
     return NextResponse.json({ hotel })
   } catch (error: any) {
-    console.error('Error fetching hotel:', error)
+    devError('Error fetching hotel:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch hotel' },
       { status: 500 }
@@ -71,7 +72,7 @@ export async function PUT(
 
     return NextResponse.json({ hotel })
   } catch (error: any) {
-    console.error('Error updating hotel:', error)
+    devError('Error updating hotel:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to update hotel' },
       { status: 500 }
@@ -96,7 +97,7 @@ export async function DELETE(
 
     return NextResponse.json({ message: 'Hotel deleted successfully' })
   } catch (error: any) {
-    console.error('Error deleting hotel:', error)
+    devError('Error deleting hotel:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to delete hotel' },
       { status: 500 }

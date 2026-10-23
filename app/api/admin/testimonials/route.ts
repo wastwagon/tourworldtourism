@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { devError } from '@/lib/dev-log'
 
 
 export async function GET(request: Request) {
@@ -32,7 +33,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ testimonials })
   } catch (error: any) {
-    console.error('Error fetching testimonials:', error)
+    devError('Error fetching testimonials:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch testimonials' },
       { status: 500 }

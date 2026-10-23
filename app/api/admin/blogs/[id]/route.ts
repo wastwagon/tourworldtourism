@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import slugify from 'slugify'
+import { devError } from '@/lib/dev-log'
 
 
 export async function GET(
@@ -25,7 +26,7 @@ export async function GET(
 
     return NextResponse.json({ blog })
   } catch (error: any) {
-    console.error('Error fetching blog:', error)
+    devError('Error fetching blog:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch blog' },
       { status: 500 }
@@ -92,7 +93,7 @@ export async function PUT(
 
     return NextResponse.json({ blog })
   } catch (error: any) {
-    console.error('Error updating blog:', error)
+    devError('Error updating blog:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to update blog' },
       { status: 500 }
@@ -117,7 +118,7 @@ export async function DELETE(
 
     return NextResponse.json({ message: 'Blog deleted successfully' })
   } catch (error: any) {
-    console.error('Error deleting blog:', error)
+    devError('Error deleting blog:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to delete blog' },
       { status: 500 }

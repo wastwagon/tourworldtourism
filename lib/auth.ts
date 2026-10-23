@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { prisma } from "./prisma"
 import bcrypt from "bcryptjs"
-import { devLog } from "./dev-log"
+import { devLog, devError } from "./dev-log"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -22,7 +22,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           // Ensure Prisma client is available
           if (!prisma) {
-            console.error("❌ Prisma client not initialized")
+            devError("❌ Prisma client not initialized")
             throw new Error("Database connection error")
           }
 
@@ -53,8 +53,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             role: user.role,
           }
         } catch (error) {
-          console.error("❌ NextAuth authorize error:", error)
-          console.error("Error details:", {
+          devError("❌ NextAuth authorize error:", error)
+          devError("Error details:", {
             message: error instanceof Error ? error.message : String(error),
             stack: error instanceof Error ? error.stack : undefined,
             name: error instanceof Error ? error.name : undefined,
@@ -77,7 +77,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
         return token
       } catch (error) {
-        console.error("❌ JWT callback error:", error)
+        devError("❌ JWT callback error:", error)
         return token
       }
     },
@@ -103,7 +103,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         
         return session
       } catch (error) {
-        console.error("❌ Session callback error:", error)
+        devError("❌ Session callback error:", error)
         // Return a minimal session to prevent 500
         return {
           user: null,

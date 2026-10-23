@@ -4,6 +4,7 @@ import { CalendarIcon, UserIcon } from '@heroicons/react/24/outline'
 import { SectionHeader } from './SectionHeader'
 import { SafeImage } from './SafeImage'
 import { cachedPublic } from '@/lib/public-cache'
+import { devError } from '@/lib/dev-log'
 
 async function getFeaturedBlogs() {
   try {
@@ -21,10 +22,10 @@ async function getFeaturedBlogs() {
       return JSON.parse(JSON.stringify(blogs))
     })
   } catch (error) {
-    console.error('Error fetching featured blogs:', error)
+    devError('Error fetching featured blogs:', error)
     if (error instanceof Error) {
-      console.error('Error message:', error.message)
-      console.error('Error stack:', error.stack)
+      devError('Error message:', error.message)
+      devError('Error stack:', error.stack)
     }
     return []
   }

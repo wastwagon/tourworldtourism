@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { devError } from '@/lib/dev-log'
 
 
 export async function GET() {
@@ -20,7 +21,7 @@ export async function GET() {
 
     return NextResponse.json(galleries)
   } catch (error) {
-    console.error('Error fetching galleries:', error)
+    devError('Error fetching galleries:', error)
     return NextResponse.json(
       { error: 'Failed to fetch galleries' },
       { status: 500 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { devError } from '@/lib/dev-log'
 
 
 export async function GET() {
@@ -16,7 +17,7 @@ export async function GET() {
 
     return NextResponse.json({ hotels })
   } catch (error: any) {
-    console.error('Error fetching hotels:', error)
+    devError('Error fetching hotels:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch hotels' },
       { status: 500 }
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ hotel }, { status: 201 })
   } catch (error: any) {
-    console.error('Error creating hotel:', error)
+    devError('Error creating hotel:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to create hotel' },
       { status: 500 }

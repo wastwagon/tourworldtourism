@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { devError } from '@/lib/dev-log'
 
 export async function GET(
   request: Request,
@@ -20,7 +21,7 @@ export async function GET(
 
     return NextResponse.json(gallery)
   } catch (error) {
-    console.error('Error fetching gallery:', error)
+    devError('Error fetching gallery:', error)
     return NextResponse.json(
       { error: 'Failed to fetch gallery' },
       { status: 500 }
@@ -53,7 +54,7 @@ export async function PUT(
 
     return NextResponse.json(gallery)
   } catch (error) {
-    console.error('Error updating gallery:', error)
+    devError('Error updating gallery:', error)
     return NextResponse.json(
       { error: 'Failed to update gallery' },
       { status: 500 }
@@ -73,7 +74,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error deleting gallery:', error)
+    devError('Error deleting gallery:', error)
     return NextResponse.json(
       { error: 'Failed to delete gallery' },
       { status: 500 }

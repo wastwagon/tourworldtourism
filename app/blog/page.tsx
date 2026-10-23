@@ -47,7 +47,7 @@ async function getFeaturedTourImage() {
     })
     return tour?.featuredImage || null
   } catch (error) {
-    console.error('Error fetching featured tour image:', error)
+    devError('Error fetching featured tour image:', error)
     return null
   }
 }
@@ -71,7 +71,7 @@ export default async function BlogPage() {
     blogs = await getBlogs()
     featuredTourImage = await getFeaturedTourImage()
   } catch (err) {
-    console.error('Failed to load blogs:', err)
+    devError('Failed to load blogs:', err)
     error = err instanceof Error ? err.message : 'Failed to load blogs'
   }
 

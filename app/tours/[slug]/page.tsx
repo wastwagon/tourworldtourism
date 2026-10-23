@@ -7,9 +7,10 @@ import { ImageGallery } from '@/components/ImageGallery'
 import { ItineraryDisplay } from '@/components/ItineraryDisplay'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
-import { 
-  CurrencyDollarIcon, 
-  UserGroupIcon, 
+import { devError } from '@/lib/dev-log'
+import {
+  CurrencyDollarIcon,
+  UserGroupIcon,
   CalendarIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline'
@@ -60,7 +61,7 @@ async function getTour(slug: string) {
     })
     return tour
   } catch (error) {
-    console.error('Error fetching tour:', error)
+    devError('Error fetching tour:', error)
     return null
   }
 }

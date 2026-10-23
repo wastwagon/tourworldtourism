@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import slugify from 'slugify'
-import { devLog } from '@/lib/dev-log'
+import { devLog, devError } from '@/lib/dev-log'
 
 
 export async function GET(
@@ -26,7 +26,7 @@ export async function GET(
 
     return NextResponse.json({ tour })
   } catch (error: any) {
-    console.error('Error fetching tour:', error)
+    devError('Error fetching tour:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch tour' },
       { status: 500 }
@@ -128,8 +128,8 @@ export async function PUT(
       message: 'Tour updated successfully'
     })
   } catch (error: any) {
-    console.error('Error updating tour:', error)
-    console.error('Error stack:', error.stack)
+    devError('Error updating tour:', error)
+    devError('Error stack:', error.stack)
     return NextResponse.json(
       { 
         error: error.message || 'Failed to update tour',
@@ -170,7 +170,7 @@ export async function DELETE(
 
     return NextResponse.json({ message: 'Tour deleted successfully' })
   } catch (error: any) {
-    console.error('Error deleting tour:', error)
+    devError('Error deleting tour:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to delete tour' },
       { status: 500 }

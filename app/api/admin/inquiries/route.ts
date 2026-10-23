@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { devError } from '@/lib/dev-log'
 
 
 export async function GET() {
@@ -16,7 +17,7 @@ export async function GET() {
 
     return NextResponse.json({ inquiries })
   } catch (error: any) {
-    console.error('Error fetching inquiries:', error)
+    devError('Error fetching inquiries:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch inquiries' },
       { status: 500 }

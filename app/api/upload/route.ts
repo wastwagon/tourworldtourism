@@ -3,7 +3,7 @@ import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'
 import { compressImage, getCompressionStats } from '@/lib/image-compression'
-import { devLog } from '@/lib/dev-log'
+import { devLog, devError, devWarn } from '@/lib/dev-log'
 
 export async function POST(request: Request) {
   try {
@@ -110,19 +110,19 @@ export async function POST(request: Request) {
         } catch (unlinkError: any) {
           // Ignore ENOENT errors (file doesn't exist) - this is fine
           if (unlinkError.code !== 'ENOENT') {
-            console.warn(`Could not delete test file: ${unlinkError.message}`)
+            devWarn(`Could not delete test file: ${unlinkError.message}`)
           }
         }
         devLog(`Directory is writable: ${uploadDir}`)
       } catch (writeError: any) {
-        console.error(`Directory is not writable: ${uploadDir}`, writeError)
+        devError(`Directory is not writable: ${uploadDir}`, writeError)
         return NextResponse.json(
           { error: `Upload directory is not writable. Please check file permissions. Details: ${writeError.message}` },
           { status: 500 }
         )
       }
     } catch (dirError: any) {
-      console.error('Error creating/checking upload directory:', dirError)
+      devError('Error creating/checking upload directory:', dirError)
       return NextResponse.json(
         { error: `Failed to create upload directory. Please check file permissions. Details: ${dirError.message}` },
         { status: 500 }
@@ -135,7 +135,7 @@ export async function POST(request: Request) {
       await writeFile(filepath, compressedBuffer, { mode: 0o644 })
       devLog(`Testimonial image saved successfully: ${filepath}`)
     } catch (writeError: any) {
-      console.error('Error saving testimonial image:', writeError)
+      devError('Error saving testimonial image:', writeError)
       return NextResponse.json(
         { error: `Failed to save file. Please check file permissions. Details: ${writeError.message}` },
         { status: 500 }
@@ -157,9 +157,9 @@ export async function POST(request: Request) {
       filename: filename,
     })
   } catch (error: any) {
-    console.error('Error uploading testimonial file:', error)
-    console.error('Error stack:', error.stack)
-    console.error('Error details:', {
+    devError('Error uploading testimonial file:', error)
+    devError('Error stack:', error.stack)
+    devError('Error details:', {
       message: error.message,
       code: error.code,
       errno: error.errno,

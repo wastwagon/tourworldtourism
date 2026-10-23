@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import slugify from 'slugify'
+import { devError } from '@/lib/dev-log'
 
 export async function GET() {
   try {
@@ -29,7 +30,7 @@ export async function GET() {
 
     return NextResponse.json({ tours })
   } catch (error: any) {
-    console.error('Error fetching tours:', error)
+    devError('Error fetching tours:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to fetch tours' },
       { status: 500 }
@@ -120,7 +121,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ tour }, { status: 201 })
   } catch (error: any) {
-    console.error('Error creating tour:', error)
+    devError('Error creating tour:', error)
     return NextResponse.json(
       { error: error.message || 'Failed to create tour' },
       { status: 500 }

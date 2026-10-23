@@ -9,6 +9,7 @@ import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
 import { JsonLd } from '@/components/JsonLd'
 import { buildBlogPostingJsonLd } from '@/lib/structured-data'
 import { createPageMetadata } from '@/lib/metadata-helpers'
+import { devError } from '@/lib/dev-log'
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
@@ -20,7 +21,7 @@ async function getBlog(slug: string) {
     })
     return blog
   } catch (error) {
-    console.error('Error fetching blog:', error)
+    devError('Error fetching blog:', error)
     return null
   }
 }

@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { SectionHeader } from './SectionHeader'
 import { SafeImage } from './SafeImage'
 import { cachedPublic } from '@/lib/public-cache'
+import { devError } from '@/lib/dev-log'
 
 async function getFeaturedHotels() {
   try {
@@ -19,7 +20,7 @@ async function getFeaturedHotels() {
       return JSON.parse(JSON.stringify(hotels))
     })
   } catch (error) {
-    console.error('Error fetching featured hotels:', error)
+    devError('Error fetching featured hotels:', error)
     return []
   }
 }
