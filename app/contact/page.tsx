@@ -7,6 +7,7 @@ import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
 import { createPageMetadata } from '@/lib/metadata-helpers'
 import { FaqSection } from '@/components/FaqSection'
 import { CONTACT_FAQ } from '@/lib/faq-content'
+import { devError } from '@/lib/dev-log'
 
 export const metadata = createPageMetadata({
   title: 'Contact - Tourworld Tourism',
@@ -36,7 +37,7 @@ async function getFeaturedTourImage() {
     })
     return tour?.featuredImage || null
   } catch (error) {
-    console.error('Error fetching featured tour image:', error)
+    devError('Error fetching featured tour image:', error)
     return null
   }
 }

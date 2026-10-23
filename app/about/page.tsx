@@ -4,7 +4,10 @@ import { SafeImage } from '@/components/SafeImage'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { FaqSection } from '@/components/FaqSection'
+import { ABOUT_FAQ } from '@/lib/faq-content'
 import { createPageMetadata } from '@/lib/metadata-helpers'
+import { devError } from '@/lib/dev-log'
 import { 
   MapPinIcon
 } from '@heroicons/react/24/solid'
@@ -83,7 +86,7 @@ async function getTourImages() {
     
     return allImages.slice(0, 20) // Return up to 20 images
   } catch (error) {
-    console.error('Error fetching tour images:', error)
+    devError('Error fetching tour images:', error)
     return []
   }
 }
@@ -101,7 +104,7 @@ async function getFeaturedGalleryImage() {
     })
     return gallery?.featuredImage || gallery?.images[0] || null
   } catch (error) {
-    console.error('Error fetching gallery image:', error)
+    devError('Error fetching gallery image:', error)
     return null
   }
 }
@@ -470,6 +473,12 @@ export default async function AboutPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="py-12 sm:py-16 bg-gray-50">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <FaqSection title="About Tourworld" items={ABOUT_FAQ} />
           </div>
         </section>
 

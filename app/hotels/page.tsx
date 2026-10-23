@@ -8,6 +8,7 @@ import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
 import { FaqSection } from '@/components/FaqSection'
 import { HOTELS_FAQ } from '@/lib/faq-content'
 import { createPageMetadata } from '@/lib/metadata-helpers'
+import { devError } from '@/lib/dev-log'
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
@@ -22,12 +23,7 @@ async function getHotels() {
     // Ensure proper serialization for Next.js server-to-client component passing
     return JSON.parse(JSON.stringify(hotels))
   } catch (error) {
-    console.error('Error fetching hotels:', error)
-    // Log the full error for debugging
-    if (error instanceof Error) {
-      console.error('Error message:', error.message)
-      console.error('Error stack:', error.stack)
-    }
+    devError('Error fetching hotels:', error)
     return []
   }
 }
@@ -51,7 +47,7 @@ async function getFeaturedTourImage() {
     })
     return tour?.featuredImage || null
   } catch (error) {
-    console.error('Error fetching featured tour image:', error)
+    devError('Error fetching featured tour image:', error)
     return null
   }
 }
@@ -72,7 +68,7 @@ export default async function HotelsPage() {
     hotels = await getHotels()
     featuredTourImage = await getFeaturedTourImage()
   } catch (err) {
-    console.error('Failed to load hotels:', err)
+    devError('Failed to load hotels:', err)
     error = err instanceof Error ? err.message : 'Failed to load hotels'
   }
 

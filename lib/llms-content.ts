@@ -45,7 +45,7 @@ export function buildLlmsTxt(): string {
 
 ## Structured data
 - JSON-LD: TravelAgency, WebSite with SearchAction, TouristTrip on tour pages, BlogPosting, FAQPage, BreadcrumbList
-- FAQ sections (visible + schema): /, /contact, /tours, /hotels, /gallery
+- FAQ sections (visible + schema): /, /about, /contact, /tours, /hotels, /gallery, /blog, /testimonials
 - Sitemap: ${site}/sitemap.xml
 - Robots: ${site}/robots.txt
 - Agent descriptor: ${site}/.well-known/ai-plugin.json

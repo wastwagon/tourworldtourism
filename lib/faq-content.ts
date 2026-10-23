@@ -102,3 +102,67 @@ export const GALLERY_FAQ: FaqItem[] = [
       'New images are added after tours and events. Browse /gallery or follow social channels linked from the site for the latest highlights.',
   },
 ]
+
+export const ABOUT_FAQ: FaqItem[] = [
+  {
+    question: 'When was Tourworld Tourism founded?',
+    answer:
+      'Tourworld Tourism (TOURWORLD TOURISM SERVICES LTD) has operated licensed Ghana tours since 2015, with offices in North Ridge and Adenta, Accra.',
+  },
+  {
+    question: 'What types of experiences does Tourworld specialize in?',
+    answer:
+      'Cultural and heritage journeys, historical sites, wildlife and eco-tourism, adventure activities, and custom group itineraries across Ghana’s regions.',
+  },
+  {
+    question: 'Is Tourworld a licensed Ghana tour operator?',
+    answer:
+      'Yes. The company is licensed by the Ghana Tourism Authority and is a member of the Tour Operators Union of Ghana.',
+  },
+  {
+    question: 'How do I start planning with Tourworld?',
+    answer:
+      'Browse tours at /tours, read about the team on /about, then book online or contact +233 54 778 3865 / info@tourworldtourism.com.',
+  },
+]
+
+export const TESTIMONIALS_FAQ: FaqItem[] = [
+  {
+    question: 'Are testimonials on this site from real guests?',
+    answer:
+      'Published reviews on /testimonials are submitted by travelers and approved by the Tourworld team before they appear publicly.',
+  },
+  {
+    question: 'How can I leave a review after my tour?',
+    answer:
+      'Use the “Share Your Experience” form on /testimonials with your name, rating, and story. Moderation usually takes a few business days.',
+  },
+  {
+    question: 'Can I mention a specific tour in my testimonial?',
+    answer:
+      'Yes. When you submit a review you can associate it with the tour you joined so future guests see context for your feedback.',
+  },
+  {
+    question: 'Does Tourworld feature selected reviews?',
+    answer:
+      'Featured testimonials may appear on the homepage and tour marketing. All approved reviews remain visible on /testimonials.',
+  },
+]
+
+export const BLOG_FAQ: FaqItem[] = [
+  {
+    question: 'What does the Tourworld blog cover?',
+    answer:
+      'Travel tips, Ghana destination guides, culture and heritage insights, and updates related to tours offered at /tours.',
+  },
+  {
+    question: 'How do I read a full article?',
+    answer:
+      'Open any post on /blog to view the full story, author, publish date, and related tags.',
+  },
+  {
+    question: 'Can I republish or quote blog content?',
+    answer:
+      'Contact info@tourworldtourism.com for media or republication requests. Always link back to the original post on tourworldtourism.com.',
+  },
+]

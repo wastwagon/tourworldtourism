@@ -6,7 +6,10 @@ import { TestimonialForm } from '@/components/TestimonialForm'
 import { TestimonialsPageCarousel } from '@/components/TestimonialsPageCarousel'
 import { prisma } from '@/lib/prisma'
 import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { FaqSection } from '@/components/FaqSection'
+import { TESTIMONIALS_FAQ } from '@/lib/faq-content'
 import { createPageMetadata } from '@/lib/metadata-helpers'
+import { devError } from '@/lib/dev-log'
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
@@ -37,7 +40,7 @@ async function getAllTestimonials() {
     })
     return testimonials
   } catch (error) {
-    console.error('Error fetching testimonials:', error)
+    devError('Error fetching testimonials:', error)
     return []
   }
 }
@@ -61,7 +64,7 @@ async function getFeaturedTourImage() {
     })
     return tour?.featuredImage || null
   } catch (error) {
-    console.error('Error fetching featured tour image:', error)
+    devError('Error fetching featured tour image:', error)
     return null
   }
 }
@@ -119,6 +122,10 @@ export default async function TestimonialsPage() {
               <TestimonialsPageCarousel testimonials={testimonials} />
             </div>
           )}
+
+          <div className="max-w-3xl mx-auto mb-10 sm:mb-12">
+            <FaqSection title="Reviews & testimonials" items={TESTIMONIALS_FAQ} />
+          </div>
 
           {/* Submit Testimonial Form */}
           <div className="surface-card p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto">
