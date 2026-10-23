@@ -69,8 +69,8 @@ export default function AdminBookingsPage() {
     <AdminLayout>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Bookings Management</h1>
-          <p className="text-gray-600 mt-2">Manage all customer bookings</p>
+          <h1 className="admin-page-title">Bookings Management</h1>
+          <p className="admin-page-subtitle">Manage all customer bookings</p>
         </div>
         <div className="flex gap-2">
           <select
@@ -79,7 +79,7 @@ export default function AdminBookingsPage() {
               setFilter(e.target.value)
               setLoading(true)
             }}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600"
+            className="form-select"
           >
             <option value="all">All Bookings</option>
             <option value="pending">Pending</option>
@@ -102,7 +102,7 @@ export default function AdminBookingsPage() {
       ) : (
         <div className="admin-surface overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="admin-table">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>

@@ -73,11 +73,11 @@ export default function NewGalleryPage() {
         </Link>
 
         <div className="admin-surface p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Gallery</h1>
+          <h1 className="admin-page-title mb-6">Create New Gallery</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Gallery Title *
               </label>
               <input
@@ -85,26 +85,26 @@ export default function NewGalleryPage() {
                 value={formData.title}
                 onChange={handleTitleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
                 placeholder="e.g., Thelma & Jeanette November 2025 Tour"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Slug (auto-generated)
               </label>
               <input
                 type="text"
                 value={formData.slug}
                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                className="form-input bg-gray-50"
                 placeholder="gallery-slug"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Tour Name *
               </label>
               <input
@@ -112,20 +112,20 @@ export default function NewGalleryPage() {
                 value={formData.tourName}
                 onChange={(e) => setFormData({ ...formData, tourName: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
                 placeholder="e.g., Thelma & Jeanette November 2025"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Description
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
                 placeholder="Gallery description..."
               />
             </div>

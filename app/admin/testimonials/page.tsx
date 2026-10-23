@@ -84,8 +84,8 @@ export default function AdminTestimonialsPage() {
     <AdminLayout>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Testimonials Management</h1>
-          <p className="text-gray-600 mt-2">Manage customer testimonials</p>
+          <h1 className="admin-page-title">Testimonials Management</h1>
+          <p className="admin-page-subtitle">Manage customer testimonials</p>
         </div>
         <div className="flex items-center gap-4">
           <Link
@@ -102,7 +102,7 @@ export default function AdminTestimonialsPage() {
               setFilter(e.target.value)
               setLoading(true)
             }}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600"
+            className="form-select"
           >
             <option value="all">All Testimonials</option>
             <option value="approved">Approved</option>
@@ -123,23 +123,20 @@ export default function AdminTestimonialsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-gray-100">
+            <div key={testimonial.id} className="admin-surface p-6 transition-shadow hover:shadow-elevated">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-4">
                   {testimonial.image ? (
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-yellow-500 rounded-full blur-sm opacity-50"></div>
-                      <div className="w-14 h-14 rounded-full overflow-hidden relative border-2 border-white shadow-md">
+                    <div className="relative w-14 h-14 rounded-full overflow-hidden border border-gray-200 bg-gray-100">
                       <SafeImage
                         src={testimonial.image}
                         alt={testimonial.name}
                         fill
                         className="object-cover"
                       />
-                      </div>
                     </div>
                   ) : (
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-red-600 to-yellow-500 flex items-center justify-center text-white font-bold text-lg border-2 border-white shadow-md">
+                    <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center text-white font-bold text-lg">
                       {testimonial.name.charAt(0).toUpperCase()}
                     </div>
                   )}

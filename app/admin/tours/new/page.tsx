@@ -160,15 +160,15 @@ export default function NewTourPage() {
       </Link>
 
       <div className="admin-surface p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Tour</h1>
+        <h1 className="admin-page-title mb-6">Create New Tour</h1>
 
         <form onSubmit={handleSubmit} className="space-y-8" noValidate>
           {/* Basic Information */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Basic Information</h2>
+            <h2 className="admin-section-title">Basic Information</h2>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Tour Title *
               </label>
               <input
@@ -176,7 +176,7 @@ export default function NewTourPage() {
                 value={formData.title}
                 onChange={handleTitleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
               />
               {formData.slug && (
                 <p className="mt-1 text-sm text-gray-500">Slug: {formData.slug}</p>
@@ -184,7 +184,7 @@ export default function NewTourPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Description *
               </label>
               <textarea
@@ -192,44 +192,44 @@ export default function NewTourPage() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 required
                 rows={6}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Duration Days
                 </label>
                 <input
                   type="number"
                   value={formData.durationDays}
                   onChange={(e) => setFormData({ ...formData, durationDays: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Duration Nights
                 </label>
                 <input
                   type="number"
                   value={formData.durationNights}
                   onChange={(e) => setFormData({ ...formData, durationNights: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Tour Type *
               </label>
               <select
                 value={formData.tourType}
                 onChange={(e) => setFormData({ ...formData, tourType: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
               >
                 <option value="Culture & Heritage">Culture & Heritage</option>
                 <option value="Eco-Tourism">Eco-Tourism</option>
@@ -240,7 +240,7 @@ export default function NewTourPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Regions (comma-separated)
               </label>
               <input
@@ -253,14 +253,14 @@ export default function NewTourPage() {
                     regions: e.target.value.split(',').map((r) => r.trim()).filter(Boolean),
                   })
                 }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
               />
             </div>
           </div>
 
           {/* Highlights */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Highlights</h2>
+            <h2 className="admin-section-title">Highlights</h2>
             <div className="flex gap-2">
               <input
                 type="text"
@@ -273,12 +273,12 @@ export default function NewTourPage() {
                   }
                 }}
                 placeholder="Add a highlight"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input flex-1"
               />
               <button
                 type="button"
                 onClick={() => addArrayItem('highlights', newHighlight, setNewHighlight)}
-                className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
+                className="btn-muted px-4 py-2 min-h-0"
               >
                 <PlusIcon className="h-5 w-5" />
               </button>
@@ -301,10 +301,10 @@ export default function NewTourPage() {
 
           {/* Pricing */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Pricing</h2>
+            <h2 className="admin-section-title">Pricing</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Price Per Person
                 </label>
                 <input
@@ -312,11 +312,11 @@ export default function NewTourPage() {
                   step="0.01"
                   value={formData.pricePerPerson}
                   onChange={(e) => setFormData({ ...formData, pricePerPerson: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Single Supplement
                 </label>
                 <input
@@ -324,31 +324,31 @@ export default function NewTourPage() {
                   step="0.01"
                   value={formData.singleSupplement}
                   onChange={(e) => setFormData({ ...formData, singleSupplement: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Min Group Size
                 </label>
                 <input
                   type="number"
                   value={formData.groupSizeMin}
                   onChange={(e) => setFormData({ ...formData, groupSizeMin: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Max Group Size
                 </label>
                 <input
                   type="number"
                   value={formData.groupSizeMax}
                   onChange={(e) => setFormData({ ...formData, groupSizeMax: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
             </div>
@@ -356,7 +356,7 @@ export default function NewTourPage() {
 
           {/* Images */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Images</h2>
+            <h2 className="admin-section-title">Images</h2>
             <div>
               <ImageUpload
                 value={formData.featuredImage}
@@ -377,7 +377,7 @@ export default function NewTourPage() {
 
           {/* Status */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Status</h2>
+            <h2 className="admin-section-title">Status</h2>
             <div className="flex items-center gap-6">
               <label className="flex items-center">
                 <input
@@ -389,13 +389,13 @@ export default function NewTourPage() {
                 <span className="text-sm font-medium text-gray-700">Featured</span>
               </label>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Status
                 </label>
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
@@ -407,14 +407,14 @@ export default function NewTourPage() {
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="admin-label">
               Notes
             </label>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+              className="form-input"
             />
           </div>
 
@@ -422,7 +422,7 @@ export default function NewTourPage() {
           <div className="flex justify-end gap-4 pt-6 border-t">
             <Link
               href="/admin/tours"
-              className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              className="btn-secondary"
             >
               Cancel
             </Link>

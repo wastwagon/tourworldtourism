@@ -63,8 +63,8 @@ export default function AdminInquiriesPage() {
   return (
     <AdminLayout>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Contact Inquiries</h1>
-        <p className="text-gray-600 mt-2">Manage customer inquiries</p>
+        <h1 className="admin-page-title">Contact Inquiries</h1>
+        <p className="admin-page-subtitle">Manage customer inquiries</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -141,7 +141,7 @@ export default function AdminInquiriesPage() {
                 <select
                   value={selectedInquiry.status}
                   onChange={(e) => updateStatus(selectedInquiry.id, e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600"
+                  className="form-select"
                 >
                   <option value="unread">Unread</option>
                   <option value="read">Read</option>

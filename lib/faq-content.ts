@@ -66,3 +66,39 @@ export const TOURS_FAQ: FaqItem[] = [
       'Yes. Contact the team via /contact or WhatsApp to design a tailored schedule around your dates, interests, and group size.',
   },
 ]
+
+export const HOTELS_FAQ: FaqItem[] = [
+  {
+    question: 'Does Tourworld book hotel stays?',
+    answer:
+      'Partner hotels listed on /hotels are used on tour itineraries. For standalone lodging or upgrades, contact the team when you book a tour or via /contact.',
+  },
+  {
+    question: 'Are hotels included in tour prices?',
+    answer:
+      'Many multi-day tours include accommodation as described on each tour detail page. Check inclusions on /tours/[slug] or ask for a quote for your group size.',
+  },
+  {
+    question: 'What hotel standards does Tourworld use in Ghana?',
+    answer:
+      'Listings focus on comfortable, well-located properties used on cultural, heritage, and safari routes—often 3–5 star options in Accra, Kumasi, Cape Coast, and park gateways.',
+  },
+]
+
+export const GALLERY_FAQ: FaqItem[] = [
+  {
+    question: 'What photos are in the Tourworld gallery?',
+    answer:
+      'The gallery at /gallery combines images from tour albums—destinations, wildlife, culture, and guest moments—organized by gallery collection.',
+  },
+  {
+    question: 'Can I use Tourworld gallery images?',
+    answer:
+      'Photos are for viewing trip inspiration on the site. For media or commercial use, contact info@tourworldtourism.com for permission.',
+  },
+  {
+    question: 'How often is the photo gallery updated?',
+    answer:
+      'New images are added after tours and events. Browse /gallery or follow social channels linked from the site for the latest highlights.',
+  },
+]

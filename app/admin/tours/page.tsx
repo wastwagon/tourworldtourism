@@ -66,8 +66,8 @@ export default function AdminToursPage() {
     <AdminLayout>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Tours Management</h1>
-          <p className="text-gray-600 mt-2">Manage all tour packages</p>
+          <h1 className="admin-page-title">Tours Management</h1>
+          <p className="admin-page-subtitle">Manage all tour packages</p>
         </div>
         <Link
           href="/admin/tours/new"
@@ -96,7 +96,7 @@ export default function AdminToursPage() {
       ) : (
         <div className="admin-surface overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="admin-table">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

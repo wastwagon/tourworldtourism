@@ -56,7 +56,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 admin-surface shadow-elevated border-r border-gray-200/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -81,9 +81,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   key={item.name}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                  className={`admin-sidebar-link ${
                     isActive
-                      ? 'bg-red-50 text-red-700 border-l-4 border-red-600'
+                      ? 'bg-red-50 text-red-700 ring-1 ring-red-100'
                       : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
@@ -98,7 +98,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <div className="border-t border-gray-200 p-4">
             <button
               onClick={handleSignOut}
-              className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+              className="admin-sidebar-link w-full text-gray-700 hover:bg-gray-50"
             >
               <ArrowRightOnRectangleIcon className="h-5 w-5 mr-3" />
               Sign Out

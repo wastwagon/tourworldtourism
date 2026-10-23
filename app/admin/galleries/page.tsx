@@ -64,7 +64,7 @@ export default function AdminGalleriesPage() {
   return (
     <AdminLayout>
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Gallery Management</h1>
+          <h1 className="admin-page-title">Gallery Management</h1>
           <Link
             href="/admin/galleries/new"
             className="btn-primary gap-2"

@@ -86,8 +86,8 @@ export default async function AdminDashboard() {
   return (
     <AdminLayout>
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
-          <p className="text-gray-600 mt-2">Welcome back, {session.user?.email}</p>
+          <h1 className="admin-page-title">Dashboard Overview</h1>
+          <p className="admin-page-subtitle">Welcome back, {session.user?.email}</p>
         </div>
 
         {/* Stats Grid */}
@@ -202,7 +202,7 @@ export default async function AdminDashboard() {
               <p className="text-gray-500">No bookings yet</p>
             ) : (
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="admin-table">
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>

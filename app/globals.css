@@ -37,8 +37,52 @@
     @apply w-full px-4 py-2.5 border border-gray-300 rounded-card text-sm sm:text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent;
   }
 
+  .form-select {
+    @apply min-h-[44px] px-4 py-2.5 border border-gray-300 rounded-card text-sm sm:text-base text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent;
+  }
+
   .admin-surface {
     @apply bg-white rounded-card shadow-card border border-gray-100/90;
+  }
+
+  .admin-page-title {
+    @apply text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight;
+  }
+
+  .admin-page-subtitle {
+    @apply text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base;
+  }
+
+  .admin-section-title {
+    @apply text-lg sm:text-xl font-semibold text-gray-900 border-b border-gray-200 pb-2;
+  }
+
+  .admin-label {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+  }
+
+  .btn-muted {
+    @apply inline-flex items-center justify-center min-h-[44px] bg-gray-100 text-gray-700 px-4 py-2 rounded-card text-sm font-medium hover:bg-gray-200 active:bg-gray-300 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400;
+  }
+
+  .admin-table {
+    @apply min-w-full divide-y divide-gray-200;
+  }
+
+  .admin-table thead {
+    @apply bg-gray-50;
+  }
+
+  .admin-table th {
+    @apply px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+  }
+
+  .admin-table td {
+    @apply px-4 sm:px-6 py-4 text-sm text-gray-900;
+  }
+
+  .admin-sidebar-link {
+    @apply flex items-center min-h-[44px] px-4 py-2.5 text-sm font-medium rounded-card transition-colors;
   }
 }
 

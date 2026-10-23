@@ -5,6 +5,8 @@ import { SafeImage } from '@/components/SafeImage'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { FaqSection } from '@/components/FaqSection'
+import { GALLERY_FAQ } from '@/lib/faq-content'
 import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 
 interface GalleryImage {
@@ -253,6 +255,10 @@ export default function GalleryPage() {
               </div>
             </>
           )}
+
+          <div className="max-w-3xl mx-auto mt-14 sm:mt-16 pt-10 border-t border-gray-200">
+            <FaqSection title="Gallery" items={GALLERY_FAQ} />
+          </div>
         </div>
       </main>
 

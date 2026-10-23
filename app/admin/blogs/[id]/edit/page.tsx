@@ -140,15 +140,15 @@ export default function EditBlogPage() {
       </Link>
 
       <div className="admin-surface p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Blog Post</h1>
+        <h1 className="admin-page-title mb-6">Edit Blog Post</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Basic Information</h2>
+            <h2 className="admin-section-title">Basic Information</h2>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Title *
               </label>
               <input
@@ -156,7 +156,7 @@ export default function EditBlogPage() {
                 value={formData.title}
                 onChange={handleTitleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
               />
               {formData.slug && (
                 <p className="mt-1 text-sm text-gray-500">Slug: {formData.slug}</p>
@@ -164,7 +164,7 @@ export default function EditBlogPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Excerpt *
               </label>
               <textarea
@@ -172,13 +172,13 @@ export default function EditBlogPage() {
                 onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
                 required
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
                 placeholder="A brief summary of the blog post..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Content *
               </label>
               <textarea
@@ -186,21 +186,21 @@ export default function EditBlogPage() {
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 required
                 rows={15}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent font-mono text-sm"
+                className="form-input font-mono text-sm"
                 placeholder="Write your blog post content here..."
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Category *
                 </label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 >
                   <option value="Tourism">Tourism</option>
                   <option value="Culture">Culture</option>
@@ -210,21 +210,21 @@ export default function EditBlogPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Author
                 </label>
                 <input
                   type="text"
                   value={formData.author}
                   onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
             </div>
 
             {/* Tags */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Tags
               </label>
               <div className="flex gap-2 mb-2">
@@ -239,12 +239,12 @@ export default function EditBlogPage() {
                     }
                   }}
                   placeholder="Add a tag"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input flex-1"
                 />
                 <button
                   type="button"
                   onClick={addTag}
-                  className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
+                  className="btn-muted px-4 py-2 min-h-0"
                 >
                   <PlusIcon className="h-5 w-5" />
                 </button>
@@ -271,7 +271,7 @@ export default function EditBlogPage() {
 
           {/* Image Upload */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Featured Image</h2>
+            <h2 className="admin-section-title">Featured Image</h2>
             <ImageUpload
               value={formData.featuredImage}
               onChange={(path) => setFormData({ ...formData, featuredImage: path })}
@@ -283,7 +283,7 @@ export default function EditBlogPage() {
 
           {/* Status */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Status</h2>
+            <h2 className="admin-section-title">Status</h2>
             <div className="flex items-center gap-6">
               <label className="flex items-center">
                 <input
@@ -310,7 +310,7 @@ export default function EditBlogPage() {
           <div className="flex justify-end gap-4 pt-6 border-t">
             <Link
               href="/admin/blogs"
-              className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              className="btn-secondary"
             >
               Cancel
             </Link>

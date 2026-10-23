@@ -5,6 +5,8 @@ import { prisma } from '@/lib/prisma'
 import { MapPinIcon, PhoneIcon, GlobeAltIcon, StarIcon } from '@heroicons/react/24/solid'
 import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline'
 import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { FaqSection } from '@/components/FaqSection'
+import { HOTELS_FAQ } from '@/lib/faq-content'
 import { createPageMetadata } from '@/lib/metadata-helpers'
 
 // Force dynamic rendering to avoid build-time database calls
@@ -350,6 +352,12 @@ export default async function HotelsPage() {
             </div>
           </section>
         )}
+
+        <section className="py-10 sm:py-14 bg-gray-50">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <FaqSection title="Hotels & stays" items={HOTELS_FAQ} />
+          </div>
+        </section>
 
         {/* CTA Section */}
         <section className="py-8 sm:py-12 lg:py-16 bg-gradient-to-r from-red-600 to-yellow-500">

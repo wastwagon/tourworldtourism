@@ -114,15 +114,15 @@ export default function EditHotelPage() {
       </Link>
 
       <div className="admin-surface p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Hotel</h1>
+        <h1 className="admin-page-title mb-6">Edit Hotel</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Basic Information</h2>
+            <h2 className="admin-section-title">Basic Information</h2>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Hotel Name *
               </label>
               <input
@@ -130,13 +130,13 @@ export default function EditHotelPage() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Location *
                 </label>
                 <input
@@ -144,18 +144,18 @@ export default function EditHotelPage() {
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Region *
                 </label>
                 <select
                   value={formData.region}
                   onChange={(e) => setFormData({ ...formData, region: e.target.value })}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 >
                   <option value="">Select Region</option>
                   <option value="Greater Accra">Greater Accra</option>
@@ -173,20 +173,20 @@ export default function EditHotelPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Address
               </label>
               <textarea
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 rows={2}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Phone
                 </label>
                 <input
@@ -194,11 +194,11 @@ export default function EditHotelPage() {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="+233 XX XXX XXXX"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="admin-label">
                   Rating (1-5)
                 </label>
                 <input
@@ -209,13 +209,13 @@ export default function EditHotelPage() {
                   value={formData.rating}
                   onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
                   placeholder="4.5"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                  className="form-input"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Website
               </label>
               <input
@@ -223,19 +223,19 @@ export default function EditHotelPage() {
                 value={formData.website}
                 onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                 placeholder="https://example.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-label">
                 Description
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={6}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="form-input"
                 placeholder="Describe the hotel, its amenities, and what makes it special..."
               />
             </div>
@@ -243,7 +243,7 @@ export default function EditHotelPage() {
 
           {/* Image Upload */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Image</h2>
+            <h2 className="admin-section-title">Image</h2>
             <ImageUpload
               value={formData.featuredImage}
               onChange={(path) => setFormData({ ...formData, featuredImage: path })}
@@ -255,7 +255,7 @@ export default function EditHotelPage() {
 
           {/* Status */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 border-b pb-2">Status</h2>
+            <h2 className="admin-section-title">Status</h2>
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -271,7 +271,7 @@ export default function EditHotelPage() {
           <div className="flex justify-end gap-4 pt-6 border-t">
             <Link
               href="/admin/hotels"
-              className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              className="btn-secondary"
             >
               Cancel
             </Link>
