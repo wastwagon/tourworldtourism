@@ -161,7 +161,7 @@ export default async function ContactPage() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-red-600 to-yellow-500 rounded-lg p-4 sm:p-6 lg:p-8 text-white">
+              <div className="bg-gradient-to-r from-red-600 to-yellow-500 rounded-card p-4 sm:p-6 lg:p-8 text-white">
                 <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">GPS Locations</h3>
                 <div className="space-y-2">
                   <p className="text-xs sm:text-sm opacity-90 font-medium">North Ridge: GA-016-7761</p>

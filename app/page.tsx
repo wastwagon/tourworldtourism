@@ -13,6 +13,8 @@ import { SafeImage } from '@/components/SafeImage'
 import { prisma } from '@/lib/prisma'
 import { cachedPublic } from '@/lib/public-cache'
 import { createPageMetadata } from '@/lib/metadata-helpers'
+import { FaqSection } from '@/components/FaqSection'
+import { HOME_FAQ } from '@/lib/faq-content'
 
 export const metadata = createPageMetadata({
   title: 'Tourworld Tourism - Ghana Tours & Travel',
@@ -260,6 +262,12 @@ export default async function Home() {
 
         {/* Testimonials Section */}
         <Testimonials />
+
+        <section className="py-10 sm:py-14 bg-gray-50">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <FaqSection title="Common questions" items={HOME_FAQ} />
+          </div>
+        </section>
 
         {/* Newsletter Signup */}
         <NewsletterSignup />

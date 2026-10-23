@@ -3,6 +3,24 @@ export type FaqItem = {
   answer: string
 }
 
+export const HOME_FAQ: FaqItem[] = [
+  {
+    question: 'Who is Tourworld Tourism?',
+    answer:
+      'Tourworld Tourism (TOURWORLD TOURISM SERVICES LTD) is a licensed Ghana tour operator since 2015, offering cultural, heritage, wildlife, and custom group tours across Ghana.',
+  },
+  {
+    question: 'How do I find and book a tour?',
+    answer:
+      'Visit the Tours page to browse and filter itineraries, open a tour for pricing and details, then submit the booking form or call +233 54 778 3865.',
+  },
+  {
+    question: 'Are you licensed in Ghana?',
+    answer:
+      'Yes — licensed by the Ghana Tourism Authority and a member of the Tour Operators Union of Ghana. Offices in North Ridge and Adenta, Accra.',
+  },
+]
+
 export const CONTACT_FAQ: FaqItem[] = [
   {
     question: 'How do I book a tour with Tourworld Tourism?',

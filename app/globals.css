@@ -51,6 +51,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
