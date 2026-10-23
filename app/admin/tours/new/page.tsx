@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
@@ -140,7 +142,7 @@ export default function NewTourPage() {
         alert(responseData.error || 'Failed to create tour')
       }
     } catch (error) {
-      console.error('Error creating tour:', error)
+      devError('Error creating tour:', error)
       alert('Error creating tour')
     } finally {
       setLoading(false)
@@ -157,7 +159,7 @@ export default function NewTourPage() {
         Back to Tours
       </Link>
 
-      <div className="bg-white rounded-lg shadow-md p-8">
+      <div className="admin-surface p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Tour</h1>
 
         <form onSubmit={handleSubmit} className="space-y-8" noValidate>
@@ -428,7 +430,7 @@ export default function NewTourPage() {
               type="button"
               disabled={loading}
               onClick={() => handleSubmit()}
-              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="btn-primary"
               style={{
                 cursor: loading ? 'not-allowed' : 'pointer',
                 zIndex: 9999,

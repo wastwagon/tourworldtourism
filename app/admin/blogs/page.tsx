@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
 import Link from 'next/link'
@@ -34,7 +36,7 @@ export default function AdminBlogsPage() {
         setBlogs(data.blogs || [])
       }
     } catch (error) {
-      console.error('Error fetching blogs:', error)
+      devError('Error fetching blogs:', error)
     } finally {
       setLoading(false)
     }
@@ -65,7 +67,7 @@ export default function AdminBlogsPage() {
         </div>
         <Link
           href="/admin/blogs/new"
-          className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2"
+          className="btn-primary gap-2"
         >
           <PlusIcon className="h-5 w-5" />
           Add New Blog
@@ -73,22 +75,22 @@ export default function AdminBlogsPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="admin-surface p-12 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading blogs...</p>
         </div>
       ) : blogs.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="admin-surface p-12 text-center">
           <p className="text-gray-600 mb-4">No blogs found.</p>
           <Link
             href="/admin/blogs/new"
-            className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700"
+            className="btn-primary"
           >
             Create Your First Blog Post
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="admin-surface overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

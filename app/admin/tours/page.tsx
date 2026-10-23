@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
@@ -38,7 +40,7 @@ export default function AdminToursPage() {
         setTours(data.tours || [])
       }
     } catch (error) {
-      console.error('Error fetching tours:', error)
+      devError('Error fetching tours:', error)
     } finally {
       setLoading(false)
     }
@@ -69,7 +71,7 @@ export default function AdminToursPage() {
         </div>
         <Link
           href="/admin/tours/new"
-          className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2"
+          className="btn-primary gap-2"
         >
           <PlusIcon className="h-5 w-5" />
           Add New Tour
@@ -77,22 +79,22 @@ export default function AdminToursPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="admin-surface p-12 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading tours...</p>
         </div>
       ) : tours.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="admin-surface p-12 text-center">
           <p className="text-gray-600 mb-4">No tours found.</p>
           <Link
             href="/admin/tours/new"
-            className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700"
+            className="btn-primary"
           >
             Create Your First Tour
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="admin-surface overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

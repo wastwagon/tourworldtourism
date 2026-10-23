@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
@@ -67,7 +69,7 @@ export default function NewBlogPage() {
         alert(error.error || 'Failed to create blog')
       }
     } catch (error) {
-      console.error('Error creating blog:', error)
+      devError('Error creating blog:', error)
       alert('Error creating blog')
     } finally {
       setLoading(false)
@@ -84,7 +86,7 @@ export default function NewBlogPage() {
         Back to Blogs
       </Link>
 
-      <div className="bg-white rounded-lg shadow-md p-8">
+      <div className="admin-surface p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Blog Post</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -262,7 +264,7 @@ export default function NewBlogPage() {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+              className="btn-primary"
             >
               {loading ? 'Creating...' : 'Create Blog Post'}
             </button>

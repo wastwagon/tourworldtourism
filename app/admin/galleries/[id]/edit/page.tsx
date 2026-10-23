@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
@@ -52,7 +54,7 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
           })
         }
       } catch (error) {
-        console.error('Error fetching gallery:', error)
+        devError('Error fetching gallery:', error)
       } finally {
         setFetching(false)
       }
@@ -84,7 +86,7 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
         alert('Failed to update gallery')
       }
     } catch (error) {
-      console.error('Error updating gallery:', error)
+      devError('Error updating gallery:', error)
       alert('Error updating gallery')
     } finally {
       setLoading(false)
@@ -112,7 +114,7 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
           Back to Galleries
         </Link>
 
-        <div className="bg-white rounded-lg shadow-md p-8">
+        <div className="admin-surface p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Gallery</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -202,7 +204,7 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
               <button
                 type="submit"
                 disabled={loading || formData.images.length === 0}
-                className="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary px-8"
               >
                 {loading ? 'Updating...' : 'Update Gallery'}
               </button>

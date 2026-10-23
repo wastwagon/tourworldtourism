@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
@@ -58,7 +60,7 @@ export default function EditBlogPage() {
         router.push('/admin/blogs')
       }
     } catch (error) {
-      console.error('Error fetching blog:', error)
+      devError('Error fetching blog:', error)
       alert('Error loading blog')
       router.push('/admin/blogs')
     } finally {
@@ -107,7 +109,7 @@ export default function EditBlogPage() {
         alert(error.error || 'Failed to update blog')
       }
     } catch (error) {
-      console.error('Error updating blog:', error)
+      devError('Error updating blog:', error)
       alert('Error updating blog')
     } finally {
       setSaving(false)
@@ -137,7 +139,7 @@ export default function EditBlogPage() {
         Back to Blogs
       </Link>
 
-      <div className="bg-white rounded-lg shadow-md p-8">
+      <div className="admin-surface p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Blog Post</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -315,7 +317,7 @@ export default function EditBlogPage() {
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+              className="btn-primary"
             >
               {saving ? 'Saving...' : 'Save Changes'}
             </button>

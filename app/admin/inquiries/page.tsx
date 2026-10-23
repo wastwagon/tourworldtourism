@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
 import { EnvelopeIcon } from '@heroicons/react/24/outline'
@@ -32,7 +34,7 @@ export default function AdminInquiriesPage() {
         setInquiries(data.inquiries || [])
       }
     } catch (error) {
-      console.error('Error fetching inquiries:', error)
+      devError('Error fetching inquiries:', error)
     } finally {
       setLoading(false)
     }
@@ -68,17 +70,17 @@ export default function AdminInquiriesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
           {loading ? (
-            <div className="bg-white rounded-lg shadow p-8 text-center">
+            <div className="admin-surface p-8 text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto mb-4"></div>
               <p className="text-gray-600">Loading...</p>
             </div>
           ) : inquiries.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-8 text-center">
+            <div className="admin-surface p-8 text-center">
               <EnvelopeIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-600">No inquiries found.</p>
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow">
+            <div className="admin-surface">
               <div className="p-4 border-b border-gray-200">
                 <h2 className="font-semibold text-gray-900">
                   Inquiries ({inquiries.length})
@@ -114,7 +116,7 @@ export default function AdminInquiriesPage() {
 
         <div className="lg:col-span-2">
           {selectedInquiry ? (
-            <div className="bg-white rounded-lg shadow p-8">
+            <div className="admin-surface p-8">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">{selectedInquiry.subject}</h2>
@@ -155,14 +157,14 @@ export default function AdminInquiriesPage() {
               <div className="mt-6 flex gap-4">
                 <a
                   href={`mailto:${selectedInquiry.email}?subject=Re: ${selectedInquiry.subject}`}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  className="btn-primary px-4 py-2 min-h-0"
                 >
                   Reply via Email
                 </a>
               </div>
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow p-12 text-center">
+            <div className="admin-surface p-12 text-center">
               <EnvelopeIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-600">Select an inquiry to view details</p>
             </div>

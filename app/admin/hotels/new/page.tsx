@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
@@ -41,7 +43,7 @@ export default function NewHotelPage() {
         alert(error.error || 'Failed to create hotel')
       }
     } catch (error) {
-      console.error('Error creating hotel:', error)
+      devError('Error creating hotel:', error)
       alert('Error creating hotel')
     } finally {
       setLoading(false)
@@ -58,7 +60,7 @@ export default function NewHotelPage() {
         Back to Hotels
       </Link>
 
-      <div className="bg-white rounded-lg shadow-md p-8">
+      <div className="admin-surface p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Add New Hotel</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -223,7 +225,7 @@ export default function NewHotelPage() {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+              className="btn-primary"
             >
               {loading ? 'Creating...' : 'Create Hotel'}
             </button>

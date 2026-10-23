@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
 import Link from 'next/link'
@@ -40,7 +42,7 @@ export default function AdminBookingsPage() {
         setBookings(data.bookings || [])
       }
     } catch (error) {
-      console.error('Error fetching bookings:', error)
+      devError('Error fetching bookings:', error)
     } finally {
       setLoading(false)
     }
@@ -89,16 +91,16 @@ export default function AdminBookingsPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="admin-surface p-12 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading bookings...</p>
         </div>
       ) : bookings.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="admin-surface p-12 text-center">
           <p className="text-gray-600">No bookings found.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="admin-surface overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

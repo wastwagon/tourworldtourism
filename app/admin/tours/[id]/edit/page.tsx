@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
@@ -90,7 +92,7 @@ export default function EditTourPage() {
         router.push('/admin/tours')
       }
     } catch (error) {
-      console.error('Error fetching tour:', error)
+      devError('Error fetching tour:', error)
       alert('Error loading tour')
       router.push('/admin/tours')
     } finally {
@@ -201,13 +203,13 @@ export default function EditTourPage() {
         }, 2000)
       } else {
         const errorMsg = responseData.error || 'Failed to update tour'
-        console.error('Failed to update tour:', errorMsg)
+        devError('Failed to update tour:', errorMsg)
         alert(errorMsg)
         setSaving(false)
       }
     } catch (error: any) {
       const errorMsg = error.message || 'Unknown error'
-      console.error('Error updating tour:', errorMsg, error)
+      devError('Error updating tour:', errorMsg, error)
       alert(`Error updating tour: ${errorMsg}`)
       setSaving(false)
     }
@@ -236,7 +238,7 @@ export default function EditTourPage() {
         Back to Tours
       </Link>
 
-      <div className="bg-white rounded-lg shadow-md p-8">
+      <div className="admin-surface p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Tour</h1>
 
         {/* Success Notification */}
@@ -260,10 +262,7 @@ export default function EditTourPage() {
         )}
 
         <form 
-          onSubmit={(e) => {
-            console.log('📝 Form onSubmit event fired')
-            handleSubmit(e)
-          }} 
+          onSubmit={handleSubmit} 
           className="space-y-8"
           noValidate
         >
@@ -558,7 +557,7 @@ export default function EditTourPage() {
                 
                 handleSubmit(syntheticEvent)
               }}
-              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="btn-primary"
               style={{ 
                 cursor: saving || loading ? 'not-allowed' : 'pointer',
                 zIndex: 9999,

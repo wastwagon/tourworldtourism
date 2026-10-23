@@ -4,3 +4,9 @@ export function devLog(...args: unknown[]) {
     console.log(...args)
   }
 }
+
+export function devError(...args: unknown[]) {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(...args)
+  }
+}

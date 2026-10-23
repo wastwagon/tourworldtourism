@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -37,7 +39,7 @@ export default function AdminGalleriesPage() {
       const data = await res.json()
       setGalleries(data)
     } catch (error) {
-      console.error('Error fetching galleries:', error)
+      devError('Error fetching galleries:', error)
     } finally {
       setLoading(false)
     }
@@ -55,7 +57,7 @@ export default function AdminGalleriesPage() {
         fetchGalleries()
       }
     } catch (error) {
-      console.error('Error deleting gallery:', error)
+      devError('Error deleting gallery:', error)
     }
   }
 
@@ -65,7 +67,7 @@ export default function AdminGalleriesPage() {
           <h1 className="text-3xl font-bold text-gray-900">Gallery Management</h1>
           <Link
             href="/admin/galleries/new"
-            className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2"
+            className="btn-primary gap-2"
           >
             <PlusIcon className="h-5 w-5" />
             Add New Gallery
@@ -78,12 +80,12 @@ export default function AdminGalleriesPage() {
             <p className="text-gray-600">Loading galleries...</p>
           </div>
         ) : galleries.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg shadow">
+          <div className="text-center py-12 admin-surface">
             <PhotoIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-600 mb-4">No galleries found.</p>
             <Link
               href="/admin/galleries/new"
-              className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700"
+              className="btn-primary"
             >
               Create Your First Gallery
             </Link>
@@ -91,7 +93,7 @@ export default function AdminGalleriesPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {galleries.map((gallery) => (
-              <div key={gallery.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div key={gallery.id} className="admin-surface overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <SafeImage
                     src={gallery.featuredImage || gallery.images[0]}

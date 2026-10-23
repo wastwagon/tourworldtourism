@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from '@/components/AdminLayout'
@@ -52,7 +54,7 @@ export default function NewGalleryPage() {
         alert('Failed to create gallery')
       }
     } catch (error) {
-      console.error('Error creating gallery:', error)
+      devError('Error creating gallery:', error)
       alert('Error creating gallery')
     } finally {
       setLoading(false)
@@ -70,7 +72,7 @@ export default function NewGalleryPage() {
           Back to Galleries
         </Link>
 
-        <div className="bg-white rounded-lg shadow-md p-8">
+        <div className="admin-surface p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Gallery</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -169,7 +171,7 @@ export default function NewGalleryPage() {
               <button
                 type="submit"
                 disabled={loading || formData.images.length === 0}
-                className="bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary px-8"
               >
                 {loading ? 'Creating...' : 'Create Gallery'}
               </button>

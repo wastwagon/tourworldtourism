@@ -1,5 +1,7 @@
 'use client'
 
+import { devError } from '@/lib/dev-log'
+
 import { useState, useEffect } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
 import Link from 'next/link'
@@ -32,7 +34,7 @@ export default function AdminHotelsPage() {
         setHotels(data.hotels || [])
       }
     } catch (error) {
-      console.error('Error fetching hotels:', error)
+      devError('Error fetching hotels:', error)
     } finally {
       setLoading(false)
     }
@@ -63,7 +65,7 @@ export default function AdminHotelsPage() {
         </div>
         <Link
           href="/admin/hotels/new"
-          className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2"
+          className="btn-primary gap-2"
         >
           <PlusIcon className="h-5 w-5" />
           Add New Hotel
@@ -71,16 +73,16 @@ export default function AdminHotelsPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="admin-surface p-12 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading hotels...</p>
         </div>
       ) : hotels.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="admin-surface p-12 text-center">
           <p className="text-gray-600 mb-4">No hotels found.</p>
           <Link
             href="/admin/hotels/new"
-            className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700"
+            className="btn-primary"
           >
             Add Your First Hotel
           </Link>
@@ -88,7 +90,7 @@ export default function AdminHotelsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {hotels.map((hotel) => (
-            <div key={hotel.id} className="bg-white rounded-lg shadow overflow-hidden">
+            <div key={hotel.id} className="admin-surface overflow-hidden">
               <div className="relative h-48">
                 <SafeImage
                   src={hotel.featuredImage}
