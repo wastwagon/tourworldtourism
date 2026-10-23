@@ -1,6 +1,48 @@
 import { getSiteUrl } from '@/lib/site-url'
+import type { FaqItem } from '@/lib/faq-content'
 
 const ORG_NAME = 'TOURWORLD TOURISM SERVICES LTD'
+
+export function buildWebSiteJsonLd() {
+  const siteUrl = getSiteUrl()
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Tourworld Tourism',
+    alternateName: ORG_NAME,
+    url: siteUrl,
+    inLanguage: 'en',
+    publisher: {
+      '@type': 'TravelAgency',
+      name: ORG_NAME,
+      url: siteUrl,
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteUrl}/tours?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  }
+}
+
+export function buildFaqJsonLd(items: FaqItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  }
+}
 
 export function buildTravelAgencyJsonLd() {
   const siteUrl = getSiteUrl()

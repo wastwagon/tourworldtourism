@@ -8,6 +8,8 @@ import { TourFilters } from '@/components/TourFilters'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { FaqSection } from '@/components/FaqSection'
+import { TOURS_FAQ } from '@/lib/faq-content'
 
 interface Tour {
   id: string
@@ -295,6 +297,12 @@ function ToursPageContent() {
             ))}
           </div>
         )}
+
+        <FaqSection
+          title="Tour booking FAQ"
+          items={TOURS_FAQ}
+          className="mt-12 sm:mt-16"
+        />
       </main>
 
       {/* Footer */}

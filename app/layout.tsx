@@ -4,7 +4,7 @@ import { SessionProvider } from "@/components/SessionProvider";
 import { WhatsAppSupport } from "@/components/WhatsAppSupport";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { JsonLd } from "@/components/JsonLd";
-import { buildTravelAgencyJsonLd } from "@/lib/structured-data";
+import { buildTravelAgencyJsonLd, buildWebSiteJsonLd } from "@/lib/structured-data";
 import { getMetadataBase } from "@/lib/metadata-helpers";
 
 export const viewport: Viewport = {
@@ -54,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className="antialiased">
-        <JsonLd data={buildTravelAgencyJsonLd()} />
+        <JsonLd data={[buildTravelAgencyJsonLd(), buildWebSiteJsonLd()]} />
         <SessionProvider>
           {children}
           <MobileBottomNav />

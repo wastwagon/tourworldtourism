@@ -5,6 +5,8 @@ import { SafeImage } from '@/components/SafeImage'
 import { prisma } from '@/lib/prisma'
 import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
 import { createPageMetadata } from '@/lib/metadata-helpers'
+import { FaqSection } from '@/components/FaqSection'
+import { CONTACT_FAQ } from '@/lib/faq-content'
 
 export const metadata = createPageMetadata({
   title: 'Contact - Tourworld Tourism',
@@ -169,6 +171,12 @@ export default async function ContactPage() {
               </div>
             </div>
           </div>
+
+          <FaqSection
+            title="Frequently Asked Questions"
+            items={CONTACT_FAQ}
+            className="mt-12 sm:mt-16 max-w-3xl"
+          />
         </div>
       </main>
 
