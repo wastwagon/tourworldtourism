@@ -224,16 +224,10 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 sm:px-5 sm:py-3 backdrop-blur-sm transition-all duration-300 hover:border-sky-400/35 hover:bg-white/[0.07] hover:shadow-[0_0_24px_rgba(56,189,248,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/60"
-              aria-label="OceanCyber — Website and Mobile App Development"
+              aria-label="OceanCyber"
             >
               <span className="text-sm sm:text-base font-semibold text-white tracking-tight group-hover:text-sky-200 transition-colors">
                 OceanCyber
-              </span>
-              <span className="hidden sm:inline text-gray-600 select-none" aria-hidden="true">
-                —
-              </span>
-              <span className="text-xs sm:text-sm text-gray-400 text-center sm:text-left font-normal leading-snug group-hover:text-gray-300 transition-colors">
-                Website &amp; Mobile App Development
               </span>
             </a>
           </div>
