@@ -4,6 +4,8 @@ import { SafeImage } from '@/components/SafeImage'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { UserIcon } from '@heroicons/react/24/outline'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { createPageMetadata } from '@/lib/metadata-helpers'
 
 async function getBlogs() {
   try {
@@ -54,10 +56,12 @@ async function getFeaturedTourImage() {
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'Blog - TOURWORLD TOURISM SERVICES LTD',
-  description: 'Discover Ghana through our travel blog - stories about culture, history, wildlife, and unforgettable experiences in Ghana.',
-}
+export const metadata = createPageMetadata({
+  title: 'Blog - Tourworld Tourism',
+  description:
+    'Discover Ghana through our travel blog — culture, history, wildlife, and unforgettable experiences.',
+  path: '/blog',
+})
 
 export default async function BlogPage() {
   let blogs: any[] = []
@@ -85,6 +89,8 @@ export default async function BlogPage() {
               alt="Discover Ghana"
               fill
               className="object-cover"
+              variant="hero"
+              sizes="100vw"
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-yellow-500 to-green-600"></div>
@@ -106,6 +112,9 @@ export default async function BlogPage() {
 
       {/* Main Content */}
       <main className="flex-grow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <PageBreadcrumbs items={[{ name: 'Blog' }]} />
+        </div>
         {/* Error Message */}
         {error && (
           <section className="py-16 bg-white">
@@ -140,7 +149,7 @@ export default async function BlogPage() {
                   <Link
                     key={blog.id}
                     href={`/blog/${blog.slug}`}
-                    className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                    className="surface-card-interactive overflow-hidden group"
                   >
                     <div className="relative h-64 overflow-hidden">
                       {blog.featuredImage ? (

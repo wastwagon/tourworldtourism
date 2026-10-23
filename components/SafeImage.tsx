@@ -1,8 +1,17 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import React from 'react'
+import {
+  IMAGE_WIDTHS,
+  VARIANT_SIZES,
+  imageSrcSet,
+  inferImageVariant,
+  isLocalImageSrc,
+  optimizedImageUrl,
+  type ImageVariant,
+} from '@/lib/image-url'
 
 interface SafeImageProps {
   src: string | null | undefined
@@ -14,6 +23,33 @@ interface SafeImageProps {
   priority?: boolean
   sizes?: string
   style?: React.CSSProperties
+  variant?: ImageVariant
+}
+
+function Fallback({
+  fill,
+  width,
+  height,
+  className,
+}: {
+  fill: boolean
+  width?: number
+  height?: number
+  className: string
+}) {
+  return (
+    <div
+      className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center ${className}`}
+      style={fill ? { position: 'absolute', inset: 0 } : { width, height }}
+    >
+      <div className="flex flex-col items-center opacity-40">
+        <svg className="w-8 h-8 mb-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span className="text-[10px] font-bold tracking-tighter uppercase text-gray-500">TOURWORLD</span>
+      </div>
+    </div>
+  )
 }
 
 export function SafeImage({
@@ -26,15 +62,16 @@ export function SafeImage({
   priority = false,
   sizes,
   style,
+  variant,
 }: SafeImageProps) {
   const [imageError, setImageError] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const [imgRef, setImgRef] = useState<HTMLImageElement | null>(null)
 
-  // Ensure src is a string and handle null/undefined
   const imageSrc = src ? (typeof src === 'string' ? src : String(src)) : null
+  const resolvedVariant = inferImageVariant({ variant, priority, width })
+  const resolvedSizes = sizes || VARIANT_SIZES[resolvedVariant]
 
-  // Check if image is already loaded (for cached images)
   React.useEffect(() => {
     if (imgRef && imageSrc && !isLoaded && !imageError) {
       if (imgRef.complete && imgRef.naturalHeight !== 0) {
@@ -43,28 +80,12 @@ export function SafeImage({
     }
   }, [imgRef, imageSrc, isLoaded, imageError])
 
-  // If no src or error occurred, show fallback
   if (!imageSrc || imageError) {
-    return (
-      <div
-        className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center ${className}`}
-        style={fill ? { position: 'absolute', inset: 0 } : { width, height }}
-      >
-        <div className="flex flex-col items-center opacity-40">
-          <svg className="w-8 h-8 mb-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span className="text-[10px] font-bold tracking-tighter uppercase text-gray-500">TOURWORLD</span>
-        </div>
-      </div>
-    )
+    return <Fallback fill={fill} width={width} height={height} className={className} />
   }
 
-  // Check if it's a local path
-  const isLocalPath = imageSrc.startsWith('/') && !imageSrc.startsWith('//')
-
   const loadingPlaceholder = !isLoaded && (
-    <div 
+    <div
       className={`absolute inset-0 bg-gray-100 animate-pulse flex items-center justify-center z-10 ${className}`}
       style={fill ? {} : { width, height }}
     >
@@ -72,16 +93,24 @@ export function SafeImage({
     </div>
   )
 
-  // For local paths, use regular img tag to prevent Next.js optimization issues
-  if (isLocalPath) {
+  if (isLocalImageSrc(imageSrc)) {
+    const optimizedSrc = optimizedImageUrl(imageSrc, IMAGE_WIDTHS[resolvedVariant])
+    const srcSet = imageSrcSet(imageSrc, resolvedVariant)
+    const imgClassName = `${className} transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`
+
     if (fill) {
       return (
         <div className="relative w-full h-full">
           {loadingPlaceholder}
           <img
-            src={imageSrc}
+            src={optimizedSrc}
+            srcSet={srcSet}
+            sizes={resolvedSizes}
             alt={alt}
-            className={`${className} transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={imgClassName}
+            loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
+            fetchPriority={priority ? 'high' : 'auto'}
             onError={() => setImageError(true)}
             onLoad={() => setIsLoaded(true)}
             style={{
@@ -103,32 +132,30 @@ export function SafeImage({
         {loadingPlaceholder}
         <img
           ref={setImgRef}
-          src={imageSrc}
+          src={optimizedSrc}
+          srcSet={srcSet}
+          sizes={resolvedSizes}
           alt={alt}
           width={width}
           height={height}
-          className={`${className} transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'} object-cover`}
-          onError={(e) => {
-            console.error('Image failed to load:', imageSrc, e);
-            setImageError(true);
-            setIsLoaded(false);
-          }}
-          onLoad={() => {
-            setIsLoaded(true);
-            setImageError(false);
-          }}
-          style={{ 
-            display: imageError ? 'none' : 'block',
+          className={`${imgClassName} object-cover`}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchPriority={priority ? 'high' : 'auto'}
+          onError={() => setImageError(true)}
+          onLoad={() => setIsLoaded(true)}
+          style={{
+            display: 'block',
             width: width ? `${width}px` : '100%',
             height: height ? `${height}px` : 'auto',
-            objectFit: 'cover'
+            objectFit: 'cover',
+            ...style,
           }}
         />
       </div>
     )
   }
 
-  // For remote images, use Next.js Image component
   if (fill) {
     return (
       <div className="relative w-full h-full">
@@ -139,7 +166,7 @@ export function SafeImage({
           fill
           className={`${className} transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           priority={priority}
-          sizes={sizes}
+          sizes={resolvedSizes}
           onError={() => setImageError(true)}
           onLoad={() => setIsLoaded(true)}
         />
@@ -157,11 +184,10 @@ export function SafeImage({
         height={height || 300}
         className={`${className} transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         priority={priority}
-        sizes={sizes}
+        sizes={resolvedSizes}
         onError={() => setImageError(true)}
         onLoad={() => setIsLoaded(true)}
       />
     </div>
   )
 }
-

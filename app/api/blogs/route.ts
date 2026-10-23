@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { PUBLIC_API_CACHE_CONTROL } from '@/lib/public-cache'
 
 export async function GET(request: Request) {
   try {
@@ -28,7 +29,9 @@ export async function GET(request: Request) {
       take: limit ? parseInt(limit) : undefined,
     })
 
-    return NextResponse.json({ blogs })
+    return NextResponse.json({ blogs }, {
+      headers: { 'Cache-Control': PUBLIC_API_CACHE_CONTROL },
+    })
   } catch (error) {
     console.error('Error fetching blogs:', error)
     return NextResponse.json(

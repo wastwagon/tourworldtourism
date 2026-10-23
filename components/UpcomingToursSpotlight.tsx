@@ -2,34 +2,37 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { SafeImage } from './SafeImage'
 import { CalendarIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/solid'
+import { cachedPublic } from '@/lib/public-cache'
 
 async function getFeaturedSpotlightTours() {
   try {
-    const tours = await prisma.tour.findMany({
-      where: {
-        status: 'active',
-        featured: true,
-      },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        description: true,
-        durationDays: true,
-        durationNights: true,
-        tourType: true,
-        regions: true,
-        featuredImage: true,
-        availableDates: true,
-        highlights: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 3,
-    })
+    return await cachedPublic(['home-spotlight-tours'], async () => {
+      const tours = await prisma.tour.findMany({
+        where: {
+          status: 'active',
+          featured: true,
+        },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          description: true,
+          durationDays: true,
+          durationNights: true,
+          tourType: true,
+          regions: true,
+          featuredImage: true,
+          availableDates: true,
+          highlights: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: 3,
+      })
 
-    return JSON.parse(JSON.stringify(tours))
+      return JSON.parse(JSON.stringify(tours))
+    })
   } catch (error) {
     console.error('Error fetching featured spotlight tours:', error)
     return []
@@ -77,7 +80,7 @@ export async function UpcomingToursSpotlight() {
             href={`/tours/${featuredTour.slug}`}
             className="group block"
           >
-            <div className="relative bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="relative surface-card rounded-sheet shadow-elevated overflow-hidden transition-shadow duration-200 hover:shadow-elevated">
               {/* Decorative Accent */}
               <div className="absolute top-0 left-0 w-full h-1 sm:h-1.5 bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 z-20"></div>
               
@@ -91,6 +94,7 @@ export async function UpcomingToursSpotlight() {
                       alt={featuredTour.title}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      variant="card"
                     />
                     {/* Subtle overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent"></div>
@@ -180,6 +184,7 @@ export async function UpcomingToursSpotlight() {
                         alt={tour.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        variant="card"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                       

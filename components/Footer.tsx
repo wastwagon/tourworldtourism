@@ -5,6 +5,29 @@ import Link from 'next/link'
 import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { SafeImage } from './SafeImage'
 
+const footerServiceLinks = [
+  { label: 'Cultural Tours', href: '/tours?type=Culture%20%26%20Heritage' },
+  { label: 'Wildlife Safaris', href: '/tours?q=wildlife' },
+  { label: 'Historical Tours', href: '/tours?type=Historical' },
+  { label: 'Adventure Activities', href: '/tours?type=Adventure' },
+  { label: 'Custom Tours', href: '/tours?type=Custom' },
+  { label: 'Eco-Tourism', href: '/tours?type=Eco-Tourism' },
+  { label: 'Educational Tours', href: '/tours?q=educational' },
+] as const
+
+const footerDestinationLinks = [
+  { label: 'Accra & Greater Accra', href: '/tours?region=Greater%20Accra' },
+  { label: 'Kumasi & Ashanti', href: '/tours?region=Ashanti' },
+  { label: 'Cape Coast & Elmina', href: '/tours?region=Central' },
+  { label: 'Kakum National Park', href: '/tours?q=kakum' },
+  { label: 'Mole National Park', href: '/tours?q=mole' },
+  { label: 'Volta Region', href: '/tours?region=Volta' },
+  { label: 'Northern Region', href: '/tours?q=Northern' },
+] as const
+
+const footerLinkClass =
+  'text-white/90 hover:text-yellow-400 transition-colors underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 rounded-sm'
+
 export function Footer() {
   const [galleryImages, setGalleryImages] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
@@ -12,31 +35,10 @@ export function Footer() {
   useEffect(() => {
     async function fetchGalleryImages() {
       try {
-        const res = await fetch('/api/galleries', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        const res = await fetch('/api/galleries?preview=9')
         if (res.ok) {
-          const galleries = await res.json()
-          // Collect all images from all galleries
-          const allImages: string[] = []
-          if (Array.isArray(galleries)) {
-            galleries.forEach((gallery: any) => {
-              if (gallery.images && Array.isArray(gallery.images)) {
-                // Filter out HEIC files
-                const validImages = gallery.images.filter((img: string) => !img.toLowerCase().endsWith('.heic'));
-                allImages.push(...validImages)
-              }
-            })
-          }
-          
-          // Shuffle and take 9 random images
-          const shuffled = [...allImages].sort(() => Math.random() - 0.5)
-          const selected = shuffled.slice(0, 9)
-          
-          // If we don't have enough gallery images, fill with fallback images
+          const payload = await res.json()
+          const selected: string[] = Array.isArray(payload?.images) ? payload.images : []
           const fallbackImages = [
             '/images/ghana-landscape.jpg',
             '/images/ghana-culture.jpg',
@@ -48,10 +50,10 @@ export function Footer() {
             '/images/ghana-festival.jpg',
             '/images/ghana-nature.jpg',
           ]
-          
-          setGalleryImages(selected.length >= 9 ? selected : [...selected, ...fallbackImages].slice(0, 9))
+          setGalleryImages(
+            selected.length >= 9 ? selected : [...selected, ...fallbackImages].slice(0, 9)
+          )
         } else {
-          // Use fallback images if API fails
           setGalleryImages([
             '/images/ghana-landscape.jpg',
             '/images/ghana-culture.jpg',
@@ -64,8 +66,7 @@ export function Footer() {
             '/images/ghana-nature.jpg',
           ])
         }
-      } catch (error) {
-        // Silently use fallback images instead of logging errors
+      } catch {
         setGalleryImages([
           '/images/ghana-landscape.jpg',
           '/images/ghana-culture.jpg',
@@ -135,28 +136,28 @@ export function Footer() {
           {/* Column 2: Services */}
           <div>
             <h3 className="text-base font-semibold mb-3 text-yellow-500">Services</h3>
-            <ul className="space-y-2 text-white text-xs">
-              <li>Cultural Tours</li>
-              <li>Wildlife Safaris</li>
-              <li>Historical Tours</li>
-              <li>Adventure Activities</li>
-              <li>Custom Tours</li>
-              <li>Eco-Tourism</li>
-              <li>Educational Tours</li>
+            <ul className="space-y-2 text-xs">
+              {footerServiceLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={footerLinkClass}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Column 3: Destinations */}
           <div>
             <h3 className="text-base font-semibold mb-3 text-yellow-500">Destinations</h3>
-            <ul className="space-y-2 text-white text-xs">
-              <li>Accra & Greater Accra</li>
-              <li>Kumasi & Ashanti</li>
-              <li>Cape Coast & Elmina</li>
-              <li>Kakum National Park</li>
-              <li>Mole National Park</li>
-              <li>Volta Region</li>
-              <li>Northern Region</li>
+            <ul className="space-y-2 text-xs">
+              {footerDestinationLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={footerLinkClass}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -196,6 +197,8 @@ export function Footer() {
                         alt={`Gallery image ${index + 1}`}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        variant="thumb"
+                        sizes="60px"
                       />
                     </div>
                   ))}
@@ -205,11 +208,34 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="border-t border-gray-800 pt-6 mt-6">
+        {/* Copyright & developer credit */}
+        <div className="border-t border-gray-800 pt-6 mt-6 space-y-5">
           <div className="text-center text-sm text-white">
             <p>&copy; 2026 TOURWORLD TOURISM SERVICES LTD. All rights reserved.</p>
             <p className="mt-1 text-xs opacity-80">Licensed Tour Operator in Ghana</p>
+          </div>
+
+          <div className="flex flex-col items-center justify-center gap-2.5">
+            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-gray-500 font-medium">
+              Designed &amp; developed by
+            </p>
+            <a
+              href="https://oceancyber.net/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 sm:px-5 sm:py-3 backdrop-blur-sm transition-all duration-300 hover:border-sky-400/35 hover:bg-white/[0.07] hover:shadow-[0_0_24px_rgba(56,189,248,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400/60"
+              aria-label="OceanCyber — Website and Mobile App Development"
+            >
+              <span className="text-sm sm:text-base font-semibold text-white tracking-tight group-hover:text-sky-200 transition-colors">
+                OceanCyber
+              </span>
+              <span className="hidden sm:inline text-gray-600 select-none" aria-hidden="true">
+                —
+              </span>
+              <span className="text-xs sm:text-sm text-gray-400 text-center sm:text-left font-normal leading-snug group-hover:text-gray-300 transition-colors">
+                Website &amp; Mobile App Development
+              </span>
+            </a>
           </div>
         </div>
       </div>

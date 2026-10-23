@@ -95,14 +95,14 @@ export function TestimonialsPageCarousel({ testimonials }: TestimonialsPageCarou
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 z-10 bg-white rounded-full p-2 sm:p-3 shadow-lg hover:bg-gray-50 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 z-10 bg-white rounded-full p-2 sm:p-3 shadow-lg hover:bg-gray-50 transition-all duration-300  focus:outline-none focus:ring-2 focus:ring-red-500"
             aria-label="Previous testimonials"
           >
             <ChevronLeftIcon className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 z-10 bg-white rounded-full p-2 sm:p-3 shadow-lg hover:bg-gray-50 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 z-10 bg-white rounded-full p-2 sm:p-3 shadow-lg hover:bg-gray-50 transition-all duration-300  focus:outline-none focus:ring-2 focus:ring-red-500"
             aria-label="Next testimonials"
           >
             <ChevronRightIcon className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />

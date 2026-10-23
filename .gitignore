@@ -43,6 +43,9 @@ next-env.d.ts
 
 /app/generated/prisma
 
+# Generated responsive WebP cache
+public/images/.optimized/
+
 # Local folders (images already processed)
 NewGalleryAdditions/
 untitled folder/

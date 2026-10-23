@@ -5,14 +5,17 @@ import { SectionHeader } from '@/components/SectionHeader'
 import { TestimonialForm } from '@/components/TestimonialForm'
 import { TestimonialsPageCarousel } from '@/components/TestimonialsPageCarousel'
 import { prisma } from '@/lib/prisma'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { createPageMetadata } from '@/lib/metadata-helpers'
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'Testimonials - TOURWORLD TOURISM SERVICES LTD',
-  description: 'Read what our guests have to say about their experiences with TOURWORLD TOURISM SERVICES LTD',
-}
+export const metadata = createPageMetadata({
+  title: 'Testimonials - Tourworld Tourism',
+  description: 'Read what guests say about their Ghana tours and experiences with Tourworld Tourism.',
+  path: '/testimonials',
+})
 
 async function getAllTestimonials() {
   try {
@@ -80,6 +83,8 @@ export default async function TestimonialsPage() {
               alt="What Our Guests Say"
               fill
               className="object-cover"
+              variant="hero"
+              sizes="100vw"
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-yellow-500 to-green-600"></div>
@@ -102,9 +107,10 @@ export default async function TestimonialsPage() {
       {/* Main Content */}
       <main className="flex-grow py-6 sm:py-8 lg:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <PageBreadcrumbs className="mb-6" items={[{ name: 'Testimonials' }]} />
           {/* Testimonials Carousel */}
           {testimonials.length === 0 ? (
-            <div className="text-center py-8 sm:py-12 bg-white rounded-lg shadow">
+            <div className="text-center py-8 sm:py-12 surface-card">
               <p className="text-sm sm:text-base text-gray-600 mb-2 sm:mb-4">No testimonials available yet.</p>
               <p className="text-xs sm:text-sm text-gray-500">Be the first to share your experience!</p>
             </div>
@@ -115,7 +121,7 @@ export default async function TestimonialsPage() {
           )}
 
           {/* Submit Testimonial Form */}
-          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto">
+          <div className="surface-card p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto">
             <div className="text-center mb-6 sm:mb-8">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 Share Your Experience

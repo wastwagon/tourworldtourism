@@ -13,9 +13,34 @@ import {
   CalendarIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline'
+import { JsonLd } from '@/components/JsonLd'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { buildTouristTripJsonLd } from '@/lib/structured-data'
+import { createPageMetadata } from '@/lib/metadata-helpers'
+import type { Metadata } from 'next'
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const tour = await getTour(slug)
+
+  if (!tour) {
+    return { title: 'Tour Not Found - Tourworld Tourism' }
+  }
+
+  return createPageMetadata({
+    title: `${tour.title} - Tourworld Tourism`,
+    description: tour.description.slice(0, 160),
+    path: `/tours/${tour.slug}`,
+    image: tour.featuredImage,
+  })
+}
 
 async function getTour(slug: string) {
   try {
@@ -54,9 +79,21 @@ export default async function TourDetailPage({
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <JsonLd
+        data={buildTouristTripJsonLd({
+          title: tour.title,
+          slug: tour.slug,
+          description: tour.description,
+          durationDays: tour.durationDays,
+          regions: tour.regions,
+          tourType: tour.tourType,
+          pricePerPerson: tour.pricePerPerson,
+          featuredImage: tour.featuredImage,
+        })}
+      />
       <Header />
       {/* Hero Image */}
-      <div className="relative h-96">
+      <div className="relative h-52 sm:h-72 md:h-96">
         <SafeImage
           src={tour.featuredImage}
           alt={tour.title}
@@ -75,11 +112,18 @@ export default async function TourDetailPage({
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        <PageBreadcrumbs
+          className="mb-4 sm:mb-6"
+          items={[
+            { name: 'Tours', href: '/tours' },
+            { name: tour.title },
+          ]}
+        />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Overview */}
-            <section className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 lg:mb-8">
+            <section className="surface-card p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 lg:mb-8">
               <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Overview</h2>
               <p className="text-xs sm:text-sm md:text-base text-gray-700 leading-relaxed mb-4 sm:mb-6">{tour.description}</p>
               
@@ -106,7 +150,7 @@ export default async function TourDetailPage({
 
             {/* Highlights */}
             {tour.highlights && tour.highlights.length > 0 && (
-              <section className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 lg:mb-8">
+              <section className="surface-card p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 lg:mb-8">
                 <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Highlights</h2>
                 <ul className="space-y-2 sm:space-y-2.5">
                   {tour.highlights.map((highlight: string, idx: number) => (
@@ -127,7 +171,7 @@ export default async function TourDetailPage({
             {/* Inclusions & Exclusions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-4 sm:mb-6 lg:mb-8">
               {tour.inclusions && tour.inclusions.length > 0 && (
-                <section className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+                <section className="surface-card p-4 sm:p-6 lg:p-8">
                   <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Inclusions</h2>
                   <ul className="space-y-1.5 sm:space-y-2">
                     {tour.inclusions.map((item: string, idx: number) => (
@@ -141,7 +185,7 @@ export default async function TourDetailPage({
               )}
 
               {tour.exclusions && tour.exclusions.length > 0 && (
-                <section className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+                <section className="surface-card p-4 sm:p-6 lg:p-8">
                   <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Exclusions</h2>
                   <ul className="space-y-1.5 sm:space-y-2">
                     {tour.exclusions.map((item: string, idx: number) => (
@@ -157,7 +201,7 @@ export default async function TourDetailPage({
 
             {/* Testimonials Section */}
             {tour.testimonials && tour.testimonials.length > 0 && (
-              <section className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 lg:mb-8">
+              <section className="surface-card p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 lg:mb-8">
                 <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">What Our Guests Say</h2>
                 <div className="space-y-3 sm:space-y-4 md:space-y-6">
                   {tour.testimonials.map((testimonial: any) => (
@@ -211,7 +255,7 @@ export default async function TourDetailPage({
 
               {/* Info Cards */}
               <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-                <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="surface-card p-3 sm:p-4">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 bg-red-100 rounded-lg flex items-center justify-center">
@@ -230,7 +274,7 @@ export default async function TourDetailPage({
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="surface-card p-3 sm:p-4">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-lg flex-shrink-0 flex items-center justify-center">
@@ -252,7 +296,7 @@ export default async function TourDetailPage({
             </div>
 
             {/* Booking Form */}
-            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8 sticky top-20">
+            <div className="surface-card p-4 sm:p-6 lg:p-8 sticky top-20">
               <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Book This Tour</h2>
               <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
                 Fill out the form below and we'll contact you with custom pricing based on your group size and preferences.

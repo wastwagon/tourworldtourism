@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { PUBLIC_API_CACHE_CONTROL } from '@/lib/public-cache'
 
 export async function GET(request: Request) {
   try {
@@ -39,7 +40,9 @@ export async function GET(request: Request) {
       },
     })
 
-    return NextResponse.json(tours)
+    return NextResponse.json(tours, {
+      headers: { 'Cache-Control': PUBLIC_API_CACHE_CONTROL },
+    })
   } catch (error) {
     console.error('Error fetching tours:', error)
     return NextResponse.json(

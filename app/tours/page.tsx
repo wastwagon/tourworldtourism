@@ -1,11 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback, Suspense } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { SafeImage } from '@/components/SafeImage'
 import { TourFilters } from '@/components/TourFilters'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
 
 interface Tour {
   id: string
@@ -23,12 +25,23 @@ interface Tour {
   availableDates: string[]
 }
 
-export default function ToursPage() {
+function ToursPageContent() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const [tours, setTours] = useState<Tour[]>([])
   const [filteredTours, setFilteredTours] = useState<Tour[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [featuredTourImage, setFeaturedTourImage] = useState<string | null>(null)
+
+  const urlFilters = useMemo(
+    () => ({
+      search: searchParams.get('q') ?? '',
+      tourType: searchParams.get('type') ?? '',
+      region: searchParams.get('region') ?? '',
+    }),
+    [searchParams]
+  )
 
   useEffect(() => {
     async function fetchTours() {
@@ -65,43 +78,58 @@ export default function ToursPage() {
     fetchTours()
   }, [])
 
+  const applyFilters = useCallback(
+    (filters: { search: string; tourType: string; region: string }, source: Tour[]) => {
+      let filtered = [...source]
+
+      if (filters.search) {
+        const searchLower = filters.search.toLowerCase()
+        filtered = filtered.filter(
+          (tour) =>
+            tour.title.toLowerCase().includes(searchLower) ||
+            tour.description.toLowerCase().includes(searchLower) ||
+            tour.regions.some((r) => r.toLowerCase().includes(searchLower)) ||
+            (tour.highlights &&
+              tour.highlights.some((h: string) => h.toLowerCase().includes(searchLower)))
+        )
+      }
+
+      if (filters.tourType) {
+        filtered = filtered.filter((tour) => tour.tourType === filters.tourType)
+      }
+
+      if (filters.region) {
+        filtered = filtered.filter((tour) => tour.regions.includes(filters.region))
+      }
+
+      return filtered.sort((a: Tour, b: Tour) => {
+        if (a.featured && !b.featured) return -1
+        if (!a.featured && b.featured) return 1
+        return 0
+      })
+    },
+    []
+  )
+
   const handleFilterChange = (filters: {
     search: string
     tourType: string
     region: string
   }) => {
-    let filtered = [...tours]
+    setFilteredTours(applyFilters(filters, tours))
 
-    // Search filter
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase()
-      filtered = filtered.filter(
-        (tour) =>
-          tour.title.toLowerCase().includes(searchLower) ||
-          tour.description.toLowerCase().includes(searchLower) ||
-          (tour.highlights && tour.highlights.some((h: string) => h.toLowerCase().includes(searchLower)))
-      )
-    }
-
-    // Tour type filter
-    if (filters.tourType) {
-      filtered = filtered.filter((tour) => tour.tourType === filters.tourType)
-    }
-
-    // Region filter
-    if (filters.region) {
-      filtered = filtered.filter((tour) => tour.regions.includes(filters.region))
-    }
-
-    // Sort filtered results: featured first
-    const sortedFiltered = filtered.sort((a: Tour, b: Tour) => {
-      if (a.featured && !b.featured) return -1
-      if (!a.featured && b.featured) return 1
-      return 0
-    })
-
-    setFilteredTours(sortedFiltered)
+    const params = new URLSearchParams()
+    if (filters.search) params.set('q', filters.search)
+    if (filters.tourType) params.set('type', filters.tourType)
+    if (filters.region) params.set('region', filters.region)
+    const qs = params.toString()
+    router.replace(qs ? `/tours?${qs}` : '/tours', { scroll: false })
   }
+
+  useEffect(() => {
+    if (loading || tours.length === 0) return
+    setFilteredTours(applyFilters(urlFilters, tours))
+  }, [loading, tours, urlFilters, applyFilters])
 
   if (loading) {
     return (
@@ -127,7 +155,7 @@ export default function ToursPage() {
             <p className="text-red-600 mb-4">Error: {error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700"
+              className="btn-primary"
             >
               Retry
             </button>
@@ -152,6 +180,9 @@ export default function ToursPage() {
               alt="Our Tours"
               fill
               className="object-cover"
+              variant="hero"
+              priority
+              sizes="100vw"
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-yellow-500 to-green-600"></div>
@@ -173,8 +204,9 @@ export default function ToursPage() {
 
       {/* Main Content */}
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full">
+        <PageBreadcrumbs className="mb-4 sm:mb-6" items={[{ name: 'Tours' }]} />
         {/* Filters */}
-        <TourFilters onFilterChange={handleFilterChange} />
+        <TourFilters onFilterChange={handleFilterChange} initialFilters={urlFilters} />
 
         {/* Results Count */}
         <div className="mb-4 sm:mb-6">
@@ -196,7 +228,7 @@ export default function ToursPage() {
               <Link
                 key={tour.id}
                 href={`/tours/${tour.slug}`}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group card-hover"
+                className="surface-card-interactive overflow-hidden group card-hover"
               >
                 {/* Tour Image */}
                 <div className="relative h-40 sm:h-48 overflow-hidden">
@@ -205,6 +237,7 @@ export default function ToursPage() {
                     alt={tour.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    variant="card"
                   />
                   <div className="absolute top-2 right-2 sm:top-4 sm:right-4 flex flex-col gap-2 items-end z-10">
                     {tour.featured && (
@@ -253,7 +286,7 @@ export default function ToursPage() {
                   )}
 
                   <div className="pt-3 sm:pt-4 border-t">
-                    <span className="block w-full text-center bg-red-600 text-white py-2 rounded-lg text-xs sm:text-sm font-semibold group-hover:bg-red-700 transition-colors">
+                    <span className="flex w-full items-center justify-center min-h-[44px] bg-red-600 text-white py-2.5 rounded-card text-xs sm:text-sm font-semibold group-hover:bg-red-700 transition-colors">
                       View Details & Book →
                     </span>
                   </div>
@@ -267,5 +300,28 @@ export default function ToursPage() {
       {/* Footer */}
       <Footer />
     </div>
+  )
+}
+
+function ToursPageFallback() {
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+      <div className="flex-grow flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading tours...</p>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  )
+}
+
+export default function ToursPage() {
+  return (
+    <Suspense fallback={<ToursPageFallback />}>
+      <ToursPageContent />
+    </Suspense>
   )
 }

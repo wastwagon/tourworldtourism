@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ChevronLeftIcon, ChevronRightIcon, ClockIcon, MapPinIcon, UserGroupIcon } from '@heroicons/react/24/outline'
 import { SafeImage } from './SafeImage'
 
-interface Tour {
+export interface HeroTour {
   id: string
   title: string
   slug: string
@@ -17,38 +17,36 @@ interface Tour {
   featuredImage: string | null
 }
 
-export function Hero() {
-  const [tours, setTours] = useState<Tour[]>([])
+export function Hero({ tours: initialTours }: { tours?: HeroTour[] }) {
+  const [tours, setTours] = useState<HeroTour[]>(initialTours ?? [])
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!initialTours)
 
   useEffect(() => {
+    if (initialTours) {
+      setTours(initialTours)
+      setLoading(false)
+      return
+    }
+
     async function fetchTours() {
       try {
-        const response = await fetch('/api/tours?featured=true&limit=3', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        const response = await fetch('/api/tours?featured=true&limit=3')
         if (response.ok) {
           const data = await response.json()
-          // Ensure data is an array and take only 3 tours
           const toursArray = Array.isArray(data) ? data : []
           setTours(toursArray.slice(0, 3))
         } else {
-          // If API fails, just show default hero
           setTours([])
         }
-      } catch (error) {
-        // Silently fail and show default hero instead of logging errors
+      } catch {
         setTours([])
       } finally {
         setLoading(false)
       }
     }
     fetchTours()
-  }, [])
+  }, [initialTours])
 
   // Auto-play slider
   useEffect(() => {
@@ -91,13 +89,17 @@ export function Hero() {
           >
             {/* Background Image */}
             <div className="absolute inset-0">
+            {index === 0 || index === currentSlide || index === (currentSlide + 1) % tours.length ? (
               <SafeImage
                 src={tour.featuredImage}
                 alt={tour.title}
                 fill
                 className="object-cover"
+                variant="hero"
                 priority={index === 0}
+                sizes="100vw"
               />
+            ) : null}
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60"></div>
               <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 via-yellow-500/15 to-green-600/20"></div>
@@ -105,13 +107,13 @@ export function Hero() {
 
             {/* Content */}
             {index === currentSlide && (
-              <div className="absolute inset-0 flex items-center pt-16 sm:pt-0 pb-4 sm:pb-0">
+              <div className="absolute inset-0 flex items-center pt-12 sm:pt-0 pb-16 sm:pb-6">
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 w-full">
                   <div className="max-w-2xl text-white animate-fade-in">
                     <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 leading-tight line-clamp-2 sm:line-clamp-none">
                       {tour.title}
                     </h1>
-                    <p className="text-xs sm:text-sm md:text-base mb-3 sm:mb-4 md:mb-5 text-gray-200 line-clamp-2 sm:line-clamp-none leading-relaxed hidden sm:block">
+                    <p className="text-xs sm:text-sm md:text-base mb-3 sm:mb-4 md:mb-5 text-gray-200 line-clamp-3 sm:line-clamp-none leading-relaxed">
                       {tour.description}
                     </p>
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-5 md:mb-6 text-white/90">

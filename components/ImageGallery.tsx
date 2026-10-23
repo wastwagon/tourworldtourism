@@ -17,7 +17,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
 
   return (
     <>
-      <section className="bg-white rounded-lg shadow-sm p-8 mb-8">
+      <section className="surface-card p-4 sm:p-8 mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Gallery</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {images.map((image, index) => (
@@ -31,6 +31,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                 alt={`${title} - Image ${index + 1}`}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-300"
+                variant="card"
               />
               <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
             </button>
@@ -59,6 +60,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
               width={1200}
               height={800}
               className="max-w-full max-h-[90vh] object-contain rounded-lg"
+              variant="full"
             />
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
               {images.map((image, index) => (

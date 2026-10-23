@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PhoneIcon, MapPinIcon, XMarkIcon, Bars3Icon, EnvelopeIcon } from '@heroicons/react/24/outline'
 
 export function Header() {
@@ -16,6 +16,24 @@ export function Header() {
     }
     return pathname?.startsWith(path)
   }
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [mobileMenuOpen])
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [mobileMenuOpen])
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -33,27 +51,36 @@ export function Header() {
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center py-2 gap-y-3 md:gap-y-0 text-[11px] sm:text-sm">
-            {/* Contact Info */}
-            <div className="flex flex-col md:flex-row items-center gap-y-2 md:gap-y-0 md:gap-x-6">
-              <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-4 gap-y-2">
-                <a href="tel:+233547783865" className="flex items-center hover:text-yellow-200 transition-colors whitespace-nowrap">
-                  <PhoneIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
-                  <span>+233 54 778 3865</span>
+          <div className="flex flex-row justify-between items-center py-1.5 md:py-2 gap-x-3 text-[11px] sm:text-sm">
+            {/* Contact — phone & email on mobile; full address on md+ */}
+            <div className="flex flex-1 min-w-0 flex-col md:flex-row items-start md:items-center gap-y-1 md:gap-y-0 md:gap-x-6">
+              <div className="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-1">
+                <a
+                  href="tel:+233547783865"
+                  className="flex items-center min-h-[44px] hover:text-yellow-200 transition-colors whitespace-nowrap"
+                >
+                  <PhoneIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 flex-shrink-0" />
+                  <span className="text-[10px] sm:text-inherit">+233 54 778 3865</span>
                 </a>
-                <a href="mailto:info@tourworldtourism.com" className="flex items-center hover:text-yellow-200 transition-colors whitespace-nowrap font-medium">
-                  <EnvelopeIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
-                  <span>info@tourworldtourism.com</span>
+                <a
+                  href="mailto:info@tourworldtourism.com"
+                  className="flex items-center min-h-[44px] hover:text-yellow-200 transition-colors font-medium truncate max-w-[11rem] sm:max-w-none"
+                >
+                  <EnvelopeIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 flex-shrink-0" />
+                  <span className="truncate text-[10px] sm:text-inherit">info@tourworldtourism.com</span>
                 </a>
               </div>
-              <div className="flex items-center text-center md:text-left opacity-90 md:border-l md:border-white/30 md:pl-6">
-                <MapPinIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 flex-shrink-0" />
-                <span className="leading-tight">No. 44, Sixth Avenue, North Ridge, Accra, Ghana. <span className="font-semibold whitespace-nowrap">GPS: GA-016-7761</span></span>
+              <div className="hidden md:flex items-center text-left opacity-90 border-l border-white/30 pl-6">
+                <MapPinIcon className="h-4 w-4 mr-1.5 flex-shrink-0" />
+                <span className="leading-tight">
+                  No. 44, Sixth Avenue, North Ridge, Accra, Ghana.{' '}
+                  <span className="font-semibold whitespace-nowrap">GPS: GA-016-7761</span>
+                </span>
               </div>
             </div>
 
             {/* Social Media Icons */}
-            <div className="flex items-center space-x-5 border-t border-white/20 pt-2 md:border-t-0 md:pt-0 md:space-x-4">
+            <div className="flex flex-shrink-0 items-center space-x-3 sm:space-x-4 md:space-x-4">
               <a
                 href="https://facebook.com/tourworldtourism"
                 target="_blank"
@@ -105,7 +132,7 @@ export function Header() {
 
       {/* Main Navigation */}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
@@ -145,9 +172,11 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden text-gray-700 hover:text-red-600 transition-colors p-2"
+            type="button"
+            className="lg:hidden text-gray-700 hover:text-red-600 transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-card"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? (
               <XMarkIcon className="h-7 w-7" />
@@ -158,32 +187,68 @@ export function Header() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu sheet */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
-          <nav className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex flex-col space-y-2">
-              {navLinks.map((link) => {
-                const active = isActive(link.href)
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`
-                      px-4 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300
-                      ${active
-                        ? 'text-red-600 bg-red-50 border-l-4 border-red-600'
-                        : 'text-gray-700 hover:text-red-600 hover:bg-gray-50'
-                      }
-                    `}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              })}
+        <div
+          className="mobile-nav-overlay lg:hidden"
+          role="presentation"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className="mobile-nav-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mobile-nav-handle-row">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Menu</p>
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full text-gray-600 hover:bg-gray-100"
+                aria-label="Close menu"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
             </div>
-          </nav>
+            <nav className="mobile-nav-scroll">
+              <div className="flex flex-col gap-1">
+                {navLinks.map((link) => {
+                  const active = isActive(link.href)
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`
+                        flex items-center min-h-[48px] px-4 text-base font-medium rounded-card transition-colors
+                        ${active
+                          ? 'text-red-600 bg-red-50'
+                          : 'text-gray-800 active:bg-gray-50'
+                        }
+                      `}
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                })}
+              </div>
+              <div className="mt-6 pt-6 border-t border-gray-100 px-4 space-y-2 text-sm text-gray-600">
+                <a href="tel:+233547783865" className="flex items-center min-h-[44px] text-red-600 font-medium">
+                  <PhoneIcon className="h-5 w-5 mr-2" />
+                  +233 54 778 3865
+                </a>
+                <a
+                  href="mailto:info@tourworldtourism.com"
+                  className="flex items-center min-h-[44px] break-all"
+                >
+                  <EnvelopeIcon className="h-5 w-5 mr-2 flex-shrink-0" />
+                  info@tourworldtourism.com
+                </a>
+              </div>
+            </nav>
+          </div>
         </div>
       )}
     </header>

@@ -3,6 +3,8 @@ import { Footer } from '@/components/Footer'
 import { SafeImage } from '@/components/SafeImage'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { createPageMetadata } from '@/lib/metadata-helpers'
 import { 
   MapPinIcon
 } from '@heroicons/react/24/solid'
@@ -10,10 +12,12 @@ import {
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: 'About Us - Tourworld Tourism',
-  description: 'Learn about Tourworld Tourism, your trusted partner for unforgettable Ghanaian adventures since 2015.',
-}
+  description:
+    'Learn about Tourworld Tourism, your trusted partner for unforgettable Ghanaian adventures since 2015.',
+  path: '/about',
+})
 
 async function getTourImages() {
   try {
@@ -113,6 +117,9 @@ export default async function AboutPage() {
 
       {/* Main Content */}
       <main className="flex-grow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <PageBreadcrumbs items={[{ name: 'About' }]} />
+        </div>
         {/* Hero Section with Image */}
         <section className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] min-h-[300px] sm:min-h-[400px] md:min-h-[500px] overflow-hidden">
           {/* Background Image */}
@@ -204,7 +211,7 @@ export default async function AboutPage() {
                     <Link
                       key={idx}
                       href={`/tours/${img.tourSlug}`}
-                      className="group relative aspect-square overflow-hidden rounded-lg sm:rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                      className="group relative aspect-square overflow-hidden rounded-card shadow-card hover:shadow-elevated transition-shadow duration-200"
                     >
                       <SafeImage
                         src={img.src}
@@ -247,7 +254,7 @@ export default async function AboutPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {/* Cultural Tours */}
-              <div className="group bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+              <div className="group surface-card-interactive overflow-hidden rounded-sheet">
                 {(() => {
                   // Find image matching Cultural & Heritage
                   const culturalImage = tourImages.find(img => {
@@ -287,7 +294,7 @@ export default async function AboutPage() {
               </div>
 
               {/* Historical Tours */}
-              <div className="group bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+              <div className="group surface-card-interactive overflow-hidden rounded-sheet">
                 {(() => {
                   // Find image matching Historical Tours
                   const historicalImage = tourImages.find(img => {
@@ -334,7 +341,7 @@ export default async function AboutPage() {
               </div>
 
               {/* Wildlife Safaris */}
-              <div className="group bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+              <div className="group surface-card-interactive overflow-hidden rounded-sheet">
                 <div className="relative h-40 sm:h-48 overflow-hidden">
                   <SafeImage
                     src="/images/tours/wildlife-wonders.jpg"
@@ -354,7 +361,7 @@ export default async function AboutPage() {
               </div>
 
               {/* Custom Tours */}
-              <div className="group bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+              <div className="group surface-card-interactive overflow-hidden rounded-sheet">
                 {(() => {
                   // Find image for Custom Tours - prefer general/experience tours
                   const customImage = tourImages.find(img => {
@@ -410,7 +417,7 @@ export default async function AboutPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
               {/* Licensed & Experienced */}
-              <div className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-red-200 overflow-hidden">
+              <div className="group relative surface-card rounded-sheet p-6 sm:p-8 lg:p-10 overflow-hidden">
                 {/* Decorative Background Element */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-50 to-transparent rounded-bl-full opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
@@ -428,7 +435,7 @@ export default async function AboutPage() {
               </div>
 
               {/* Local Expertise */}
-              <div className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-yellow-200 overflow-hidden">
+              <div className="group relative surface-card rounded-sheet p-6 sm:p-8 lg:p-10 overflow-hidden">
                 {/* Decorative Background Element */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-50 to-transparent rounded-bl-full opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
@@ -446,7 +453,7 @@ export default async function AboutPage() {
               </div>
 
               {/* Responsible Tourism */}
-              <div className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-green-200 overflow-hidden">
+              <div className="group relative surface-card rounded-sheet p-6 sm:p-8 lg:p-10 overflow-hidden">
                 {/* Decorative Background Element */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-50 to-transparent rounded-bl-full opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
                 

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { SafeImage } from '@/components/SafeImage'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
 import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 
 interface GalleryImage {
@@ -21,14 +22,12 @@ export default function GalleryPage() {
   const [error, setError] = useState<string | null>(null)
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
   const [featuredTourImage, setFeaturedTourImage] = useState<string | null>(null)
+  const [visibleCount, setVisibleCount] = useState(24)
 
   useEffect(() => {
     async function fetchAllImages() {
       try {
-        // Add cache-busting query parameter to ensure fresh data
-        const res = await fetch(`/api/galleries?t=${Date.now()}`, {
-          cache: 'no-store',
-        })
+        const res = await fetch('/api/galleries')
         if (!res.ok) {
           throw new Error('Failed to fetch galleries')
         }
@@ -43,9 +42,7 @@ export default function GalleryPage() {
             const title = gallery.title || 'Tour Highlight'
             uniqueCategories.add(title)
             gallery.images.forEach((image: string) => {
-              // Filter out HEIC files as browsers cannot display them
-              if (image.toLowerCase().endsWith('.heic')) return;
-              
+              if (image.toLowerCase().endsWith('.heic') || image.toLowerCase().endsWith('.heif')) return
               images.push({
                 src: image,
                 alt: `${gallery.title} - ${gallery.tourName || ''}`,
@@ -89,6 +86,7 @@ export default function GalleryPage() {
     } else {
       setFilteredImages(allImages.filter(img => img.galleryTitle === activeCategory))
     }
+    setVisibleCount(24)
   }, [activeCategory, allImages])
 
   const openLightbox = (index: number) => {
@@ -149,7 +147,7 @@ export default function GalleryPage() {
             <p className="text-red-600 mb-4">Error: {error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700"
+              className="btn-primary"
             >
               Retry
             </button>
@@ -173,6 +171,9 @@ export default function GalleryPage() {
               alt="Photo Gallery"
               fill
               className="object-cover"
+              variant="hero"
+              priority
+              sizes="100vw"
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-yellow-500 to-green-600"></div>
@@ -195,6 +196,7 @@ export default function GalleryPage() {
       {/* Main Gallery - World-Class Equal Height Grid */}
       <main className="flex-grow py-8 sm:py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <PageBreadcrumbs className="mb-6" items={[{ name: 'Gallery' }]} />
           {/* Main Gallery content area */}
           {filteredImages.length === 0 ? (
             <div className="text-center py-20">
@@ -204,10 +206,10 @@ export default function GalleryPage() {
             <>
               {/* Equal Height Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                {filteredImages.map((image, index) => (
+                {filteredImages.slice(0, visibleCount).map((image, index) => (
                   <div
                     key={`${image.src}-${index}`}
-                    className="group cursor-pointer relative overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-50 aspect-[4/3] flex items-center justify-center"
+                    className="group cursor-pointer relative overflow-hidden rounded-card shadow-card hover:shadow-elevated transition-shadow duration-200 bg-gray-50 aspect-[4/3] flex items-center justify-center"
                     onClick={() => openLightbox(index)}
                   >
                     <SafeImage
@@ -215,6 +217,8 @@ export default function GalleryPage() {
                       alt={image.alt}
                       fill
                       className="object-contain group-hover:scale-105 transition-transform duration-700 bg-gray-50"
+                      variant="card"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                     
                     {/* Minimal World-Class Overlay */}
@@ -229,10 +233,22 @@ export default function GalleryPage() {
                 ))}
               </div>
 
+              {visibleCount < filteredImages.length && (
+                <div className="text-center mt-10">
+                  <button
+                    type="button"
+                    onClick={() => setVisibleCount((count) => count + 24)}
+                    className="btn-primary"
+                  >
+                    Load more photos
+                  </button>
+                </div>
+              )}
+
               {/* Image Count */}
               <div className="text-center mt-12 pt-8 border-t border-gray-200">
                 <p className="text-gray-500 text-xs tracking-widest uppercase">
-                  Showing <span className="text-red-600 font-bold">{filteredImages.length}</span> of <span className="text-gray-900 font-bold">{allImages.length}</span> moments captured
+                  Showing <span className="text-red-600 font-bold">{Math.min(visibleCount, filteredImages.length)}</span> of <span className="text-gray-900 font-bold">{allImages.length}</span> moments captured
                 </p>
               </div>
             </>
@@ -286,6 +302,8 @@ export default function GalleryPage() {
                 alt={filteredImages[selectedImage].alt}
                 fill
                 className="object-contain"
+                variant="full"
+                sizes="100vw"
               />
             </div>
           </div>

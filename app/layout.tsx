@@ -1,14 +1,30 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { SessionProvider } from "@/components/SessionProvider";
 import { WhatsAppSupport } from "@/components/WhatsAppSupport";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { JsonLd } from "@/components/JsonLd";
+import { buildTravelAgencyJsonLd } from "@/lib/structured-data";
+import { getMetadataBase } from "@/lib/metadata-helpers";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#111827",
+};
 
 export const metadata: Metadata = {
+  metadataBase: getMetadataBase(),
   title: "Tourworld Tourism - Ghana Tours & Travel",
   description: "Experience the best of Ghana with Tourworld Tourism. Cultural tours, wildlife safaris, historical adventures, and unforgettable Ghanaian experiences.",
   keywords: ["Ghana tours", "Ghana travel", "cultural tours", "wildlife safaris", "historical tours", "Accra tours", "Cape Coast", "Kumasi", "Ghana tourism"],
   authors: [{ name: "Tourworld Tourism" }],
+  creator: "OceanCyber",
+  publisher: "Tourworld Tourism",
+  other: {
+    developer: "https://oceancyber.net/",
+  },
   icons: {
     icon: "/icon.png",
     apple: "/apple-icon.png",
@@ -38,6 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className="antialiased">
+        <JsonLd data={buildTravelAgencyJsonLd()} />
         <SessionProvider>
           {children}
           <MobileBottomNav />

@@ -15,7 +15,8 @@
     "db:export": "node scripts/export-local-db.js",
     "db:import": "node scripts/import-to-production.js",
     "db:migrate:full": "./scripts/migrate-database.sh",
-    "db:import:coolify": "./scripts/import-dump-in-coolify.sh"
+    "db:import:coolify": "./scripts/import-dump-in-coolify.sh",
+    "images:optimize": "tsx scripts/optimize-images.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",

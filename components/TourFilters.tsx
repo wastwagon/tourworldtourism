@@ -1,19 +1,29 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-interface TourFiltersProps {
-  onFilterChange: (filters: {
-    search: string
-    tourType: string
-    region: string
-  }) => void
+export interface TourFilterValues {
+  search: string
+  tourType: string
+  region: string
 }
 
-export function TourFilters({ onFilterChange }: TourFiltersProps) {
-  const [search, setSearch] = useState('')
-  const [tourType, setTourType] = useState('')
-  const [region, setRegion] = useState('')
+interface TourFiltersProps {
+  onFilterChange: (filters: TourFilterValues) => void
+  initialFilters?: TourFilterValues
+}
+
+export function TourFilters({ onFilterChange, initialFilters }: TourFiltersProps) {
+  const [search, setSearch] = useState(initialFilters?.search ?? '')
+  const [tourType, setTourType] = useState(initialFilters?.tourType ?? '')
+  const [region, setRegion] = useState(initialFilters?.region ?? '')
+
+  useEffect(() => {
+    if (!initialFilters) return
+    setSearch(initialFilters.search)
+    setTourType(initialFilters.tourType)
+    setRegion(initialFilters.region)
+  }, [initialFilters?.search, initialFilters?.tourType, initialFilters?.region])
 
   const handleFilterChange = () => {
     onFilterChange({
@@ -35,7 +45,7 @@ export function TourFilters({ onFilterChange }: TourFiltersProps) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div className="surface-card p-4 sm:p-6 mb-8">
       <h2 className="text-xl font-bold text-gray-900 mb-4">Filter Tours</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -52,7 +62,7 @@ export function TourFilters({ onFilterChange }: TourFiltersProps) {
               onFilterChange({ search: e.target.value, tourType, region })
             }}
             placeholder="Search tours..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+            className="form-input"
           />
         </div>
 
@@ -67,7 +77,7 @@ export function TourFilters({ onFilterChange }: TourFiltersProps) {
               setTourType(e.target.value)
               onFilterChange({ search, tourType: e.target.value, region })
             }}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+            className="form-input"
           >
             <option value="">All Types</option>
             <option value="Culture & Heritage">Culture & Heritage</option>
@@ -89,7 +99,7 @@ export function TourFilters({ onFilterChange }: TourFiltersProps) {
               setRegion(e.target.value)
               onFilterChange({ search, tourType, region: e.target.value })
             }}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+            className="form-input"
           >
             <option value="">All Regions</option>
             <option value="Greater Accra">Greater Accra</option>

@@ -2,20 +2,22 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { SectionHeader } from './SectionHeader'
 import { SafeImage } from './SafeImage'
+import { cachedPublic } from '@/lib/public-cache'
 
 async function getFeaturedHotels() {
   try {
-    const hotels = await prisma.hotel.findMany({
-      where: {
-        featured: true,
-      },
-      take: 3,
-      orderBy: {
-        rating: 'desc',
-      },
+    return await cachedPublic(['home-featured-hotels'], async () => {
+      const hotels = await prisma.hotel.findMany({
+        where: {
+          featured: true,
+        },
+        take: 3,
+        orderBy: {
+          rating: 'desc',
+        },
+      })
+      return JSON.parse(JSON.stringify(hotels))
     })
-    // Ensure proper serialization for Next.js server-to-client component passing
-    return JSON.parse(JSON.stringify(hotels))
   } catch (error) {
     console.error('Error fetching featured hotels:', error)
     return []
@@ -42,7 +44,7 @@ export async function FeaturedHotels() {
           {hotels.map((hotel) => (
             <div
               key={hotel.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group"
+              className="surface-card-interactive overflow-hidden group"
             >
               <div className="relative h-48 overflow-hidden">
                 <SafeImage
@@ -50,6 +52,7 @@ export async function FeaturedHotels() {
                   alt={hotel.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  variant="card"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10 pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-20 pointer-events-none">
@@ -84,7 +87,7 @@ export async function FeaturedHotels() {
         <div className="text-center">
           <Link
             href="/hotels"
-            className="inline-block bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors"
+            className="btn-primary px-8 py-3"
           >
             Explore All Hotels
           </Link>

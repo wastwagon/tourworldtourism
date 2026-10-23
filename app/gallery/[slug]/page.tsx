@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { SafeImage } from '@/components/SafeImage'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
 
 interface Gallery {
   id: string
@@ -51,9 +52,12 @@ export default function GalleryDetailPage({ params }: { params: Promise<{ slug: 
 
         // Filter out HEIC files
         if (foundGallery.images) {
-          foundGallery.images = foundGallery.images.filter((img: string) => !img.toLowerCase().endsWith('.heic'))
+          foundGallery.images = foundGallery.images.filter((img: string) => {
+            const lower = img.toLowerCase()
+            return !lower.endsWith('.heic') && !lower.endsWith('.heif')
+          })
         }
-        
+
         setGallery(foundGallery)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred')
@@ -119,7 +123,7 @@ export default function GalleryDetailPage({ params }: { params: Promise<{ slug: 
             <p className="text-red-600 mb-4">Error: {error || 'Gallery not found'}</p>
             <Link
               href="/gallery"
-              className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 inline-block"
+              className="btn-primary inline-flex"
             >
               Back to Galleries
             </Link>
@@ -137,12 +141,13 @@ export default function GalleryDetailPage({ params }: { params: Promise<{ slug: 
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-red-600 to-yellow-500 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/gallery"
-            className="inline-flex items-center text-white hover:text-yellow-300 mb-4 transition-colors"
-          >
-            <ArrowLeftIcon className="h-5 w-5 mr-2" /> Back to Galleries
-          </Link>
+          <PageBreadcrumbs
+            className="mb-4 [&_ol]:text-white/80 [&_a]:text-white/90 [&_a:hover]:text-yellow-200 [&_span]:text-white [&_svg]:text-white/70"
+            items={[
+              { name: 'Gallery', href: '/gallery' },
+              { name: gallery.title },
+            ]}
+          />
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{gallery.title}</h1>
           <p className="text-white/90">{gallery.tourName}</p>
         </div>
@@ -151,7 +156,7 @@ export default function GalleryDetailPage({ params }: { params: Promise<{ slug: 
       {/* Main Content */}
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         {gallery.description && (
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div className="surface-card p-6 mb-8">
             <p className="text-gray-700 leading-relaxed">{gallery.description}</p>
           </div>
         )}
@@ -169,6 +174,8 @@ export default function GalleryDetailPage({ params }: { params: Promise<{ slug: 
                 alt={`${gallery.title} - Image ${index + 1}`}
                 fill
                 className="object-contain group-hover:scale-105 transition-transform duration-300"
+                variant="card"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
             </div>
@@ -215,6 +222,8 @@ export default function GalleryDetailPage({ params }: { params: Promise<{ slug: 
                 alt={`${gallery.title} - Image ${currentImageIndex + 1}`}
                 fill
                 className="object-contain"
+                variant="full"
+                sizes="100vw"
               />
             </div>
           </div>

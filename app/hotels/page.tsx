@@ -4,6 +4,8 @@ import { SafeImage } from '@/components/SafeImage'
 import { prisma } from '@/lib/prisma'
 import { MapPinIcon, PhoneIcon, GlobeAltIcon, StarIcon } from '@heroicons/react/24/solid'
 import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { createPageMetadata } from '@/lib/metadata-helpers'
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
@@ -52,10 +54,12 @@ async function getFeaturedTourImage() {
   }
 }
 
-export const metadata = {
-  title: 'Hotels - TOURWORLD TOURISM SERVICES LTD',
-  description: 'Discover our carefully selected partner hotels across Ghana, offering world-class accommodations for your tour experience.',
-}
+export const metadata = createPageMetadata({
+  title: 'Hotels - Tourworld Tourism',
+  description:
+    'Discover our carefully selected partner hotels across Ghana, offering world-class accommodations for your tour experience.',
+  path: '/hotels',
+})
 
 export default async function HotelsPage() {
   let hotels: any[] = []
@@ -83,6 +87,8 @@ export default async function HotelsPage() {
               alt="Our Partner Hotels"
               fill
               className="object-cover"
+              variant="hero"
+              sizes="100vw"
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-yellow-500 to-green-600"></div>
@@ -104,6 +110,9 @@ export default async function HotelsPage() {
 
       {/* Main Content */}
       <main className="flex-grow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <PageBreadcrumbs items={[{ name: 'Hotels' }]} />
+        </div>
         {/* Error Message */}
         {error && (
           <section className="py-16 bg-white">
@@ -137,7 +146,7 @@ export default async function HotelsPage() {
                 {hotels.filter(h => h.featured).map((hotel) => (
                   <div
                     key={hotel.id}
-                    className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                    className="surface-card-interactive overflow-hidden group"
                   >
                     {/* Hotel Image */}
                     <div className="relative h-64 overflow-hidden">
@@ -241,7 +250,7 @@ export default async function HotelsPage() {
                 {hotels.filter(h => !h.featured).map((hotel) => (
                   <div
                     key={hotel.id}
-                    className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+                    className="surface-card-interactive overflow-hidden group"
                   >
                     {/* Hotel Image */}
                     <div className="relative h-64 overflow-hidden">

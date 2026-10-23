@@ -3,21 +3,23 @@ import { prisma } from '@/lib/prisma'
 import { CalendarIcon, UserIcon } from '@heroicons/react/24/outline'
 import { SectionHeader } from './SectionHeader'
 import { SafeImage } from './SafeImage'
+import { cachedPublic } from '@/lib/public-cache'
 
 async function getFeaturedBlogs() {
   try {
-    const blogs = await prisma.blog.findMany({
-      where: {
-        published: true,
-        featured: true,
-      },
-      take: 3,
-      orderBy: {
-        publishedAt: 'desc',
-      },
+    return await cachedPublic(['home-featured-blogs'], async () => {
+      const blogs = await prisma.blog.findMany({
+        where: {
+          published: true,
+          featured: true,
+        },
+        take: 3,
+        orderBy: {
+          publishedAt: 'desc',
+        },
+      })
+      return JSON.parse(JSON.stringify(blogs))
     })
-    // Ensure proper serialization for Next.js server-to-client component passing
-    return JSON.parse(JSON.stringify(blogs))
   } catch (error) {
     console.error('Error fetching featured blogs:', error)
     if (error instanceof Error) {
@@ -49,7 +51,7 @@ export async function FeaturedBlogs() {
             <Link
               key={blog.id}
               href={`/blog/${blog.slug}`}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group"
+              className="surface-card-interactive overflow-hidden group"
             >
               <div className="relative h-48 overflow-hidden">
                 {blog.featuredImage ? (
@@ -58,6 +60,7 @@ export async function FeaturedBlogs() {
                     alt={blog.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    variant="card"
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-red-600 via-yellow-500 to-green-600 opacity-90"></div>
@@ -94,7 +97,7 @@ export async function FeaturedBlogs() {
         <div className="text-center">
           <Link
             href="/blog"
-            className="inline-block bg-red-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors"
+            className="btn-primary px-8 py-3"
           >
             View All Blog Posts
           </Link>

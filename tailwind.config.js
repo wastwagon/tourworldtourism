@@ -7,6 +7,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      borderRadius: {
+        card: '0.875rem',
+        sheet: '1.25rem',
+      },
+      boxShadow: {
+        card: '0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.06)',
+        elevated: '0 8px 28px rgba(15, 23, 42, 0.1)',
+      },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },

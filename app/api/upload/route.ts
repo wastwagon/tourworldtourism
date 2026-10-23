@@ -26,10 +26,22 @@ export async function POST(request: Request) {
     }
 
     // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
-    if (!allowedTypes.includes(file.type)) {
+    const allowedTypes = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/webp',
+      'image/gif',
+      'image/heic',
+      'image/heif',
+    ]
+    const fileName = file.name?.toLowerCase() || ''
+    const isAllowedType =
+      allowedTypes.includes(file.type) ||
+      /\.(jpe?g|png|webp|gif|heic|heif)$/i.test(fileName)
+    if (!isAllowedType) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only JPEG, PNG, WEBP, and GIF are allowed.' },
+        { error: 'Invalid file type. Only JPEG, PNG, WEBP, GIF, and HEIC are allowed.' },
         { status: 400 }
       )
     }
@@ -48,10 +60,14 @@ export async function POST(request: Request) {
     const originalBuffer = Buffer.from(bytes)
     const originalSize = originalBuffer.length
 
+    const originalType =
+      file.type ||
+      (/\.hei[cf]$/i.test(fileName) ? 'image/heic' : 'image/jpeg')
+
     // Compress and optimize image
     const { buffer: compressedBuffer, extension } = await compressImage(
       originalBuffer,
-      file.type,
+      originalType,
       {
         maxWidth: 1920,
         maxHeight: 1920,

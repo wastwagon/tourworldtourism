@@ -3,6 +3,14 @@ import { Footer } from '@/components/Footer'
 import { ContactForm } from '@/components/ContactForm'
 import { SafeImage } from '@/components/SafeImage'
 import { prisma } from '@/lib/prisma'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { createPageMetadata } from '@/lib/metadata-helpers'
+
+export const metadata = createPageMetadata({
+  title: 'Contact - Tourworld Tourism',
+  description: 'Contact Tourworld Tourism for tour bookings, custom itineraries, and travel questions in Ghana.',
+  path: '/contact',
+})
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
@@ -47,6 +55,8 @@ export default async function ContactPage() {
               alt="Contact Us"
               fill
               className="object-cover"
+              variant="hero"
+              sizes="100vw"
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-yellow-500 to-green-600"></div>
@@ -69,17 +79,17 @@ export default async function ContactPage() {
       {/* Main Content */}
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-
+          <PageBreadcrumbs className="mb-6" items={[{ name: 'Contact' }]} />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
             {/* Contact Form */}
-            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 lg:p-8">
+            <div className="surface-card p-4 sm:p-6 lg:p-8">
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Send us a Message</h2>
               <ContactForm />
             </div>
 
             {/* Contact Information */}
             <div className="space-y-6 sm:space-y-8">
-              <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 lg:p-8">
+              <div className="surface-card p-4 sm:p-6 lg:p-8">
                 <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Get in Touch</h2>
                 <div className="space-y-4 sm:space-y-6">
                   <div>

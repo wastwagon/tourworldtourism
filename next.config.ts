@@ -11,8 +11,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Pages are already set to dynamic rendering via export const dynamic = 'force-dynamic'
-  // No need for experimental.dynamicIO (only available in canary)
+  // Pages that read the database stay dynamic so Docker builds with a
+  // placeholder DATABASE_URL do not freeze empty HTML. Public query results
+  // are cached for 120s via unstable_cache / API Cache-Control.
   // Ensure environment variables are available
   env: {
     DATABASE_URL: process.env.DATABASE_URL,

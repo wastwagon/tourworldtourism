@@ -93,14 +93,14 @@ export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) 
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-all duration-300  focus:outline-none focus:ring-2 focus:ring-red-500"
             aria-label="Previous testimonials"
           >
             <ChevronLeftIcon className="h-6 w-6 text-gray-700" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-all duration-300  focus:outline-none focus:ring-2 focus:ring-red-500"
             aria-label="Next testimonials"
           >
             <ChevronRightIcon className="h-6 w-6 text-gray-700" />
@@ -133,7 +133,7 @@ export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) 
       <div className="text-center mt-12">
         <Link
           href="/testimonials"
-          className="inline-block bg-white border-2 border-red-600 text-red-600 px-8 py-3 rounded-lg font-bold hover:bg-red-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-xl"
+          className="btn-secondary px-8 py-3 font-semibold hover:bg-red-600 hover:text-white hover:border-red-600"
         >
           Read Full Reviews & Share Your Story
         </Link>

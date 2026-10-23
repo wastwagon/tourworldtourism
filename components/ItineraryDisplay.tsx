@@ -17,7 +17,7 @@ interface ItineraryDisplayProps {
 export function ItineraryDisplay({ itinerary, tourTitle }: ItineraryDisplayProps) {
   if (!itinerary || !Array.isArray(itinerary) || itinerary.length === 0) {
     return (
-      <section className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+      <section className="surface-card p-4 sm:p-6 mb-4 sm:mb-6">
         <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Itinerary</h2>
         <p className="text-xs sm:text-sm text-gray-600">Itinerary details coming soon.</p>
       </section>
@@ -25,7 +25,7 @@ export function ItineraryDisplay({ itinerary, tourTitle }: ItineraryDisplayProps
   }
 
   return (
-    <section className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+    <section className="surface-card p-4 sm:p-6 mb-4 sm:mb-6">
       <div className="mb-4 sm:mb-6">
         <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Complete Itinerary</h2>
         <p className="text-xs sm:text-sm text-gray-600">Day-by-day breakdown of your {tourTitle} experience</p>

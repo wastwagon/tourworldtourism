@@ -103,7 +103,7 @@ export function TestimonialForm({ tourId, tourTitle, onSuccess }: TestimonialFor
           required
           value={formData.name}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+          className="form-input"
           placeholder="John Doe"
         />
       </div>
@@ -118,7 +118,7 @@ export function TestimonialForm({ tourId, tourTitle, onSuccess }: TestimonialFor
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+          className="form-input"
           placeholder="john@example.com"
         />
       </div>
@@ -166,7 +166,7 @@ export function TestimonialForm({ tourId, tourTitle, onSuccess }: TestimonialFor
           required
           value={formData.testimonial}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+          className="form-textarea min-h-[140px]"
           placeholder="Share your experience with us..."
         />
         <p className="mt-1 text-xs text-gray-500">
@@ -202,7 +202,7 @@ export function TestimonialForm({ tourId, tourTitle, onSuccess }: TestimonialFor
       <button
         type="submit"
         disabled={isSubmitting || formData.rating === 0}
-        className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? 'Submitting...' : 'Submit Testimonial'}
       </button>

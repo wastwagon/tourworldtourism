@@ -16,6 +16,7 @@ const directories = [
   'public/images/hotels',
   'public/images/blogs',
   'public/images/general',
+  'public/images/.optimized',
 ]
 
 async function ensureDirectories() {

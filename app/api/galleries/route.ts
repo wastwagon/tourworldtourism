@@ -1,5 +1,15 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { PUBLIC_API_CACHE_CONTROL } from '@/lib/public-cache'
+
+function jsonWithCache(data: unknown, status = 200) {
+  return NextResponse.json(data, {
+    status,
+    headers: {
+      'Cache-Control': PUBLIC_API_CACHE_CONTROL,
+    },
+  })
+}
 
 export async function GET(request: Request) {
   try {
@@ -7,8 +17,8 @@ export async function GET(request: Request) {
     const featured = searchParams.get('featured') === 'true'
     const limit = searchParams.get('limit')
     const slug = searchParams.get('slug')
+    const preview = searchParams.get('preview')
 
-    // If slug is provided, return single gallery
     if (slug) {
       const gallery = await prisma.gallery.findUnique({
         where: { slug },
@@ -21,10 +31,9 @@ export async function GET(request: Request) {
         )
       }
 
-      return NextResponse.json(gallery)
+      return jsonWithCache(gallery)
     }
 
-    // Otherwise return list of galleries
     const where: any = {
       published: true,
     }
@@ -42,14 +51,24 @@ export async function GET(request: Request) {
       ],
     })
 
-    // Add cache control headers to prevent stale data
-    return NextResponse.json(galleries, {
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-      },
-    })
+    if (preview) {
+      const count = Math.min(Math.max(parseInt(preview, 10) || 9, 1), 24)
+      const images: string[] = []
+      for (const gallery of galleries) {
+        if (!Array.isArray(gallery.images)) continue
+        for (const image of gallery.images) {
+          if (typeof image !== 'string') continue
+          if (image.toLowerCase().endsWith('.heic') || image.toLowerCase().endsWith('.heif')) continue
+          images.push(image)
+          if (images.length >= count) {
+            return jsonWithCache({ images })
+          }
+        }
+      }
+      return jsonWithCache({ images })
+    }
+
+    return jsonWithCache(galleries)
   } catch (error) {
     console.error('Error fetching galleries:', error)
     return NextResponse.json(

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { sendAdminNotification } from '@/lib/mail'
+import { PUBLIC_API_CACHE_CONTROL } from '@/lib/public-cache'
 
 export async function POST(request: Request) {
   try {
@@ -133,7 +134,9 @@ export async function GET(request: Request) {
       },
     })
 
-    return NextResponse.json({ testimonials })
+    return NextResponse.json({ testimonials }, {
+      headers: { 'Cache-Control': PUBLIC_API_CACHE_CONTROL },
+    })
   } catch (error: any) {
     console.error('Error fetching testimonials:', error)
     return NextResponse.json(

@@ -81,7 +81,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
       {tourTitle && (
-        <div className="relative bg-gradient-to-r from-red-50 via-yellow-50 to-green-50 border-l-4 border-red-600 p-4 sm:p-5 rounded-lg shadow-sm">
+        <div className="relative bg-gradient-to-r from-red-50 via-yellow-50 to-green-50 border-l-4 border-red-600 p-4 sm:p-5 rounded-card">
           <div className="flex items-start">
             <div className="flex-shrink-0">
               <CheckCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-red-600 mt-0.5" />
@@ -106,7 +106,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
           required
           value={formData.customerName}
           onChange={handleChange}
-          className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all text-sm sm:text-base"
+          className="form-input"
           placeholder="Enter your full name"
         />
       </div>
@@ -124,7 +124,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
             required
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all text-sm sm:text-base"
+            className="form-input"
             placeholder="your.email@example.com"
           />
         </div>
@@ -141,7 +141,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
             required
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all text-sm sm:text-base"
+            className="form-input"
             placeholder="+233 XX XXX XXXX"
           />
         </div>
@@ -161,7 +161,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
             required
             value={formData.numberOfPeople}
             onChange={handleChange}
-            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all text-sm sm:text-base"
+            className="form-input"
             placeholder="5"
           />
           <p className="text-[10px] sm:text-xs text-gray-500 mt-1">Perfect for families and small groups</p>
@@ -178,7 +178,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
             name="preferredStartDate"
             value={formData.preferredStartDate}
             onChange={handleChange}
-            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all text-sm sm:text-base"
+            className="form-input"
             placeholder="e.g. Summer 2026 or Any time"
           />
         </div>
@@ -195,7 +195,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
           rows={4}
           value={formData.specialRequests}
           onChange={handleChange}
-          className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all text-sm sm:text-base resize-none"
+          className="form-textarea min-h-[120px] resize-none"
           placeholder="Any dietary requirements, accessibility needs, or special requests..."
         />
       </div>
@@ -231,7 +231,7 @@ export function BookingForm({ tourId, tourTitle }: BookingFormProps) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-lg"
+        className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? (
           <span className="flex items-center justify-center">

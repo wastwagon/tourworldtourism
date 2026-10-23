@@ -5,6 +5,10 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { CalendarIcon, UserIcon } from '@heroicons/react/24/outline'
+import { PageBreadcrumbs } from '@/components/PageBreadcrumbs'
+import { JsonLd } from '@/components/JsonLd'
+import { buildBlogPostingJsonLd } from '@/lib/structured-data'
+import { createPageMetadata } from '@/lib/metadata-helpers'
 
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic'
@@ -31,10 +35,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
 
-  return {
+  return createPageMetadata({
     title: `${blog.title} - TOURWORLD TOURISM`,
     description: blog.excerpt,
-  }
+    path: `/blog/${blog.slug}`,
+    image: blog.featuredImage,
+  })
 }
 
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -59,6 +65,16 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <JsonLd
+        data={buildBlogPostingJsonLd({
+          title: blog.title,
+          slug: blog.slug,
+          excerpt: blog.excerpt,
+          author: blog.author,
+          featuredImage: blog.featuredImage,
+          publishedAt: blog.publishedAt,
+        })}
+      />
       <Header />
 
       {/* Hero Image */}
@@ -109,8 +125,15 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       {/* Main Content */}
       <main className="flex-grow">
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+          <PageBreadcrumbs
+            className="mb-6"
+            items={[
+              { name: 'Blog', href: '/blog' },
+              { name: blog.title },
+            ]}
+          />
           {/* Excerpt */}
-          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 lg:mb-8">
+          <div className="surface-card p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 lg:mb-8">
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed italic border-l-4 border-red-600 pl-3 sm:pl-4 md:pl-6">
               {blog.excerpt}
             </p>
@@ -131,7 +154,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           )}
 
           {/* Blog Content */}
-          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 md:p-8 lg:p-12 prose prose-sm sm:prose-base md:prose-lg max-w-none">
+          <div className="surface-card p-4 sm:p-6 md:p-8 lg:p-12 prose prose-sm sm:prose-base md:prose-lg max-w-none">
             <div
               dangerouslySetInnerHTML={{ __html: formattedContent }}
               className="blog-content"
@@ -139,11 +162,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           </div>
 
           {/* Related Blogs */}
-          <div className="mt-6 sm:mt-8 lg:mt-12 bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+          <div className="mt-6 sm:mt-8 lg:mt-12 surface-card p-4 sm:p-6 lg:p-8">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Continue Reading</h2>
             <Link
               href="/blog"
-              className="inline-block bg-red-600 text-white px-6 py-2 sm:px-8 sm:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-red-700 transition-colors"
+              className="btn-primary px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base"
             >
               View All Blog Posts
             </Link>

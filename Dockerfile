@@ -79,7 +79,7 @@ RUN chmod +x ./scripts/start.sh
 RUN chmod +x ./scripts/auto-import-data.js
 RUN chmod +x ./scripts/ensure-upload-dirs.js
 # Ensure public/images directories exist and are writable
-RUN mkdir -p public/images/{galleries,testimonials,tours,hotels,blogs,general} && \
+RUN mkdir -p public/images/{galleries,testimonials,tours,hotels,blogs,general,.optimized} && \
     chown -R nextjs:nodejs public/images && \
     chmod -R 755 public/images
 

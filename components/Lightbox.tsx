@@ -62,13 +62,15 @@ export function Lightbox({ isOpen, onClose, imageSrc, alt, name }: LightboxProps
         className="relative max-w-6xl max-h-[90vh] w-full mx-4 my-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative w-full bg-white rounded-lg shadow-2xl overflow-hidden">
+        <div className="relative w-full bg-white rounded-card shadow-elevated overflow-hidden">
           <div className="relative w-full" style={{ aspectRatio: '4/3', minHeight: '400px' }}>
             <SafeImage
               src={imageSrc}
               alt={alt}
               fill
               className="object-contain"
+              variant="full"
+              sizes="100vw"
             />
           </div>
 
