@@ -27,6 +27,7 @@ export function buildLlmsTxt(): string {
 - Examples: ${site}/tours?type=Culture%20%26%20Heritage | ${site}/tours?region=Greater%20Accra
 
 ## Public read APIs (JSON, GET, no auth)
+- Rate limit: 120 requests per minute per IP (HTTP 429 when exceeded)
 - List active tours: ${site}/api/tours
 - Featured tours: ${site}/api/tours?featured=true&limit=10
 - Single tour by slug: ${site}/api/tours/{slug}

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { sendAdminNotification } from '@/lib/mail'
 import { PUBLIC_API_CACHE_CONTROL } from '@/lib/public-cache'
+import { rateLimitPublicApi } from '@/lib/public-api-rate-limit'
 
 export async function POST(request: Request) {
   try {
@@ -96,6 +97,9 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
+  const limited = rateLimitPublicApi(request)
+  if (limited) return limited
+
   try {
     const { searchParams } = new URL(request.url)
     const approved = searchParams.get('approved')

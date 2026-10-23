@@ -2,15 +2,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { prisma } from "./prisma"
 import bcrypt from "bcryptjs"
-
-// Test Prisma connection on module load
-if (typeof window === 'undefined') {
-  console.log("🔍 Initializing NextAuth v5 (Auth.js)...")
-  console.log("Prisma client available:", !!prisma)
-  if (prisma) {
-    console.log("Prisma client type:", typeof prisma)
-  }
-}
+import { devLog } from "./dev-log"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -22,10 +14,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       async authorize(credentials) {
         try {
-          console.log("🔐 NextAuth authorize called with email:", credentials?.email)
-          
+          devLog("NextAuth authorize:", credentials?.email)
+
           if (!credentials?.email || !credentials?.password) {
-            console.log("❌ Missing credentials")
             return null
           }
 
@@ -35,10 +26,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             throw new Error("Database connection error")
           }
 
-          console.log("🔍 Looking up user in database...")
-          console.log("Prisma client type:", typeof prisma)
-          console.log("Prisma user model available:", typeof prisma.user)
-          
           const user = await prisma.user.findUnique({
             where: {
               email: credentials.email as string
@@ -46,22 +33,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           })
 
           if (!user) {
-            console.log("❌ User not found:", credentials.email)
             return null
           }
 
-          console.log("✅ User found, validating password...")
           const isPasswordValid = await bcrypt.compare(
             credentials.password as string,
             user.password
           )
 
           if (!isPasswordValid) {
-            console.log("❌ Invalid password")
             return null
           }
 
-          console.log("✅ Authentication successful for:", user.email)
+          devLog("Authentication successful for:", user.email)
           return {
             id: user.id,
             email: user.email,

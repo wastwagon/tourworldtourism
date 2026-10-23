@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { rateLimitPublicApi } from '@/lib/public-api-rate-limit'
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const limited = rateLimitPublicApi(request)
+  if (limited) return limited
+
   const { slug } = await params
   try {
     const tour = await prisma.tour.findUnique({

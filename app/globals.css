@@ -36,6 +36,10 @@
   .form-textarea {
     @apply w-full px-4 py-2.5 border border-gray-300 rounded-card text-sm sm:text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent;
   }
+
+  .admin-surface {
+    @apply bg-white rounded-card shadow-card border border-gray-100/90;
+  }
 }
 
 /* Safe area support for iOS devices */

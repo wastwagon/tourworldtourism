@@ -92,7 +92,7 @@ export default async function AdminDashboard() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+          <div className="admin-surface p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Tours</p>
@@ -107,7 +107,7 @@ export default async function AdminDashboard() {
             </Link>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+          <div className="admin-surface p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Bookings</p>
@@ -123,7 +123,7 @@ export default async function AdminDashboard() {
             </Link>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+          <div className="admin-surface p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Contact Inquiries</p>
@@ -141,7 +141,7 @@ export default async function AdminDashboard() {
             </Link>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+          <div className="admin-surface p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Testimonials</p>
@@ -162,28 +162,28 @@ export default async function AdminDashboard() {
 
         {/* Additional Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="admin-surface p-6">
             <p className="text-sm text-gray-600">Hotels</p>
             <p className="text-2xl font-bold text-gray-900">{stats.hotels}</p>
             <Link href="/admin/hotels" className="text-xs text-red-600 hover:text-red-700 mt-1 inline-block">
               Manage →
             </Link>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="admin-surface p-6">
             <p className="text-sm text-gray-600">Blogs</p>
             <p className="text-2xl font-bold text-gray-900">{stats.blogs}</p>
             <Link href="/admin/blogs" className="text-xs text-red-600 hover:text-red-700 mt-1 inline-block">
               Manage →
             </Link>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="admin-surface p-6">
             <p className="text-sm text-gray-600">Galleries</p>
             <p className="text-2xl font-bold text-gray-900">{stats.galleries}</p>
             <Link href="/admin/galleries" className="text-xs text-red-600 hover:text-red-700 mt-1 inline-block">
               Manage →
             </Link>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="admin-surface p-6">
             <p className="text-sm text-gray-600">Newsletter Subscribers</p>
             <p className="text-2xl font-bold text-gray-900">{stats.subscribers}</p>
           </div>
@@ -191,7 +191,7 @@ export default async function AdminDashboard() {
 
         {/* Recent Bookings and Email Tester */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          <div className="lg:col-span-2 bg-white rounded-lg shadow p-6">
+          <div className="lg:col-span-2 admin-surface p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-gray-900">Recent Bookings</h2>
               <Link href="/admin/bookings" className="text-sm text-red-600 hover:text-red-700">
@@ -232,7 +232,7 @@ export default async function AdminDashboard() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="admin-surface p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Email System Status</h2>
             <div className="space-y-4">
               <div className="p-3 bg-green-50 rounded-lg border border-green-100">
@@ -249,19 +249,19 @@ export default async function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link href="/admin/tours/new" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-red-500">
+          <Link href="/admin/tours/new" className="admin-surface p-6 hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-red-500">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">➕ New Tour</h3>
             <p className="text-sm text-gray-600">Create a new tour package</p>
           </Link>
-          <Link href="/admin/blogs/new" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-red-500">
+          <Link href="/admin/blogs/new" className="admin-surface p-6 hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-red-500">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">➕ New Blog</h3>
             <p className="text-sm text-gray-600">Write a new blog post</p>
           </Link>
-          <Link href="/admin/hotels/new" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-red-500">
+          <Link href="/admin/hotels/new" className="admin-surface p-6 hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-red-500">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">➕ New Hotel</h3>
             <p className="text-sm text-gray-600">Add a new hotel</p>
           </Link>
-          <Link href="/admin/galleries/new" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-red-500">
+          <Link href="/admin/galleries/new" className="admin-surface p-6 hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-red-500">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">➕ New Gallery</h3>
             <p className="text-sm text-gray-600">Create a photo gallery</p>
           </Link>

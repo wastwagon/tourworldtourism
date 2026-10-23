@@ -3,6 +3,7 @@ import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'
 import { compressImage, getCompressionStats } from '@/lib/image-compression'
+import { devLog } from '@/lib/dev-log'
 
 export async function POST(request: Request) {
   try {
@@ -77,7 +78,7 @@ export async function POST(request: Request) {
 
     // Log compression stats
     const stats = getCompressionStats(originalSize, compressedBuffer.length)
-    console.log(`Image compression: ${stats.percentage}% reduction (${(stats.saved / 1024).toFixed(2)}KB saved)`)
+    devLog(`Image compression: ${stats.percentage}% reduction (${(stats.saved / 1024).toFixed(2)}KB saved)`)
 
     // Generate unique filename with correct extension
     const timestamp = Date.now()
@@ -90,11 +91,11 @@ export async function POST(request: Request) {
     // Create directory if it doesn't exist with proper permissions
     try {
       if (!existsSync(uploadDir)) {
-        console.log(`Creating testimonials upload directory: ${uploadDir}`)
+        devLog(`Creating testimonials upload directory: ${uploadDir}`)
         await mkdir(uploadDir, { recursive: true, mode: 0o755 })
-        console.log(`Directory created successfully: ${uploadDir}`)
+        devLog(`Directory created successfully: ${uploadDir}`)
       } else {
-        console.log(`Upload directory exists: ${uploadDir}`)
+        devLog(`Upload directory exists: ${uploadDir}`)
       }
       
       // Verify directory is writable using a unique test file per request
@@ -112,7 +113,7 @@ export async function POST(request: Request) {
             console.warn(`Could not delete test file: ${unlinkError.message}`)
           }
         }
-        console.log(`Directory is writable: ${uploadDir}`)
+        devLog(`Directory is writable: ${uploadDir}`)
       } catch (writeError: any) {
         console.error(`Directory is not writable: ${uploadDir}`, writeError)
         return NextResponse.json(
@@ -132,7 +133,7 @@ export async function POST(request: Request) {
     const filepath = join(uploadDir, filename)
     try {
       await writeFile(filepath, compressedBuffer, { mode: 0o644 })
-      console.log(`Testimonial image saved successfully: ${filepath}`)
+      devLog(`Testimonial image saved successfully: ${filepath}`)
     } catch (writeError: any) {
       console.error('Error saving testimonial image:', writeError)
       return NextResponse.json(

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import slugify from 'slugify'
+import { devLog } from '@/lib/dev-log'
 
 
 export async function GET(
@@ -119,7 +120,7 @@ export async function PUT(
       },
     })
     
-    console.log(`Tour updated successfully: ${tour.id} - ${tour.title}`)
+    devLog(`Tour updated: ${tour.id} - ${tour.title}`)
 
     return NextResponse.json({ 
       success: true,

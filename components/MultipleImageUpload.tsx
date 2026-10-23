@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { PhotoIcon, XMarkIcon, ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { SafeImage } from './SafeImage'
+import { devLog } from '@/lib/dev-log'
 
 interface MultipleImageUploadProps {
   images: string[]
@@ -74,7 +75,7 @@ export function MultipleImageUpload({
         }
 
         const data = await res.json()
-        console.log('Upload successful:', data)
+        devLog('Upload successful:', data)
         
         if (!data.path) {
           console.error('Upload response missing path:', data)
@@ -85,15 +86,15 @@ export function MultipleImageUpload({
       })
 
       const uploadedPaths = await Promise.all(uploadPromises)
-      console.log('All uploads completed. Paths:', uploadedPaths)
+      devLog('All uploads completed. Paths:', uploadedPaths)
       
       const newImages = [...images, ...uploadedPaths]
-      console.log('Updating images array. Total:', newImages.length)
+      devLog('Updating images array. Total:', newImages.length)
       onChange(newImages)
 
       // Set first uploaded image as featured if no featured image exists
       if (onFeaturedChange && !featuredImage && uploadedPaths.length > 0) {
-        console.log('Setting featured image:', uploadedPaths[0])
+        devLog('Setting featured image:', uploadedPaths[0])
         onFeaturedChange(uploadedPaths[0])
       }
     } catch (err: any) {
